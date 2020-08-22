@@ -44,7 +44,6 @@
         "label": " Badge/Feed height (px)",
         "value": 100,
         "min": 0,
-        "max": 500,
         "step": 1
     },
     "badgeWidth": {
@@ -53,7 +52,6 @@
         "label": "Badge width (px)",
         "value": 100,
         "min": 0,
-        "max": "500",
         "step": 1
     },
     "feedWidth": {
@@ -62,7 +60,6 @@
         "label": "Feed width (px)",
         "value": 100,
         "min": 0,
-        "max": "500",
         "step": 1
     },    
     "badgeImage": {
@@ -82,7 +79,6 @@
         "label": "Feed top padding (px)",
         "value": 0,
         "min": 0,
-        "max": "100",
         "step": 1
     },
     "feedRightPadding": {
@@ -91,7 +87,6 @@
         "label": "Feed right padding (px)",
         "value": 0,
         "min": 0,
-        "max": "100",
         "step": 1
     },
     "feedBottomPadding": {
@@ -100,7 +95,6 @@
         "label": "Feed bottom padding (px)",
         "value": 0,
         "min": 0,
-        "max": "100",
         "step": 1
     },
     "feedLeftPadding": {
@@ -109,7 +103,6 @@
         "label": "Feed left padding (px)",
         "value": 0,
         "min": 0,
-        "max": "100",
         "step": 1
     },
     "dropShadowOffsetX": {
@@ -118,7 +111,6 @@
         "label": "Drop shadow x-offset (px)",
         "value": 0,
         "min": 0,
-        "max": "100",
         "step": 1
     },
     "dropShadowOffsetY": {
@@ -127,7 +119,6 @@
         "label": "Drop shadow y-offset (px)",
         "value": 0,
         "min": 0,
-        "max": "100",
         "step": 1
     },
     "dropShadowBlurRadius": {
@@ -136,7 +127,6 @@
         "label": "Drop shadow blur radius (px)",
         "value": 0,
         "min": 0,
-        "max": "100",
         "step": 1
     },
     "dropShadowColor": {
