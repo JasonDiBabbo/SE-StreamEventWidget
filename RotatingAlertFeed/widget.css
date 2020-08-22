@@ -48,7 +48,7 @@ html {
  */
 
 .badge {
-    height: {{badgeHeight}}px;
+    height: {{badgeFeedHeight}}px;
     width: {{badgeWidth}}px;
 }
 
@@ -57,7 +57,7 @@ html {
  */
 
  .feed {
-    height: {{feedHeight}}px;
+    height: {{badgeFeedHeight}}px;
     width: {{feedWidth}}px;
 
     background-color: {{feedBackgroundColor}};
@@ -67,3 +67,10 @@ html {
     padding-bottom: {{feedBottomPadding}}px;
     padding-left: {{feedLeftPadding}}px;
  }
+
+ /**
+  * Shadow styles (badge, feed)
+  */
+  .badge, .feed {
+      filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
+  }

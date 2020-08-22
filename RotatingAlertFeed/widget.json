@@ -8,7 +8,7 @@
     "fontSize": {
         "group": "TEXT OPTIONS",
         "type": "number",
-        "label": "Text font size (px)",
+        "label": "Font size (px)",
         "value": 80,
         "step": 1
     },
@@ -38,17 +38,17 @@
         "label": "Letter spacing (px)",
         "value": 0
     },
-    "badgeHeight": {
-        "group": "BADGE STYLE OPTIONS",
-        "type": "number",
-        "label": "Badge height (px)",
+    "badgeFeedHeight": {
+        "group": "DIMENSIONS",
+        "type":" number",
+        "label": " Badge/Feed height (px)",
         "value": 100,
         "min": 0,
         "max": 500,
         "step": 1
     },
     "badgeWidth": {
-        "group": "BADGE STYLE OPTIONS",
+        "group": "DIMENSIONS",
         "type": "number",
         "label": "Badge width (px)",
         "value": 100,
@@ -56,31 +56,28 @@
         "max": "500",
         "step": 1
     },
-    "badgeImage": {
-        "group": "BADGE STYLE OPTIONS",
-        "type": "image-input",
-        "label": "Badge image"
-    },
-    "feedHeight": {
-        "group": "FEED STYLE OPTIONS",
-        "type": "number",
-        "label": "Feed height (px)",
-        "value": 100,
-        "min": 0,
-        "max": 500,
-        "step": 1
-    },
     "feedWidth": {
-        "group": "FEED STYLE OPTIONS",
+        "group": "DIMENSIONS",
         "type": "number",
         "label": "Feed width (px)",
         "value": 100,
         "min": 0,
         "max": "500",
         "step": 1
+    },    
+    "badgeImage": {
+        "group": "BADGE",
+        "type": "image-input",
+        "label": "Badge image"
+    },
+    "feedBackgroundColor": {
+        "group": "FEED",
+        "type": "colorpicker",
+        "label": "Feed background color",
+        "value": "#231F20"
     },
     "feedTopPadding": {
-        "group": "FEED STYLE OPTIONS",
+        "group": "FEED",
         "type": "number",
         "label": "Feed top padding (px)",
         "value": 0,
@@ -89,7 +86,7 @@
         "step": 1
     },
     "feedRightPadding": {
-        "group": "FEED STYLE OPTIONS",
+        "group": "FEED",
         "type": "number",
         "label": "Feed right padding (px)",
         "value": 0,
@@ -98,7 +95,7 @@
         "step": 1
     },
     "feedBottomPadding": {
-        "group": "FEED STYLE OPTIONS",
+        "group": "FEED",
         "type": "number",
         "label": "Feed bottom padding (px)",
         "value": 0,
@@ -107,7 +104,7 @@
         "step": 1
     },
     "feedLeftPadding": {
-        "group": "FEED STYLE OPTIONS",
+        "group": "FEED",
         "type": "number",
         "label": "Feed left padding (px)",
         "value": 0,
@@ -115,10 +112,37 @@
         "max": "100",
         "step": 1
     },
-    "feedBackgroundColor": {
-        "group": "FEED STYLE OPTIONS",
+    "dropShadowOffsetX": {
+        "group": "SHADOWS",
+        "type": "number",
+        "label": "Drop shadow x-offset (px)",
+        "value": 0,
+        "min": 0,
+        "max": "100",
+        "step": 1
+    },
+    "dropShadowOffsetY": {
+        "group": "SHADOWS",
+        "type": "number",
+        "label": "Drop shadow y-offset (px)",
+        "value": 0,
+        "min": 0,
+        "max": "100",
+        "step": 1
+    },
+    "dropShadowBlurRadius": {
+        "group": "SHADOWS",
+        "type": "number",
+        "label": "Drop shadow blur radius (px)",
+        "value": 0,
+        "min": 0,
+        "max": "100",
+        "step": 1
+    },
+    "dropShadowColor": {
+        "group": "SHADOWS",
         "type": "colorpicker",
-        "label": "Feed background color",
-        "value": "#231f20"
-    }    
+        "label": "Shadow color",
+        "value": "#303030"
+    }
 }
