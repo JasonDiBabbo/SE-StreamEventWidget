@@ -37,5 +37,28 @@
         "type": "number",
         "label": "Letter spacing (px)",
         "value": 0
+    },
+    "badgeHeight": {
+        "group": "BADGE OPTIONS",
+        "type": "number",
+        "label": "Badge height (px)",
+        "value": 100,
+        "min": 0,
+        "max": 500,
+        "step": 1
+    },
+    "badgeWidth": {
+        "group": "BADGE OPTIONS",
+        "type": "number",
+        "label": "Badge width (px)",
+        "value": 100,
+        "min": 0,
+        "max": "500",
+        "step": 1
+    },
+    "badgeImage": {
+        "group": "BADGE OPTIONS",
+        "type": "image-input",
+        "label": "Badge image"
     }
 }

@@ -6,6 +6,10 @@ html {
     letter-spacing: {{textLetterSpacing}}px;
 }
 
+/**
+ * Flex styles
+ */
+
 .flex {
     display: flex;
 }
@@ -24,4 +28,13 @@ html {
 
 .flex.column-reverse {
     flex-direction: column-reverse;
+}
+
+/**
+ * Badge styles
+ */
+
+.badge {
+    height: {{badgeHeight}}px;
+    width: {{badgeWidth}}px;
 }
