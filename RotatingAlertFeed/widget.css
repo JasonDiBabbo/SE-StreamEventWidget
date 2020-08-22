@@ -5,3 +5,23 @@ html {
     color: {{fontColor}};
     letter-spacing: {{textLetterSpacing}}px;
 }
+
+.flex {
+    display: flex;
+}
+
+.flex.row {
+    flex-direction: row;
+}
+
+.flex.row-reverse {
+    flex-direction: row-reverse;
+}
+
+.flex.column {
+    flex-direction: column;
+}
+
+.flex.column-reverse {
+    flex-direction: column-reverse;
+}
