@@ -1,3 +1,41 @@
 {
-    
+    "fontFamily": {
+        "group": "TEXT OPTIONS",
+        "type": "googleFont",
+        "label": "Font family",
+        "value": "Passion One"
+    },
+    "fontSize": {
+        "group": "TEXT OPTIONS",
+        "type": "number",
+        "label": "Text font size (px)",
+        "value": 80,
+        "step": 1
+    },
+    "fontColor": {
+        "group": "TEXT OPTIONS",
+        "type": "colorpicker",
+        "label": "Font color",
+        "value": "#FFFFFF"
+    },
+    "fontWeight": {
+        "group": "TEXT OPTIONS",
+        "type": "dropdown",
+        "label": "Font weight",
+        "value": "400",
+        "options": {
+            "100": "100 - Thin",
+            "300": "300 - Light",
+            "400": "400 - Regular",
+            "500": "500 - Medium",
+            "700": "700 - Bold",
+            "900": "900 - Black"
+        }
+    },
+    "textLetterSpacing": {
+        "group": "TEXT OPTIONS",
+        "type": "number",
+        "label": "Letter spacing (px)",
+        "value": 0
+    }
 }

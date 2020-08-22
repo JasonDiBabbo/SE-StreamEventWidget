@@ -1,0 +1,7 @@
+html {
+    font-family: {{fontFamily}};
+    font-size: {{fontSize}}px;
+    font-weight: {{fontWeight}};
+    color: {{fontColor}};
+    letter-spacing: {{textLetterSpacing}}px;
+}
