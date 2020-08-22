@@ -1,3 +1,12 @@
+/**
+ * Global styles
+ */
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
 html {
     font-family: {{fontFamily}};
     font-size: {{fontSize}}px;
@@ -30,6 +39,10 @@ html {
     flex-direction: column-reverse;
 }
 
+.flex.align-center {
+    align-items: center;
+}
+
 /**
  * Badge styles
  */
@@ -38,3 +51,19 @@ html {
     height: {{badgeHeight}}px;
     width: {{badgeWidth}}px;
 }
+
+/**
+ * Feed styles
+ */
+
+ .feed {
+    height: {{feedHeight}}px;
+    width: {{feedWidth}}px;
+
+    background-color: {{feedBackgroundColor}};
+
+    padding-top: {{feedTopPadding}}px;
+    padding-right: {{feedRightPadding}}px;
+    padding-bottom: {{feedBottomPadding}}px;
+    padding-left: {{feedLeftPadding}}px;
+ }
