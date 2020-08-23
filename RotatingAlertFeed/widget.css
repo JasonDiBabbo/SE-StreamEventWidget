@@ -41,6 +41,7 @@ html {
 
 .flex.align-center {
     align-items: center;
+    justify-content: center;
 }
 
 /**
@@ -68,10 +69,10 @@ html {
     padding-left: {{barLeftPadding}}px;
  }
 
- /**
-  * Shadow styles (badge, bar)
-  */
+/**
+ * Shadow styles (badge, bar)
+ */
 
-  .badge, .bar {
-      filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
-  }
+.badge, .bar {
+    filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
+}
