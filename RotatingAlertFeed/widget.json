@@ -67,6 +67,18 @@
         "type": "image-input",
         "label": "Badge image"
     },
+    "feedOrientation": {
+        "group": "BADGE",
+        "type": "dropdown",
+        "label": "Badge location:",
+        "value": "row",
+        "options": {
+            "row": "Left",
+            "row-reverse": "Right",
+            "column": "Top",
+            "column-reverse": "Bottom"
+        }
+    },
     "barBackgroundColor": {
         "group": "BAR",
         "type": "colorpicker",
