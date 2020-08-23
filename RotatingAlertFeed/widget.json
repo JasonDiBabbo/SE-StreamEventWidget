@@ -38,6 +38,12 @@
         "label": "Letter spacing (px)",
         "value": 0
     },
+    "accentColor": {
+        "group": "COLOR OPTIONS",
+        "type": "colorpicker",
+        "label": "Accent color",
+        "value": "#3985FE"
+    },
     "badgeBarHeight": {
         "group": "DIMENSIONS",
         "type":" number",
@@ -113,6 +119,14 @@
         "group": "BAR",
         "type": "number",
         "label": "Bar left padding (px)",
+        "value": 0,
+        "min": 0,
+        "step": 1
+    },
+    "barTextLeftMargin": {
+        "group": "BAR",
+        "type": "number",
+        "label": "Bar text left margin (px)",
         "value": 0,
         "min": 0,
         "step": 1

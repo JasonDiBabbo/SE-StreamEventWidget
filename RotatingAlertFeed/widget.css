@@ -44,6 +44,14 @@ html {
     justify-content: center;
 }
 
+.flex-item-grow {
+    flex-grow: 1;
+}
+
+.flex-item-static {
+    flex-grow: 0;
+}
+
 /**
  * Badge styles
  */
@@ -57,7 +65,7 @@ html {
  * Bar styles
  */
 
- .bar {
+.bar {
     height: {{badgeBarHeight}}px;
     width: {{barWidth}}px;
 
@@ -67,7 +75,19 @@ html {
     padding-right: {{barRightPadding}}px;
     padding-bottom: {{barBottomPadding}}px;
     padding-left: {{barLeftPadding}}px;
- }
+}
+
+.bar i {
+    color: {{accentColor}};
+}
+
+.bar span {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    margin-left: {{barTextLeftMargin}}px;
+}
 
 /**
  * Shadow styles (badge, bar)
