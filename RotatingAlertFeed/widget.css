@@ -53,6 +53,19 @@ html {
 }
 
 /**
+ * Container styles
+ */
+
+.container {
+    /* Center the container relative to the size of the custom widget */
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/**
  * Badge styles
  */
 
