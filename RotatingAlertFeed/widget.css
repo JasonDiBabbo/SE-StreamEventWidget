@@ -106,9 +106,11 @@ html {
 }
 
 /**
- * Shadow styles (badge, bar)
+ * Badge and bar shared styles
  */
 
 .badge, .bar {
     filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
+
+    border-radius: {{borderRadius}}px;
 }
