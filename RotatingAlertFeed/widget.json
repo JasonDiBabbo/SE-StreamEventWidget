@@ -67,7 +67,15 @@
         "value": 100,
         "min": 0,
         "step": 1
-    },    
+    },
+    "spaceBetweenBadgeAndBar": {
+        "group": "DIMENSIONS",
+        "type": "number",
+        "label": "Space between badge and bar (px)",
+        "value": 100,
+        "min": 0,
+        "step": 1
+    },
     "badgeImage": {
         "group": "BADGE",
         "type": "image-input",

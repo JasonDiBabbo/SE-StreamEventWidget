@@ -61,6 +61,22 @@ html {
     width: {{badgeWidth}}px;
 }
 
+.container.flex.column .badge {
+    margin-bottom: {{spaceBetweenBadgeAndBar}}px;
+}
+
+.container.flex.column-reverse .badge {
+    margin-top: {{spaceBetweenBadgeAndBar}}px;
+}
+
+.container.flex.row .badge {
+    margin-right: {{spaceBetweenBadgeAndBar}}px;
+}
+
+.container.flex.row-reverse .badge {
+    margin-left: {{spaceBetweenBadgeAndBar}}px;
+}
+
 /**
  * Bar styles
  */
