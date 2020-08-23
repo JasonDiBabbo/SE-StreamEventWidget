@@ -38,10 +38,10 @@
         "label": "Letter spacing (px)",
         "value": 0
     },
-    "badgeFeedHeight": {
+    "badgeBarHeight": {
         "group": "DIMENSIONS",
         "type":" number",
-        "label": " Badge/Feed height (px)",
+        "label": " Badge/Bar height (px)",
         "value": 100,
         "min": 0,
         "step": 1
@@ -54,10 +54,10 @@
         "min": 0,
         "step": 1
     },
-    "feedWidth": {
+    "barWidth": {
         "group": "DIMENSIONS",
         "type": "number",
-        "label": "Feed width (px)",
+        "label": "Bar width (px)",
         "value": 100,
         "min": 0,
         "step": 1
@@ -67,40 +67,40 @@
         "type": "image-input",
         "label": "Badge image"
     },
-    "feedBackgroundColor": {
-        "group": "FEED",
+    "barBackgroundColor": {
+        "group": "BAR",
         "type": "colorpicker",
-        "label": "Feed background color",
+        "label": "Bar background color",
         "value": "#231F20"
     },
-    "feedTopPadding": {
-        "group": "FEED",
+    "barTopPadding": {
+        "group": "BAR",
         "type": "number",
-        "label": "Feed top padding (px)",
+        "label": "Bar top padding (px)",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "feedRightPadding": {
-        "group": "FEED",
+    "barRightPadding": {
+        "group": "BAR",
         "type": "number",
-        "label": "Feed right padding (px)",
+        "label": "Bar right padding (px)",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "feedBottomPadding": {
-        "group": "FEED",
+    "barBottomPadding": {
+        "group": "BAR",
         "type": "number",
-        "label": "Feed bottom padding (px)",
+        "label": "Bar bottom padding (px)",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "feedLeftPadding": {
-        "group": "FEED",
+    "barLeftPadding": {
+        "group": "BAR",
         "type": "number",
-        "label": "Feed left padding (px)",
+        "label": "Bar left padding (px)",
         "value": 0,
         "min": 0,
         "step": 1

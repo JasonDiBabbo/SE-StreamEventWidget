@@ -48,29 +48,30 @@ html {
  */
 
 .badge {
-    height: {{badgeFeedHeight}}px;
+    height: {{badgeBarHeight}}px;
     width: {{badgeWidth}}px;
 }
 
 /**
- * Feed styles
+ * Bar styles
  */
 
- .feed {
-    height: {{badgeFeedHeight}}px;
-    width: {{feedWidth}}px;
+ .bar {
+    height: {{badgeBarHeight}}px;
+    width: {{barWidth}}px;
 
-    background-color: {{feedBackgroundColor}};
+    background-color: {{barBackgroundColor}};
 
-    padding-top: {{feedTopPadding}}px;
-    padding-right: {{feedRightPadding}}px;
-    padding-bottom: {{feedBottomPadding}}px;
-    padding-left: {{feedLeftPadding}}px;
+    padding-top: {{barTopPadding}}px;
+    padding-right: {{barRightPadding}}px;
+    padding-bottom: {{barBottomPadding}}px;
+    padding-left: {{barLeftPadding}}px;
  }
 
  /**
-  * Shadow styles (badge, feed)
+  * Shadow styles (badge, bar)
   */
-  .badge, .feed {
+
+  .badge, .bar {
       filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
   }
