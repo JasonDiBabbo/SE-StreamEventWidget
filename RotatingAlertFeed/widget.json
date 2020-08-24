@@ -3,7 +3,7 @@
         "group": "TEXT OPTIONS",
         "type": "googleFont",
         "label": "Font family",
-        "value": "Passion One"
+        "value": "Montserrat"
     },
     "fontSize": {
         "group": "TEXT OPTIONS",
