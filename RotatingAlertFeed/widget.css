@@ -106,11 +106,15 @@ html {
     padding-left: {{barLeftPadding}}px;
 }
 
-.bar i {
+.bar-alert-type-icon {
+    flex-grow: 0;
+
     color: {{accentColor}};
 }
 
-.bar span {
+.bar-alert-text {
+    flex-grow: 1;
+    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
