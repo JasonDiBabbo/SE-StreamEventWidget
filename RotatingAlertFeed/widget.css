@@ -96,10 +96,10 @@ html {
 
     background-color: {{barBackgroundColor}};
 
-    padding-top: {{barTopPadding}}px;
-    padding-right: {{barRightPadding}}px;
-    padding-bottom: {{barBottomPadding}}px;
-    padding-left: {{barLeftPadding}}px;
+    padding-top: {{barAlertVerticalPadding}}px;
+    padding-bottom: {{barAlertVerticalPadding}}px;
+    padding-left: {{barAlertHorizontalPadding}}px;
+    padding-right: {{barAlertHorizontalPadding}}px;
 }
 
 .bar-alert-icon {

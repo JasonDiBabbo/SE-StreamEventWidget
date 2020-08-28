@@ -108,34 +108,18 @@
         "label": "Bar background color",
         "value": "#231F20"
     },
-    "barTopPadding": {
+    "barAlertVerticalPadding": {
         "group": "BAR",
         "type": "number",
-        "label": "Bar top padding (px)",
+        "label": "Bar alert vertical padding (px)",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "barRightPadding": {
+    "barAlertHorizontalPadding": {
         "group": "BAR",
         "type": "number",
-        "label": "Bar right padding (px)",
-        "value": 0,
-        "min": 0,
-        "step": 1
-    },
-    "barBottomPadding": {
-        "group": "BAR",
-        "type": "number",
-        "label": "Bar bottom padding (px)",
-        "value": 0,
-        "min": 0,
-        "step": 1
-    },
-    "barLeftPadding": {
-        "group": "BAR",
-        "type": "number",
-        "label": "Bar left padding (px)",
+        "label": "Bar alert horizontal padding (px)",
         "value": 0,
         "min": 0,
         "step": 1
