@@ -44,14 +44,6 @@ html {
     justify-content: center;
 }
 
-.flex-item-grow {
-    flex-grow: 1;
-}
-
-.flex-item-static {
-    flex-grow: 0;
-}
-
 /**
  * Container styles
  */
