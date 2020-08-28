@@ -103,13 +103,13 @@ html {
 }
 
 .bar-alert-icon {
-    flex-grow: 0;
+    flex: none;
 
     color: {{accentColor}};
 }
 
 .bar-alert-text {
-    flex-grow: 1;
+    flex: auto;
     
     white-space: nowrap;
     overflow: hidden;
