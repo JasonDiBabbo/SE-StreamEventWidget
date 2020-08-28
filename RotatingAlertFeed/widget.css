@@ -89,23 +89,32 @@ html {
 .bar {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
     height: {{badgeBarHeight}}px;
     width: {{barWidth}}px;
 
     background-color: {{barBackgroundColor}};
+}
 
-    padding-top: {{barAlertVerticalPadding}}px;
-    padding-bottom: {{barAlertVerticalPadding}}px;
-    padding-left: {{barAlertHorizontalPadding}}px;
-    padding-right: {{barAlertHorizontalPadding}}px;
+.bar-alert {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: flex-start;
+
+    height: {{badgeBarHeight}}px;
+    width: {{barWidth}}px;
+
+    background-color: transparent;
 }
 
 .bar-alert-icon {
     flex: none;
 
     color: {{accentColor}};
+
+    margin: 0px {{barAlertElementSpacing}}px;
 }
 
 .bar-alert-text {
@@ -115,7 +124,7 @@ html {
     overflow: hidden;
     text-overflow: ellipsis;
 
-    margin-left: {{barTextLeftMargin}}px;
+    margin-right: {{barAlertElementSpacing}}px;
 }
 
 /**
@@ -124,6 +133,8 @@ html {
 
 .badge, .bar {
     filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
+}
 
+.badge, .bar, .bar-alert {
     border-radius: {{borderRadius}}px;
 }

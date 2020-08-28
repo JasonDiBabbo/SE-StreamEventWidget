@@ -108,28 +108,13 @@
         "label": "Bar background color",
         "value": "#231F20"
     },
-    "barAlertVerticalPadding": {
+    "barAlertElementSpacing": {
         "group": "BAR",
         "type": "number",
-        "label": "Bar alert vertical padding (px)",
+        "label": "Bar alert element horizontal spacing (px)",
         "value": 0,
         "min": 0,
-        "step": 1
-    },
-    "barAlertHorizontalPadding": {
-        "group": "BAR",
-        "type": "number",
-        "label": "Bar alert horizontal padding (px)",
-        "value": 0,
-        "min": 0,
-        "step": 1
-    },
-    "barTextLeftMargin": {
-        "group": "BAR",
-        "type": "number",
-        "label": "Bar text left margin (px)",
-        "value": 0,
-        "min": 0,
+        "max": 20,
         "step": 1
     },
     "dropShadowOffsetX": {
