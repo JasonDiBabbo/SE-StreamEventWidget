@@ -62,6 +62,10 @@ html {
  */
 
 .badge {
+    background-color: {{badgeBackgroundColor}};
+}
+
+.badge, .badge-content {
     height: {{badgeBarHeight}}px;
     width: {{badgeWidth}}px;
 }

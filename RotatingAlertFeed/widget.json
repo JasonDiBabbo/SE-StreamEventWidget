@@ -39,12 +39,6 @@
         "value": 0,
         "step": 1
     },
-    "accentColor": {
-        "group": "COLOR OPTIONS",
-        "type": "colorpicker",
-        "label": "Accent color",
-        "value": "#3985FE"
-    },
     "badgeBarHeight": {
         "group": "DIMENSIONS",
         "type":" number",
@@ -85,15 +79,21 @@
         "min": 0,
         "step": 1
     },
-    "badgeImage": {
+    "badgeVideo": {
         "group": "BADGE",
-        "type": "image-input",
-        "label": "Badge image"
+        "type": "video-input",
+        "label": "Badge video"
+    },
+    "badgeBackgroundColor": {
+        "group": "BADGE",
+        "type": "colorpicker",
+        "label": "Background color",
+        "value": "#231F20"
     },
     "feedOrientation": {
         "group": "BADGE",
         "type": "dropdown",
-        "label": "Badge location:",
+        "label": "Location:",
         "value": "row",
         "options": {
             "row": "Left",
@@ -105,13 +105,19 @@
     "barBackgroundColor": {
         "group": "BAR",
         "type": "colorpicker",
-        "label": "Bar background color",
+        "label": "Background color",
         "value": "#231F20"
+    },
+    "accentColor": {
+        "group": "BAR",
+        "type": "colorpicker",
+        "label": "Accent color",
+        "value": "#3985FE"
     },
     "barAlertElementSpacing": {
         "group": "BAR",
         "type": "number",
-        "label": "Bar alert element horizontal spacing (px)",
+        "label": "Horizontal spacing (px)",
         "value": 0,
         "min": 0,
         "max": 20,
