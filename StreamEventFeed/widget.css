@@ -71,19 +71,19 @@ html {
 }
 
 .container.flex.column .badge {
-    margin-bottom: {{spaceBetweenBadgeAndBar}}px;
+    margin-bottom: 24px;
 }
 
 .container.flex.column-reverse .badge {
-    margin-top: {{spaceBetweenBadgeAndBar}}px;
+    margin-top: 24px;
 }
 
 .container.flex.row .badge {
-    margin-right: {{spaceBetweenBadgeAndBar}}px;
+    margin-right: 24px;
 }
 
 .container.flex.row-reverse .badge {
-    margin-left: {{spaceBetweenBadgeAndBar}}px;
+    margin-left: 24px;
 }
 
 /**
@@ -97,7 +97,6 @@ html {
 
     height: {{badgeBarHeight}}px;
     width: {{barWidth}}px;
-
     background-color: {{barBackgroundColor}};
 }
 
@@ -106,29 +105,25 @@ html {
     flex: none;
     align-items: center;
     justify-content: flex-start;
+    background-color: transparent;
 
     height: {{badgeBarHeight}}px;
     width: {{barWidth}}px;
-
-    background-color: transparent;
 }
 
 .bar-alert-icon {
     flex: none;
+    margin: 0px 20px;
 
     color: {{accentColor}};
-
-    margin: 0px {{barAlertElementSpacing}}px;
 }
 
 .bar-alert-text {
     flex: auto;
-    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    margin-right: {{barAlertElementSpacing}}px;
+    margin-right: 20px;
 }
 
 /**

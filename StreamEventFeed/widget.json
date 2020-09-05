@@ -63,14 +63,6 @@
         "min": 0,
         "step": 1
     },
-    "spaceBetweenBadgeAndBar": {
-        "group": "DIMENSIONS",
-        "type": "number",
-        "label": "Space between badge and bar (px)",
-        "value": 100,
-        "min": 0,
-        "step": 1
-    },
     "borderRadius": {
         "group": "DIMENSIONS",
         "type": "number",
@@ -113,15 +105,6 @@
         "type": "colorpicker",
         "label": "Accent color",
         "value": "#3985FE"
-    },
-    "barAlertElementSpacing": {
-        "group": "BAR",
-        "type": "number",
-        "label": "Horizontal spacing (px)",
-        "value": 0,
-        "min": 0,
-        "max": 20,
-        "step": 1
     },
     "dropShadowOffsetX": {
         "group": "SHADOWS",
