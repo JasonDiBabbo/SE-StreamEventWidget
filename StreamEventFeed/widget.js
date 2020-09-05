@@ -1,5 +1,5 @@
 /**
- * Rotating Alert Feed v1.0.0
+ * Stream Event Feed v1.0.0
  * 
  * - @JasonDiBabbo
  */
