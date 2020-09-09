@@ -2,16 +2,10 @@
  * Global styles
  */
 
-* {
-    padding: 0px;
-    margin: 0px;
-}
-
 html {
     font-family: {{fontFamily}};
     font-size: {{fontSize}}px;
     font-weight: {{fontWeight}};
-    color: {{fontColor}};
     letter-spacing: {{textLetterSpacing}}px;
 }
 
@@ -58,6 +52,19 @@ html {
 }
 
 /**
+ * Slide styles
+ */
+
+.slide-frame {
+    position: relative;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+}
+
+/**
  * Badge styles
  */
 
@@ -65,7 +72,7 @@ html {
     background-color: {{badgeBackgroundColor}};
 }
 
-.badge, .badge-content {
+.badge, .badge-item, .badge-item > * {
     height: {{badgeBarHeight}}px;
     width: {{badgeWidth}}px;
 }
@@ -100,30 +107,31 @@ html {
     background-color: {{barBackgroundColor}};
 }
 
-.bar-alert {
+.bar-item {
+    /** Flex box with items vertically centered and aligned to the left */
+
     display: flex;
-    flex: none;
     align-items: center;
     justify-content: flex-start;
-    background-color: transparent;
 
+    background-color: transparent;
     height: {{badgeBarHeight}}px;
     width: {{barWidth}}px;
 }
 
-.bar-alert-icon {
+.bar-icon {
     flex: none;
     margin: 0px 20px;
-
     color: {{accentColor}};
 }
 
-.bar-alert-text {
+.bar-text {
     flex: auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-right: 20px;
+    color: {{fontColor}};
 }
 
 /**
@@ -132,8 +140,5 @@ html {
 
 .badge, .bar {
     filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
-}
-
-.badge, .bar, .bar-alert {
     border-radius: {{borderRadius}}px;
 }

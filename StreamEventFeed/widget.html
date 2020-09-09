@@ -4,16 +4,18 @@
 <link href="https://fonts.googleapis.com/css?family={{fontFamily}}:400,{{fontWeight}}" rel="stylesheet" />
 
 <div class="container flex {{feedOrientation}} align-center">
-    <div class="badge">
-        <video autoplay loop class="badge-content">
-            <source src="{{badgeVideo}}" type="video/webm">
-        </video>
+    <div class="badge slide-frame">
+        <div class="badge-item slide">
+            <video autoplay loop>
+                <source src="{{badgeVideo}}" type="video/webm">
+            </video>
+        </div>
     </div>
 
-    <div class="bar">
-        <div class="bar-alert">
-            <i class="bar-alert-icon fas fa-heart"></i>
-            <span class="bar-alert-text">MonsterAbe</span>
+    <div class="bar slide-frame">
+        <div class="bar-item slide">
+            <i class="bar-icon fas fa-heart"></i>
+            <span class="bar-text">MonsterAbe</span>
         </div>
     </div>
 </div>
