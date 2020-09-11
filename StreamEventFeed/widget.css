@@ -125,8 +125,17 @@ html {
 
 .bar-icon {
     flex: none;
-    margin: 0px 20px;
+    margin: 0px 24px;
     color: {{accentColor}};
+}
+
+svg.bar-icon {
+    height: 1em;
+    width: 1em;
+}
+
+svg.bar-icon path {
+    fill: {{accentColor}};
 }
 
 .bar-text {
@@ -134,7 +143,7 @@ html {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-right: 20px;
+    margin-right: 24px;
     color: {{fontColor}};
 }
 
@@ -151,10 +160,10 @@ html {
  * Animation styles
  */
  
- .animate__animated.animate__fadeIn {
+.animate__animated.animate__fadeIn {
     --animate-duration: {{fadeInAnimationTime}}s;
-  }
+}
 
-  .animate__animated.animate__fadeOut {
+.animate__animated.animate__fadeOut {
     --animate-duration: {{fadeOutAnimationTime}}s;
-  }
+}
