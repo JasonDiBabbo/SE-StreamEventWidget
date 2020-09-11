@@ -15,29 +15,38 @@ class StreamEvent {
     }
 }
 class FollowerEvent extends StreamEvent {
-    constructor(followerName) {
+    constructor(follower) {
         super(StreamEventType.Follower, 'fas fa-heart');
-        this.followerName = followerName;
+        this.name = follower.name;
         this.html = this.getHtml();
     }
     getHtml() {
         const iconHtml = `<i class="bar-icon ${this.iconCssClass}"></i>`;
-        const spanHtml = `<span class="bar-text">${this.followerName}</span>`;
+        const spanHtml = `<span class="bar-text">${this.name}</span>`;
         const html = `${iconHtml}${spanHtml}`;
         return html;
     }
 }
 class SubscriberEvent extends StreamEvent {
-    constructor(subscriberName) {
+    constructor(subscriber) {
         super(StreamEventType.Subscriber, 'fas fa-star');
-        this.subscriberName = subscriberName;
+        this.name = subscriber.name;
+        this.amount = subscriber.amount;
         this.html = this.getHtml();
     }
     getHtml() {
         const iconHtml = `<i class="bar-icon ${this.iconCssClass}"></i>`;
-        const spanHtml = `<span class="bar-text">${this.subscriberName}</span>`;
+        const spanHtml = `<span class="bar-text">${this.name} ${this.getSubDurationString()}</span>`;
         const html = ` ${iconHtml}${spanHtml}`;
         return html;
+    }
+    getSubDurationString() {
+        if (typeof this.amount === 'number' && this.amount > 0) {
+            return `X${this.amount.toString()}`;
+        }
+        else {
+            return '';
+        }
     }
 }
 class EventManager {
@@ -155,8 +164,8 @@ window.addEventListener('onWidgetLoad', function (obj) {
     }
     let latestFollower = data["follower-latest"];
     let latestSubscriber = data["subscriber-latest"];
-    let latestFollowerEvent = new FollowerEvent(latestFollower.name);
-    let latestSubscriberEvent = new SubscriberEvent(latestSubscriber.name);
+    let latestFollowerEvent = new FollowerEvent(latestFollower);
+    let latestSubscriberEvent = new SubscriberEvent(latestSubscriber);
     let events = [latestFollowerEvent, latestSubscriberEvent];
     EventManager.RegisterEvents(events);
     AnimationManager.InitializeEventCycle(timeIn, timeDisplay, timeOut);

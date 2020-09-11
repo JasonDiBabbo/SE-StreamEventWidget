@@ -22,15 +22,18 @@ abstract class StreamEvent implements IStreamEvent {
 class FollowerEvent extends StreamEvent {
     public html: string;
 
-    constructor(private followerName: string) {
+    private name: string;
+
+    constructor(follower: any) {
         super(StreamEventType.Follower, 'fas fa-heart');
 
+        this.name = follower.name;
         this.html = this.getHtml();
     }
 
     private getHtml(): string {
         const iconHtml = `<i class="bar-icon ${this.iconCssClass}"></i>`;
-        const spanHtml = `<span class="bar-text">${this.followerName}</span>`;
+        const spanHtml = `<span class="bar-text">${this.name}</span>`;
         const html = `${iconHtml}${spanHtml}`;
 
         return html;
@@ -40,18 +43,32 @@ class FollowerEvent extends StreamEvent {
 class SubscriberEvent extends StreamEvent {
     public html: string;
 
-    constructor(private subscriberName: string) {
+    private name: string;
+
+    private amount: number;
+
+    constructor(subscriber: any) {
         super(StreamEventType.Subscriber, 'fas fa-star');
 
+        this.name = subscriber.name;
+        this.amount = subscriber.amount
         this.html = this.getHtml();
     }
 
     private getHtml(): string {
         const iconHtml = `<i class="bar-icon ${this.iconCssClass}"></i>`;
-        const spanHtml = `<span class="bar-text">${this.subscriberName}</span>`;
+        const spanHtml = `<span class="bar-text">${this.name} ${this.getSubDurationString()}</span>`;
         const html = ` ${iconHtml}${spanHtml}`;
 
         return html;
+    }
+
+    private getSubDurationString(): string {
+        if (typeof this.amount === 'number' && this.amount > 0) {
+            return `X${this.amount.toString()}`;
+        } else {
+            return '';
+        }
     }
 }
 
@@ -211,8 +228,8 @@ window.addEventListener('onWidgetLoad', function (obj) {
     let latestFollower = data["follower-latest"];
     let latestSubscriber = data["subscriber-latest"];
 
-    let latestFollowerEvent: FollowerEvent = new FollowerEvent(latestFollower.name);
-    let latestSubscriberEvent: SubscriberEvent = new SubscriberEvent(latestSubscriber.name);
+    let latestFollowerEvent: FollowerEvent = new FollowerEvent(latestFollower);
+    let latestSubscriberEvent: SubscriberEvent = new SubscriberEvent(latestSubscriber);
 
     let events: StreamEvent[] = [latestFollowerEvent, latestSubscriberEvent];
     EventManager.RegisterEvents(events);
