@@ -13,7 +13,7 @@ class StreamEvent {
     constructor(eventType) {
         this.eventType = eventType;
     }
-    static LookupIconCss(eventType) {
+    static lookupIconCss(eventType) {
         let iconCss = null;
         switch (eventType) {
             case StreamEventType.Follower:
@@ -35,7 +35,7 @@ class FollowerEvent extends StreamEvent {
         this.html = this.getHtml();
     }
     getHtml() {
-        const iconHtml = `<i class="bar-icon ${StreamEvent.LookupIconCss(this.eventType)}"></i>`;
+        const iconHtml = `<i class="bar-icon ${StreamEvent.lookupIconCss(this.eventType)}"></i>`;
         const spanHtml = `<span class="bar-text">${this.name}</span>`;
         const html = `${iconHtml}${spanHtml}`;
         return html;
@@ -49,7 +49,7 @@ class SubscriberEvent extends StreamEvent {
         this.html = this.getHtml();
     }
     getHtml() {
-        const iconHtml = `<i class="bar-icon ${StreamEvent.LookupIconCss(this.eventType)}"></i>`;
+        const iconHtml = `<i class="bar-icon ${StreamEvent.lookupIconCss(this.eventType)}"></i>`;
         const spanHtml = `<span class="bar-text">${this.name} ${this.getSubAmountString()}</span>`;
         const html = ` ${iconHtml}${spanHtml}`;
         return html;
@@ -89,104 +89,104 @@ class CheerEvent extends StreamEvent {
     }
 }
 class EventManager {
-    static get CurrentEvent() {
-        if (EventManager._events.length === 0) {
+    static get currentEvent() {
+        if (EventManager.events.length === 0) {
             return null;
         }
-        if (EventManager._currentEventIndex >= EventManager._events.length) {
+        if (EventManager.currentEventIndex >= EventManager.events.length) {
             throw new Error(`EventManager.CurrentEvent - '_currentEventIndex' value has become out of bounds.`);
         }
-        return EventManager._events[EventManager._currentEventIndex];
+        return EventManager.events[EventManager.currentEventIndex];
     }
-    static get NextEvent() {
-        if (EventManager._events.length === 0) {
+    static get nextEvent() {
+        if (EventManager.events.length === 0) {
             return null;
         }
         EventManager.incrementEventIndex();
-        if (EventManager._currentEventIndex >= EventManager._events.length) {
+        if (EventManager.currentEventIndex >= EventManager.events.length) {
             throw new Error(`EventManager.NextEvent - '_currentEventIndex' value has become out of bounds.`);
         }
-        return EventManager._events[EventManager._currentEventIndex];
+        return EventManager.events[EventManager.currentEventIndex];
     }
-    static RegisterEvent(event) {
+    static registerEvent(event) {
         if (!event) {
             return;
         }
-        let index = EventManager._events.findIndex((x) => x.eventType === event.eventType);
+        let index = EventManager.events.findIndex((x) => x.eventType === event.eventType);
         if (index === -1) {
-            EventManager._events.push(event);
+            EventManager.events.push(event);
         }
         else {
-            EventManager._events.splice(index, 1, event);
+            EventManager.events.splice(index, 1, event);
         }
-        if (EventManager._events.length === 1) {
-            EventManager._currentEventIndex = 0;
+        if (EventManager.events.length === 1) {
+            EventManager.currentEventIndex = 0;
         }
     }
-    static RegisterEvents(events) {
+    static registerEvents(events) {
         if (events) {
-            events.forEach((event) => EventManager.RegisterEvent(event));
+            events.forEach((event) => EventManager.registerEvent(event));
         }
     }
     static incrementEventIndex() {
-        EventManager._currentEventIndex = EventManager._currentEventIndex + 1 >= EventManager._events.length ? 0 : EventManager._currentEventIndex + 1;
+        EventManager.currentEventIndex = EventManager.currentEventIndex + 1 >= EventManager.events.length ? 0 : EventManager.currentEventIndex + 1;
     }
 }
-EventManager._currentEventIndex = -1;
-EventManager._events = [];
+EventManager.currentEventIndex = -1;
+EventManager.events = [];
 class AnimationManager {
-    static InitializeEventCycle(timeIn, timeDisplay, timeOut) {
-        AnimationManager.CycleInEvent(EventManager.CurrentEvent, timeIn, timeDisplay, timeOut);
+    static initializeEventCycle(timeIn, timeDisplay, timeOut) {
+        AnimationManager.cycleInEvent(EventManager.currentEvent, timeIn, timeDisplay, timeOut);
     }
-    static CycleInEvent(event, timeIn, timeDisplay, timeOut) {
+    static cycleInEvent(event, timeIn, timeDisplay, timeOut) {
         if (!event) {
             throw new Error(`AnimationManager.CycleInEvent - 'event' parameter is null or undefined.`);
         }
-        AnimationManager.FadeInEvent(event, timeIn);
+        AnimationManager.fadeInEvent(event, timeIn);
         setTimeout(() => {
-            AnimationManager.FadeOutEvent(timeOut);
+            AnimationManager.fadeOutEvent(timeOut);
             setTimeout(() => {
-                let nextEvent = EventManager.NextEvent;
-                AnimationManager.CycleInEvent(nextEvent, timeIn, timeDisplay, timeOut);
+                let nextEvent = EventManager.nextEvent;
+                AnimationManager.cycleInEvent(nextEvent, timeIn, timeDisplay, timeOut);
             }, timeOut);
         }, timeIn + timeDisplay);
     }
-    static FadeInEvent(event, timeIn) {
-        const slideElement = document.querySelector(AnimationManager.CurrentBarSlideSelector);
+    static fadeInEvent(event, timeIn) {
+        const slideElement = document.querySelector(AnimationManager.currentBarSlideSelector);
         slideElement.innerHTML = event.html;
-        slideElement.classList.remove(AnimationManager.HiddenElementClass);
-        slideElement.classList.add(...AnimationManager.FadeInCssClasses);
+        slideElement.classList.remove(AnimationManager.hiddenElementClass);
+        slideElement.classList.add(...AnimationManager.fadeInCssClasses);
         setTimeout(() => {
-            slideElement.classList.remove(...AnimationManager.FadeInCssClasses);
+            slideElement.classList.remove(...AnimationManager.fadeInCssClasses);
         }, timeIn);
     }
-    static FadeOutEvent(timeOut) {
-        const slideElement = document.querySelector(AnimationManager.CurrentBarSlideSelector);
-        slideElement.classList.remove(...AnimationManager.FadeInCssClasses);
-        slideElement.classList.add(...AnimationManager.FadeOutCssClasses);
+    static fadeOutEvent(timeOut) {
+        const slideElement = document.querySelector(AnimationManager.currentBarSlideSelector);
+        slideElement.classList.remove(...AnimationManager.fadeInCssClasses);
+        slideElement.classList.add(...AnimationManager.fadeOutCssClasses);
         setTimeout(() => {
-            slideElement.classList.add(AnimationManager.HiddenElementClass);
-            slideElement.classList.remove(...AnimationManager.FadeOutCssClasses);
+            slideElement.classList.add(AnimationManager.hiddenElementClass);
+            slideElement.classList.remove(...AnimationManager.fadeOutCssClasses);
         }, timeOut);
     }
 }
-AnimationManager.AnimationPrefix = 'animate__';
-AnimationManager.HiddenElementClass = 'hidden';
-AnimationManager.CurrentBarSlideSelector = '.bar-item.slide:first-child';
-AnimationManager.FadeInCssClasses = [
-    `${AnimationManager.AnimationPrefix}animated`,
-    `${AnimationManager.AnimationPrefix}fadeIn`
+AnimationManager.animationPrefix = 'animate__';
+AnimationManager.hiddenElementClass = 'hidden';
+AnimationManager.currentBarSlideSelector = '.bar-item.slide';
+AnimationManager.fadeInCssClasses = [
+    `${AnimationManager.animationPrefix}animated`,
+    `${AnimationManager.animationPrefix}fadeIn`
 ];
-AnimationManager.FadeOutCssClasses = [
-    `${AnimationManager.AnimationPrefix}animated`,
-    `${AnimationManager.AnimationPrefix}fadeOut`
+AnimationManager.fadeOutCssClasses = [
+    `${AnimationManager.animationPrefix}animated`,
+    `${AnimationManager.animationPrefix}fadeOut`
 ];
 class Utilities {
-    static ParseFloatWithDefault(float, defaultValue) {
+    static parseFloatWithDefault(float, defaultValue) {
         let result = parseFloat(float);
         return isNaN(result) ? defaultValue : result;
     }
-    static CheerEventIsValid(cheerEvent) {
+    static cheerEventIsValid(cheerEvent) {
         return cheerEvent.name && cheerEvent.amount > 0;
     }
 }
@@ -195,16 +195,16 @@ window.addEventListener('onEventReceived', function (obj) {
 window.addEventListener('onWidgetLoad', function (obj) {
     let data = obj['detail']['session']['data'];
     let fieldData = obj['detail']['fieldData'];
-    let timeIn = Utilities.ParseFloatWithDefault(fieldData.fadeInAnimationTime, 2) * 1000;
-    let timeDisplay = Utilities.ParseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
-    let timeOut = Utilities.ParseFloatWithDefault(fieldData.fadeOutAnimationTime, 2) * 1000;
+    let timeIn = Utilities.parseFloatWithDefault(fieldData.fadeInAnimationTime, 2) * 1000;
+    let timeDisplay = Utilities.parseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
+    let timeOut = Utilities.parseFloatWithDefault(fieldData.fadeOutAnimationTime, 2) * 1000;
     let latestFollowerEvent = new FollowerEvent(data['follower-latest']);
     let latestSubscriberEvent = new SubscriberEvent(data['subscriber-latest']);
     let latestCheerEvent = new CheerEvent(data['cheer-latest']);
     let events = [latestFollowerEvent, latestSubscriberEvent];
-    if (Utilities.CheerEventIsValid(latestCheerEvent)) {
+    if (Utilities.cheerEventIsValid(latestCheerEvent)) {
         events.push(latestCheerEvent);
     }
-    EventManager.RegisterEvents(events);
-    AnimationManager.InitializeEventCycle(timeIn, timeDisplay, timeOut);
+    EventManager.registerEvents(events);
+    AnimationManager.initializeEventCycle(timeIn, timeDisplay, timeOut);
 });

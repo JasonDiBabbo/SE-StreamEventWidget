@@ -4,22 +4,18 @@
  * - @JasonDiBabbo
  */
 
-interface IStreamEvent {
-    html: string;
-}
-
 enum StreamEventType {
     Follower,
     Subscriber,
     Cheer
 }
 
-abstract class StreamEvent implements IStreamEvent {
+abstract class StreamEvent {
     public abstract html: string;
 
     constructor(public eventType: StreamEventType) { }
 
-    public static LookupIconCss(eventType: StreamEventType): string {
+    public static lookupIconCss(eventType: StreamEventType): string {
         let iconCss = null;
 
         switch (eventType) {
@@ -50,7 +46,7 @@ class FollowerEvent extends StreamEvent {
     }
 
     private getHtml(): string {
-        const iconHtml = `<i class="bar-icon ${StreamEvent.LookupIconCss(this.eventType)}"></i>`;
+        const iconHtml = `<i class="bar-icon ${StreamEvent.lookupIconCss(this.eventType)}"></i>`;
         const spanHtml = `<span class="bar-text">${this.name}</span>`;
         const html = `${iconHtml}${spanHtml}`;
 
@@ -74,7 +70,7 @@ class SubscriberEvent extends StreamEvent {
     }
 
     private getHtml(): string {
-        const iconHtml = `<i class="bar-icon ${StreamEvent.LookupIconCss(this.eventType)}"></i>`;
+        const iconHtml = `<i class="bar-icon ${StreamEvent.lookupIconCss(this.eventType)}"></i>`;
         const spanHtml = `<span class="bar-text">${this.name} ${this.getSubAmountString()}</span>`;
         const html = ` ${iconHtml}${spanHtml}`;
 
@@ -102,7 +98,6 @@ class CheerEvent extends StreamEvent {
 
         this.name = cheer.name;
         this.amount = cheer.amount;
-
         this.html = this.getHtml();
     }
 
@@ -129,101 +124,101 @@ class CheerEvent extends StreamEvent {
 }
 
 class EventManager {
-    private static _currentEventIndex = -1;
+    private static currentEventIndex = -1;
     
-    private static _events: StreamEvent[] = [];
+    private static events: StreamEvent[] = [];
 
-    public static get CurrentEvent(): StreamEvent {
-        if (EventManager._events.length === 0) {
+    public static get currentEvent(): StreamEvent {
+        if (EventManager.events.length === 0) {
             return null;
         }
 
-        if (EventManager._currentEventIndex >= EventManager._events.length) {
+        if (EventManager.currentEventIndex >= EventManager.events.length) {
             throw new Error(`EventManager.CurrentEvent - '_currentEventIndex' value has become out of bounds.`);
         }
 
-        return EventManager._events[EventManager._currentEventIndex];
+        return EventManager.events[EventManager.currentEventIndex];
     }
 
-    public static get NextEvent(): StreamEvent {
-        if (EventManager._events.length === 0) {
+    public static get nextEvent(): StreamEvent {
+        if (EventManager.events.length === 0) {
             return null;
         }
 
         EventManager.incrementEventIndex();
 
-        if (EventManager._currentEventIndex >= EventManager._events.length) {
+        if (EventManager.currentEventIndex >= EventManager.events.length) {
             throw new Error(`EventManager.NextEvent - '_currentEventIndex' value has become out of bounds.`);
         }
 
-        return EventManager._events[EventManager._currentEventIndex];
+        return EventManager.events[EventManager.currentEventIndex];
     }
 
-    public static RegisterEvent(event: StreamEvent): void {
+    public static registerEvent(event: StreamEvent): void {
         if (!event) {
             return;
         }
 
-        let index = EventManager._events.findIndex((x) => x.eventType === event.eventType);
+        let index = EventManager.events.findIndex((x) => x.eventType === event.eventType);
 
         if (index === -1) {
-            EventManager._events.push(event);
+            EventManager.events.push(event);
         } else {
-            EventManager._events.splice(index, 1, event);
+            EventManager.events.splice(index, 1, event);
         }
 
-        if (EventManager._events.length === 1) {
-            EventManager._currentEventIndex = 0;
+        if (EventManager.events.length === 1) {
+            EventManager.currentEventIndex = 0;
         }
     }
 
-    public static RegisterEvents(events: StreamEvent[]) {
+    public static registerEvents(events: StreamEvent[]) {
         if (events) {
-            events.forEach((event) => EventManager.RegisterEvent(event));
+            events.forEach((event) => EventManager.registerEvent(event));
         }
     }
 
     private static incrementEventIndex(): void  {
-        EventManager._currentEventIndex = EventManager._currentEventIndex + 1 >= EventManager._events.length ? 0 : EventManager._currentEventIndex + 1;
+        EventManager.currentEventIndex = EventManager.currentEventIndex + 1 >= EventManager.events.length ? 0 : EventManager.currentEventIndex + 1;
     }
 }
 
 class AnimationManager {
-    public static readonly AnimationPrefix = 'animate__';
+    private static readonly animationPrefix = 'animate__';
 
-    public static readonly HiddenElementClass = 'hidden';
+    private static readonly hiddenElementClass = 'hidden';
 
-    public static readonly CurrentBarSlideSelector = '.bar-item.slide:first-child';
+    private static readonly currentBarSlideSelector = '.bar-item.slide';
 
-    public static readonly FadeInCssClasses: string[] = [
-        `${AnimationManager.AnimationPrefix}animated`,
-        `${AnimationManager.AnimationPrefix}fadeIn`
+    private static readonly fadeInCssClasses: string[] = [
+        `${AnimationManager.animationPrefix}animated`,
+        `${AnimationManager.animationPrefix}fadeIn`
     ];
 
-    public static readonly FadeOutCssClasses: string[] = [
-        `${AnimationManager.AnimationPrefix}animated`,
-        `${AnimationManager.AnimationPrefix}fadeOut`
+    private static readonly fadeOutCssClasses: string[] = [
+        `${AnimationManager.animationPrefix}animated`,
+        `${AnimationManager.animationPrefix}fadeOut`
     ];
 
-    public static InitializeEventCycle(timeIn: number, timeDisplay: number, timeOut: number): void {
-        AnimationManager.CycleInEvent(EventManager.CurrentEvent, timeIn, timeDisplay, timeOut);
+    public static initializeEventCycle(timeIn: number, timeDisplay: number, timeOut: number): void {
+        AnimationManager.cycleInEvent(EventManager.currentEvent, timeIn, timeDisplay, timeOut);
     }
 
-    private static CycleInEvent(event: StreamEvent, timeIn: number, timeDisplay: number, timeOut: number): void {
+    private static cycleInEvent(event: StreamEvent, timeIn: number, timeDisplay: number, timeOut: number): void {
         if (!event) {
             throw new Error(`AnimationManager.CycleInEvent - 'event' parameter is null or undefined.`);
         }
 
-        AnimationManager.FadeInEvent(event, timeIn);
+        AnimationManager.fadeInEvent(event, timeIn);
 
         setTimeout(
             () => {
-                AnimationManager.FadeOutEvent(timeOut);
+                AnimationManager.fadeOutEvent(timeOut);
 
                 setTimeout(
                     () => {
-                        let nextEvent = EventManager.NextEvent;
-                        AnimationManager.CycleInEvent(nextEvent, timeIn, timeDisplay, timeOut);
+                        let nextEvent = EventManager.nextEvent;
+                        AnimationManager.cycleInEvent(nextEvent, timeIn, timeDisplay, timeOut);
                     },
                     timeOut
                 );
@@ -232,43 +227,43 @@ class AnimationManager {
         );
     }
 
-    private static FadeInEvent(event: StreamEvent, timeIn: number): void {
-        const slideElement = document.querySelector(AnimationManager.CurrentBarSlideSelector);
+    private static fadeInEvent(event: StreamEvent, timeIn: number): void {
+        const slideElement = document.querySelector(AnimationManager.currentBarSlideSelector);
 
         slideElement.innerHTML = event.html;
-        slideElement.classList.remove(AnimationManager.HiddenElementClass);
-        slideElement.classList.add(...AnimationManager.FadeInCssClasses);
+        slideElement.classList.remove(AnimationManager.hiddenElementClass);
+        slideElement.classList.add(...AnimationManager.fadeInCssClasses);
 
         setTimeout(
             () => {
-                slideElement.classList.remove(...AnimationManager.FadeInCssClasses);
+                slideElement.classList.remove(...AnimationManager.fadeInCssClasses);
             },
             timeIn
         );
     }
 
-    private static FadeOutEvent(timeOut: number): void {
-        const slideElement = document.querySelector(AnimationManager.CurrentBarSlideSelector);
+    private static fadeOutEvent(timeOut: number): void {
+        const slideElement = document.querySelector(AnimationManager.currentBarSlideSelector);
 
-        slideElement.classList.remove(...AnimationManager.FadeInCssClasses);
-        slideElement.classList.add(...AnimationManager.FadeOutCssClasses);
+        slideElement.classList.remove(...AnimationManager.fadeInCssClasses);
+        slideElement.classList.add(...AnimationManager.fadeOutCssClasses);
 
         setTimeout(() => {
-            slideElement.classList.add(AnimationManager.HiddenElementClass);
-            slideElement.classList.remove(...AnimationManager.FadeOutCssClasses);
+            slideElement.classList.add(AnimationManager.hiddenElementClass);
+            slideElement.classList.remove(...AnimationManager.fadeOutCssClasses);
         },
         timeOut);
     }
 }
 
 class Utilities {
-    public static ParseFloatWithDefault(float: string, defaultValue: number): number {
+    public static parseFloatWithDefault(float: string, defaultValue: number): number {
         let result = parseFloat(float);
 
         return isNaN(result) ? defaultValue : result;
     }
 
-    public static CheerEventIsValid(cheerEvent: CheerEvent): boolean {
+    public static cheerEventIsValid(cheerEvent: CheerEvent): boolean {
         return cheerEvent.name && cheerEvent.amount > 0;
     }
 }
@@ -281,9 +276,9 @@ window.addEventListener('onWidgetLoad', function (obj) {
     let data = obj['detail']['session']['data'];
     let fieldData = obj['detail']['fieldData'];
 
-    let timeIn = Utilities.ParseFloatWithDefault(fieldData.fadeInAnimationTime, 2) * 1000;
-    let timeDisplay = Utilities.ParseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
-    let timeOut = Utilities.ParseFloatWithDefault(fieldData.fadeOutAnimationTime, 2) * 1000;
+    let timeIn = Utilities.parseFloatWithDefault(fieldData.fadeInAnimationTime, 2) * 1000;
+    let timeDisplay = Utilities.parseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
+    let timeOut = Utilities.parseFloatWithDefault(fieldData.fadeOutAnimationTime, 2) * 1000;
 
     let latestFollowerEvent: FollowerEvent = new FollowerEvent(data['follower-latest']);
     let latestSubscriberEvent: SubscriberEvent = new SubscriberEvent(data['subscriber-latest']);
@@ -291,11 +286,11 @@ window.addEventListener('onWidgetLoad', function (obj) {
 
     let events: StreamEvent[] = [latestFollowerEvent, latestSubscriberEvent];
 
-    if (Utilities.CheerEventIsValid(latestCheerEvent)) {
+    if (Utilities.cheerEventIsValid(latestCheerEvent)) {
         events.push(latestCheerEvent);
     }
     
-    EventManager.RegisterEvents(events);
+    EventManager.registerEvents(events);
 
-    AnimationManager.InitializeEventCycle(timeIn, timeDisplay, timeOut);
+    AnimationManager.initializeEventCycle(timeIn, timeDisplay, timeOut);
 });
