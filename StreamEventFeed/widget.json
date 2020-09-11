@@ -135,5 +135,29 @@
         "type": "colorpicker",
         "label": "Shadow color",
         "value": "#303030"
+    },
+    "fadeInAnimationTime": {
+        "group": "ANIMATION",
+        "type": "number",
+        "label": "Fade in time (ms)",
+        "value": 2000,
+        "min": 0,
+        "step": 100
+    },
+    "fadeOutAnimationTime": {
+        "group": "ANIMATION",
+        "type": "number",
+        "label": "Fade out time (ms)",
+        "value": 2000,
+        "min": 0,
+        "step": 100
+    },
+    "eventDisplayTime": {
+        "group": "ANIMATION",
+        "type": "number",
+        "label": "Event display time (ms)",
+        "value": 4000,
+        "min": 0,
+        "step": 100
     }
 }

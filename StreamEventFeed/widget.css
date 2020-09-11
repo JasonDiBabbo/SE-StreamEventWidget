@@ -9,6 +9,10 @@ html {
     letter-spacing: {{textLetterSpacing}}px;
 }
 
+.hidden {
+    display: none;
+}
+
 /**
  * Flex styles
  */
