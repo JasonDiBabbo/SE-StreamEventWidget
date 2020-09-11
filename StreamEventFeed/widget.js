@@ -152,23 +152,21 @@ class AnimationManager {
         }, timeIn + timeDisplay);
     }
     static FadeInEvent(event, timeIn) {
-        $(AnimationManager.CurrentBarSlideSelector)
-            .html(event.html)
-            .removeClass(AnimationManager.HiddenElementClass)
-            .addClass(AnimationManager.FadeInCssClasses);
+        const slideElement = document.querySelector(AnimationManager.CurrentBarSlideSelector);
+        slideElement.innerHTML = event.html;
+        slideElement.classList.remove(AnimationManager.HiddenElementClass);
+        slideElement.classList.add(...AnimationManager.FadeInCssClasses);
         setTimeout(() => {
-            $(AnimationManager.CurrentBarSlideSelector)
-                .removeClass(AnimationManager.FadeInCssClasses);
+            slideElement.classList.remove(...AnimationManager.FadeInCssClasses);
         }, timeIn);
     }
     static FadeOutEvent(timeOut) {
-        $(AnimationManager.CurrentBarSlideSelector)
-            .removeClass(AnimationManager.FadeInCssClasses)
-            .addClass(AnimationManager.FadeOutCssClasses);
+        const slideElement = document.querySelector(AnimationManager.CurrentBarSlideSelector);
+        slideElement.classList.remove(...AnimationManager.FadeInCssClasses);
+        slideElement.classList.add(...AnimationManager.FadeOutCssClasses);
         setTimeout(() => {
-            $(AnimationManager.CurrentBarSlideSelector)
-                .addClass(AnimationManager.HiddenElementClass)
-                .removeClass(AnimationManager.FadeOutCssClasses);
+            slideElement.classList.add(AnimationManager.HiddenElementClass);
+            slideElement.classList.remove(...AnimationManager.FadeOutCssClasses);
         }, timeOut);
     }
 }
