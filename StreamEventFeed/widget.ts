@@ -204,6 +204,14 @@ class AnimationManager {
     }
 }
 
+class Utilities {
+    public static ParseFloatWithDefault(float: string, defaultValue: number): number {
+        let result = parseFloat(float);
+
+        return isNaN(result) ? defaultValue : result;
+    }
+}
+
 declare var $: any;
 
 window.addEventListener('onEventReceived', function (obj) {
@@ -216,14 +224,9 @@ window.addEventListener('onWidgetLoad', function (obj) {
 
     /* UI Parameters */
     
-    let timeIn = parseFloat(fieldData.fadeInAnimationTime) * 1000;
-    if (isNaN(timeIn)) { timeIn = 2000; }
-
-    let timeDisplay = parseFloat(fieldData.eventDisplayTime) * 1000;
-    if (isNaN(timeDisplay)) { timeDisplay = 4000; }
-
-    let timeOut = parseFloat(fieldData.fadeOutAnimationTime) * 1000;
-    if (isNaN(timeOut)) { timeOut = 2000; }
+    let timeIn = Utilities.ParseFloatWithDefault(fieldData.fadeInAnimationTime, 2) * 1000;
+    let timeDisplay = Utilities.ParseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
+    let timeOut = Utilities.ParseFloatWithDefault(fieldData.fadeOutAnimationTime, 2) * 1000;
 
     let latestFollower = data["follower-latest"];
     let latestSubscriber = data["subscriber-latest"];
