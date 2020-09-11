@@ -141,15 +141,23 @@ window.addEventListener('onWidgetLoad', function (obj) {
     let data = obj["detail"]["session"]["data"];
     let fieldData = obj["detail"]["fieldData"];
     /* UI Parameters */
-    let timeIn = fieldData.fadeInAnimationTime == null || isNaN(fieldData.fadeInAnimationTime) ? 2000 : fieldData.fadeInAnimationTime;
-    let timeDisplay = fieldData.eventDisplayTime == null || isNaN(fieldData.eventDisplayTime) ? 4000 : fieldData.eventDisplayTime;
-    let timeOut = fieldData.fadeOutAnimationTime == null || isNaN(fieldData.fadeOutAnimationTime) ? 2000 : fieldData.fadeOutAnimationTime;
+    let timeIn = parseFloat(fieldData.fadeInAnimationTime) * 1000;
+    if (isNaN(timeIn)) {
+        timeIn = 2000;
+    }
+    let timeDisplay = parseFloat(fieldData.eventDisplayTime) * 1000;
+    if (isNaN(timeDisplay)) {
+        timeDisplay = 4000;
+    }
+    let timeOut = parseFloat(fieldData.fadeOutAnimationTime) * 1000;
+    if (isNaN(timeOut)) {
+        timeOut = 2000;
+    }
     let latestFollower = data["follower-latest"];
     let latestSubscriber = data["subscriber-latest"];
     let latestFollowerEvent = new FollowerEvent(latestFollower.name);
     let latestSubscriberEvent = new SubscriberEvent(latestSubscriber.name);
     let events = [latestFollowerEvent, latestSubscriberEvent];
     EventManager.RegisterEvents(events);
-    $(AnimationManager.CurrentBarSlideSelector).prop('--animate-duration', '2s');
     AnimationManager.InitializeEventCycle(timeIn, timeDisplay, timeOut);
 });

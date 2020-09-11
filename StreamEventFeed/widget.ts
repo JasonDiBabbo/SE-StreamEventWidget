@@ -165,13 +165,13 @@ class AnimationManager {
             .removeClass(AnimationManager.HiddenElementClass)
             .addClass(AnimationManager.FadeInCssClasses);
 
-            setTimeout(
-                () => {
-                    $(AnimationManager.CurrentBarSlideSelector)
-                        .removeClass(AnimationManager.FadeInCssClasses);
-                },
-                timeIn
-            );
+        setTimeout(
+            () => {
+                $(AnimationManager.CurrentBarSlideSelector)
+                    .removeClass(AnimationManager.FadeInCssClasses);
+            },
+            timeIn
+        );
     }
 
     private static FadeOutEvent(timeOut: number): void {
@@ -199,9 +199,14 @@ window.addEventListener('onWidgetLoad', function (obj) {
 
     /* UI Parameters */
     
-    let timeIn: number = fieldData.fadeInAnimationTime == null || isNaN(fieldData.fadeInAnimationTime) ? 2000 : fieldData.fadeInAnimationTime;
-    let timeDisplay: number = fieldData.eventDisplayTime == null || isNaN(fieldData.eventDisplayTime) ? 4000 : fieldData.eventDisplayTime;
-    let timeOut: number = fieldData.fadeOutAnimationTime == null || isNaN(fieldData.fadeOutAnimationTime) ? 2000 : fieldData.fadeOutAnimationTime;
+    let timeIn = parseFloat(fieldData.fadeInAnimationTime) * 1000;
+    if (isNaN(timeIn)) { timeIn = 2000; }
+
+    let timeDisplay = parseFloat(fieldData.eventDisplayTime) * 1000;
+    if (isNaN(timeDisplay)) { timeDisplay = 4000; }
+
+    let timeOut = parseFloat(fieldData.fadeOutAnimationTime) * 1000;
+    if (isNaN(timeOut)) { timeOut = 2000; }
 
     let latestFollower = data["follower-latest"];
     let latestSubscriber = data["subscriber-latest"];
@@ -212,6 +217,5 @@ window.addEventListener('onWidgetLoad', function (obj) {
     let events: StreamEvent[] = [latestFollowerEvent, latestSubscriberEvent];
     EventManager.RegisterEvents(events);
 
-    $(AnimationManager.CurrentBarSlideSelector).prop('--animate-duration', '2s');
     AnimationManager.InitializeEventCycle(timeIn, timeDisplay, timeOut);
 });

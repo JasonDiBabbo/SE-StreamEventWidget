@@ -138,26 +138,20 @@
     },
     "fadeInAnimationTime": {
         "group": "ANIMATION",
-        "type": "number",
-        "label": "Fade in time (ms)",
-        "value": 2000,
-        "min": 0,
-        "step": 100
+        "type": "text",
+        "label": "Fade in time (s)",
+        "value": "2"
     },
     "fadeOutAnimationTime": {
         "group": "ANIMATION",
-        "type": "number",
-        "label": "Fade out time (ms)",
-        "value": 2000,
-        "min": 0,
-        "step": 100
+        "type": "text",
+        "label": "Fade out time (s)",
+        "value": "2"
     },
     "eventDisplayTime": {
         "group": "ANIMATION",
-        "type": "number",
-        "label": "Event display time (ms)",
-        "value": 4000,
-        "min": 0,
-        "step": 100
+        "type": "text",
+        "label": "Event display time (s)",
+        "value": "10"
     }
 }
