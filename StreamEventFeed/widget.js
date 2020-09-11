@@ -5,8 +5,8 @@
  */
 var StreamEventType;
 (function (StreamEventType) {
-    StreamEventType[StreamEventType["Follower"] = 0] = "Follower";
-    StreamEventType[StreamEventType["Subscriber"] = 1] = "Subscriber";
+    StreamEventType[StreamEventType["Follow"] = 0] = "Follow";
+    StreamEventType[StreamEventType["Subscription"] = 1] = "Subscription";
     StreamEventType[StreamEventType["Cheer"] = 2] = "Cheer";
 })(StreamEventType || (StreamEventType = {}));
 class StreamEvent {
@@ -16,10 +16,10 @@ class StreamEvent {
     static lookupIconCss(eventType) {
         let iconCss = null;
         switch (eventType) {
-            case StreamEventType.Follower:
+            case StreamEventType.Follow:
                 iconCss = 'fas fa-heart';
                 break;
-            case StreamEventType.Subscriber:
+            case StreamEventType.Subscription:
                 iconCss = 'fas fa-star';
                 break;
             default:
@@ -28,9 +28,9 @@ class StreamEvent {
         return iconCss;
     }
 }
-class FollowerEvent extends StreamEvent {
+class FollowEvent extends StreamEvent {
     constructor(follower) {
-        super(StreamEventType.Follower);
+        super(StreamEventType.Follow);
         this.name = follower.name;
         this.html = this.getHtml();
     }
@@ -41,9 +41,9 @@ class FollowerEvent extends StreamEvent {
         return html;
     }
 }
-class SubscriberEvent extends StreamEvent {
+class SubscriptionEvent extends StreamEvent {
     constructor(subscriber) {
-        super(StreamEventType.Subscriber);
+        super(StreamEventType.Subscription);
         this.name = subscriber.name;
         this.amount = subscriber.amount;
         this.html = this.getHtml();
@@ -55,7 +55,7 @@ class SubscriberEvent extends StreamEvent {
         return html;
     }
     getSubAmountString() {
-        if (typeof this.amount === 'number' && this.amount > 0) {
+        if (typeof this.amount === 'number' && this.amount > 1) {
             return `X${this.amount.toString()}`;
         }
         else {
@@ -186,8 +186,14 @@ class Utilities {
         let result = parseFloat(float);
         return isNaN(result) ? defaultValue : result;
     }
-    static cheerEventIsValid(cheerEvent) {
-        return cheerEvent.name && cheerEvent.amount > 0;
+    static cheerEventIsValid(event) {
+        return event.name && event.amount > 0;
+    }
+    static followEventIsValid(event) {
+        return !!event.name;
+    }
+    static subscriptionEventIsValid(event) {
+        return event.name && event.amount > 0;
     }
 }
 window.addEventListener('onEventReceived', function (obj) {
@@ -198,10 +204,16 @@ window.addEventListener('onWidgetLoad', function (obj) {
     let timeIn = Utilities.parseFloatWithDefault(fieldData.fadeInAnimationTime, 2) * 1000;
     let timeDisplay = Utilities.parseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
     let timeOut = Utilities.parseFloatWithDefault(fieldData.fadeOutAnimationTime, 2) * 1000;
-    let latestFollowerEvent = new FollowerEvent(data['follower-latest']);
-    let latestSubscriberEvent = new SubscriberEvent(data['subscriber-latest']);
+    let latestFollowEvent = new FollowEvent(data['follower-latest']);
+    let latestSubscriptionEvent = new SubscriptionEvent(data['subscriber-latest']);
     let latestCheerEvent = new CheerEvent(data['cheer-latest']);
-    let events = [latestFollowerEvent, latestSubscriberEvent];
+    let events = [latestFollowEvent, latestSubscriptionEvent];
+    if (Utilities.followEventIsValid(latestFollowEvent)) {
+        events.push(latestFollowEvent);
+    }
+    if (Utilities.subscriptionEventIsValid(latestSubscriptionEvent)) {
+        events.push(latestSubscriptionEvent);
+    }
     if (Utilities.cheerEventIsValid(latestCheerEvent)) {
         events.push(latestCheerEvent);
     }
