@@ -220,8 +220,7 @@ class AnimationManager {
     }
 
     private static fadeOutEvent(): void {
-        const slideElement = AnimationManager.currentBarSlide;
-        slideElement.className = 'bar-item slide invisible';
+        AnimationManager.currentBarSlide.className = 'bar-item slide invisible';
     }
 }
 

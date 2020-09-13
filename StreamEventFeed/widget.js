@@ -157,8 +157,7 @@ class AnimationManager {
         slideElement.className = 'bar-item slide';
     }
     static fadeOutEvent() {
-        const slideElement = AnimationManager.currentBarSlide;
-        slideElement.className = 'bar-item slide invisible';
+        AnimationManager.currentBarSlide.className = 'bar-item slide invisible';
     }
 }
 AnimationManager.barSelector = '.bar.slide-frame';
