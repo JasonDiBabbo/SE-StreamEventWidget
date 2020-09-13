@@ -136,22 +136,15 @@
         "label": "Shadow color",
         "value": "#303030"
     },
-    "fadeInAnimationTime": {
+    "fadeAnimationTime": {
         "group": "ANIMATION",
         "type": "text",
-        "label": "Fade in time (s)",
-        "value": "2"
-    },
-    "fadeOutAnimationTime": {
-        "group": "ANIMATION",
-        "type": "text",
-        "label": "Fade out time (s)",
-        "value": "2"
+        "label": "Cycle - Fade in/out time (s)"
     },
     "eventDisplayTime": {
         "group": "ANIMATION",
         "type": "text",
-        "label": "Event display time (s)",
+        "label": "Cycle - Display time (s)",
         "value": "10"
     }
 }

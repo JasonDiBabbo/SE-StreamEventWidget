@@ -9,8 +9,8 @@ html {
     letter-spacing: {{textLetterSpacing}}px;
 }
 
-.hidden {
-    display: none;
+.invisible {
+    opacity: 0;
 }
 
 /**
@@ -66,6 +66,7 @@ html {
 
 .slide {
     position: absolute;
+    transition: opacity {{fadeAnimationTime}}s linear;
 }
 
 /**
@@ -154,16 +155,4 @@ svg.bar-icon path {
 .badge, .bar {
     filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
     border-radius: {{borderRadius}}px;
-}
-
-/**
- * Animation styles
- */
- 
-.animate__animated.animate__fadeIn {
-    --animate-duration: {{fadeInAnimationTime}}s;
-}
-
-.animate__animated.animate__fadeOut {
-    --animate-duration: {{fadeOutAnimationTime}}s;
 }

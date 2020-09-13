@@ -135,52 +135,34 @@ class EventManager {
 EventManager.currentEventIndex = -1;
 EventManager.events = [];
 class AnimationManager {
-    static initializeEventCycle(timeIn, timeDisplay, timeOut) {
-        AnimationManager.cycleInEvent(EventManager.currentEvent, timeIn, timeDisplay, timeOut);
+    static get barElement() {
+        return document.querySelector(AnimationManager.barSelector);
     }
-    static cycleInEvent(event, timeIn, timeDisplay, timeOut) {
-        if (!event) {
-            throw new Error(`AnimationManager.CycleInEvent - 'event' parameter is null or undefined.`);
-        }
-        AnimationManager.fadeInEvent(event, timeIn);
+    static get currentBarSlide() {
+        return document.querySelector(AnimationManager.currentBarSlideSelector);
+    }
+    static initializeEventCycle(timeFade, timeDisplay) {
+        AnimationManager.cycleInEvent(EventManager.currentEvent, timeFade, timeDisplay);
+    }
+    static cycleInEvent(event, timeFade, timeDisplay) {
+        AnimationManager.fadeInEvent(event);
         setTimeout(() => {
-            AnimationManager.fadeOutEvent(timeOut);
-            setTimeout(() => {
-                let nextEvent = EventManager.nextEvent;
-                AnimationManager.cycleInEvent(nextEvent, timeIn, timeDisplay, timeOut);
-            }, timeOut);
-        }, timeIn + timeDisplay);
+            AnimationManager.fadeOutEvent();
+            setTimeout(() => AnimationManager.cycleInEvent(EventManager.nextEvent, timeFade, timeDisplay), timeFade);
+        }, timeFade + timeDisplay);
     }
-    static fadeInEvent(event, timeIn) {
-        const slideElement = document.querySelector(AnimationManager.currentBarSlideSelector);
+    static fadeInEvent(event) {
+        const slideElement = AnimationManager.currentBarSlide;
         slideElement.innerHTML = event.html;
-        slideElement.classList.remove(AnimationManager.hiddenElementClass);
-        slideElement.classList.add(...AnimationManager.fadeInCssClasses);
-        setTimeout(() => {
-            slideElement.classList.remove(...AnimationManager.fadeInCssClasses);
-        }, timeIn);
+        slideElement.className = 'bar-item slide';
     }
-    static fadeOutEvent(timeOut) {
-        const slideElement = document.querySelector(AnimationManager.currentBarSlideSelector);
-        slideElement.classList.remove(...AnimationManager.fadeInCssClasses);
-        slideElement.classList.add(...AnimationManager.fadeOutCssClasses);
-        setTimeout(() => {
-            slideElement.classList.add(AnimationManager.hiddenElementClass);
-            slideElement.classList.remove(...AnimationManager.fadeOutCssClasses);
-        }, timeOut);
+    static fadeOutEvent() {
+        const slideElement = AnimationManager.currentBarSlide;
+        slideElement.className = 'bar-item slide invisible';
     }
 }
-AnimationManager.animationPrefix = 'animate__';
-AnimationManager.hiddenElementClass = 'hidden';
-AnimationManager.currentBarSlideSelector = '.bar-item.slide';
-AnimationManager.fadeInCssClasses = [
-    `${AnimationManager.animationPrefix}animated`,
-    `${AnimationManager.animationPrefix}fadeIn`
-];
-AnimationManager.fadeOutCssClasses = [
-    `${AnimationManager.animationPrefix}animated`,
-    `${AnimationManager.animationPrefix}fadeOut`
-];
+AnimationManager.barSelector = '.bar.slide-frame';
+AnimationManager.currentBarSlideSelector = '.bar-item.slide:first-child';
 class Utilities {
     static parseFloatWithDefault(float, defaultValue) {
         let result = parseFloat(float);
@@ -201,9 +183,8 @@ window.addEventListener('onEventReceived', function (obj) {
 window.addEventListener('onWidgetLoad', function (obj) {
     let data = obj['detail']['session']['data'];
     let fieldData = obj['detail']['fieldData'];
-    let timeIn = Utilities.parseFloatWithDefault(fieldData.fadeInAnimationTime, 2) * 1000;
+    let timeIn = Utilities.parseFloatWithDefault(fieldData.fadeAnimationTime, 2) * 1000;
     let timeDisplay = Utilities.parseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
-    let timeOut = Utilities.parseFloatWithDefault(fieldData.fadeOutAnimationTime, 2) * 1000;
     let latestFollowEvent = new FollowEvent(data['follower-latest']);
     let latestSubscriptionEvent = new SubscriptionEvent(data['subscriber-latest']);
     let latestCheerEvent = new CheerEvent(data['cheer-latest']);
@@ -218,5 +199,5 @@ window.addEventListener('onWidgetLoad', function (obj) {
         events.push(latestCheerEvent);
     }
     EventManager.registerEvents(events);
-    AnimationManager.initializeEventCycle(timeIn, timeDisplay, timeOut);
+    AnimationManager.initializeEventCycle(timeIn, timeDisplay);
 });
