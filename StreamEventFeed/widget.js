@@ -138,7 +138,7 @@ class AnimationManager {
     static get barElement() {
         return document.querySelector(AnimationManager.barSelector);
     }
-    static get currentBarSlide() {
+    static get currentBarSlideElement() {
         return document.querySelector(AnimationManager.currentBarSlideSelector);
     }
     static initializeEventCycle(timeFade, timeDisplay) {
@@ -152,12 +152,12 @@ class AnimationManager {
         }, timeFade + timeDisplay);
     }
     static fadeInEvent(event) {
-        const slideElement = AnimationManager.currentBarSlide;
+        const slideElement = AnimationManager.currentBarSlideElement;
         slideElement.innerHTML = event.html;
         slideElement.className = 'bar-item slide';
     }
     static fadeOutEvent() {
-        AnimationManager.currentBarSlide.className = 'bar-item slide invisible';
+        AnimationManager.currentBarSlideElement.className = 'bar-item slide invisible';
     }
 }
 AnimationManager.barSelector = '.bar.slide-frame';

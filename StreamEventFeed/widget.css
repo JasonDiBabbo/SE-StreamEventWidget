@@ -70,6 +70,19 @@ html {
 }
 
 /**
+ * Badge & Bar styles
+ */
+
+.badge, .bar {
+    filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
+    border-radius: {{borderRadius}}px;
+}
+
+.badge, .badge-item, .badge-item > *, .bar, .bar-item {
+    height: {{badgeBarHeight}}px;
+}
+
+/**
  * Badge styles
  */
 
@@ -78,7 +91,6 @@ html {
 }
 
 .badge, .badge-item, .badge-item > * {
-    height: {{badgeBarHeight}}px;
     width: {{badgeWidth}}px;
 }
 
@@ -107,9 +119,11 @@ html {
     align-items: center;
     justify-content: flex-start;
 
-    height: {{badgeBarHeight}}px;
-    width: {{barWidth}}px;
     background-color: {{barBackgroundColor}};
+}
+
+.bar, .bar-item {
+    width: {{barWidth}}px;
 }
 
 .bar-item {
@@ -120,8 +134,6 @@ html {
     justify-content: flex-start;
 
     background-color: transparent;
-    height: {{badgeBarHeight}}px;
-    width: {{barWidth}}px;
 }
 
 .bar-icon {
@@ -146,13 +158,4 @@ svg.bar-icon path {
     text-overflow: ellipsis;
     margin-right: 24px;
     color: {{fontColor}};
-}
-
-/**
- * Badge and bar shared styles
- */
-
-.badge, .bar {
-    filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
-    border-radius: {{borderRadius}}px;
 }

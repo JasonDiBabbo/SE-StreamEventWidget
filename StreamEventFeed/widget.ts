@@ -192,7 +192,7 @@ class AnimationManager {
         return document.querySelector(AnimationManager.barSelector);
     }
 
-    public static get currentBarSlide(): Element {
+    public static get currentBarSlideElement(): Element {
         return document.querySelector(AnimationManager.currentBarSlideSelector);
     }
 
@@ -214,13 +214,13 @@ class AnimationManager {
     }
 
     private static fadeInEvent(event: StreamEvent): void {
-        const slideElement = AnimationManager.currentBarSlide;
+        const slideElement = AnimationManager.currentBarSlideElement;
         slideElement.innerHTML = event.html;
         slideElement.className = 'bar-item slide';
     }
 
     private static fadeOutEvent(): void {
-        AnimationManager.currentBarSlide.className = 'bar-item slide invisible';
+        AnimationManager.currentBarSlideElement.className = 'bar-item slide invisible';
     }
 }
 
@@ -265,6 +265,5 @@ window.addEventListener('onWidgetLoad', function (obj) {
     if (Utilities.cheerEventIsValid(latestCheerEvent)) { events.push(latestCheerEvent); }
     
     EventManager.registerEvents(events);
-
     AnimationManager.initializeEventCycle(timeIn, timeDisplay);
 });
