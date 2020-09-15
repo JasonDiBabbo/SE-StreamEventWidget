@@ -32,7 +32,7 @@
             "900": "900 - Black"
         }
     },
-    "textLetterSpacing": {
+    "letterSpacing": {
         "group": "TEXT OPTIONS",
         "type": "number",
         "label": "Letter spacing (px)",
@@ -136,15 +136,27 @@
         "label": "Shadow color",
         "value": "#303030"
     },
-    "fadeAnimationTime": {
+    "eventCycleFadeTime": {
         "group": "ANIMATION",
         "type": "text",
         "label": "Cycle - Fade in/out time (s)"
     },
-    "eventDisplayTime": {
+    "eventCycleDisplayTime": {
         "group": "ANIMATION",
         "type": "text",
         "label": "Cycle - Display time (s)",
         "value": "10"
+    },
+    "eventAlertSlideTime": {
+        "group": "ANIMATION",
+        "type": "text",
+        "label": "Alert - Slide in/out time (s)",
+        "value": ".75"
+    },
+    "eventAlertFadeTime": {
+        "group": "ANIMATION",
+        "type": "text",
+        "label": "Alert - Fade time (s)",
+        "value": "2"
     }
 }

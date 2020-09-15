@@ -102,7 +102,7 @@ class CheerEvent extends StreamEvent {
     }
 
     private getHtml(): string {
-        const iconHtml = 
+        const iconHtml =
             `<svg class="bar-icon" viewBox="0 0 187.35 242.67">
                 <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>
                 <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>
@@ -125,7 +125,7 @@ class CheerEvent extends StreamEvent {
 
 class EventManager {
     private static currentEventIndex = -1;
-    
+
     private static events: StreamEvent[] = [];
 
     public static get currentEvent(): StreamEvent {
@@ -178,7 +178,7 @@ class EventManager {
         }
     }
 
-    private static incrementEventIndex(): void  {
+    private static incrementEventIndex(): void {
         EventManager.currentEventIndex = EventManager.currentEventIndex + 1 >= EventManager.events.length ? 0 : EventManager.currentEventIndex + 1;
     }
 }
@@ -186,41 +186,53 @@ class EventManager {
 class AnimationManager {
     private static readonly barSelector = '.bar.slide-frame';
 
-    private static readonly currentBarSlideSelector = '.bar-item.slide:first-child';
+    private static readonly barChildrenSelector = '.bar.slide-frame > .bar-item.slide';
 
-    public static get barElement(): Element {
+    private static currentTimeout: number;
+
+    private static setTimeoutForbidden = false;
+
+    public static get bar(): Element {
         return document.querySelector(AnimationManager.barSelector);
     }
 
-    public static get currentBarSlideElement(): Element {
-        return document.querySelector(AnimationManager.currentBarSlideSelector);
+    public static get barSlides(): NodeListOf<Element> {
+        return document.querySelectorAll(AnimationManager.barChildrenSelector);
     }
 
-    public static initializeEventCycle(timeFade: number, timeDisplay: number): void {
-        AnimationManager.cycleInEvent(EventManager.currentEvent, timeFade, timeDisplay);
+    public static initializeEventCycle(timeEventFade: number, timeEventDisplay: number): void {
+        AnimationManager.cycleInEvent(EventManager.currentEvent, timeEventFade, timeEventDisplay);
     }
 
-    private static cycleInEvent(event: StreamEvent, timeFade: number, timeDisplay: number): void {
+    private static cycleInEvent(event: StreamEvent, timeEventFade: number, timeEventDisplay: number): void {
         AnimationManager.fadeInEvent(event);
 
-        setTimeout(
+        AnimationManager.setTimeout(
             () => {
                 AnimationManager.fadeOutEvent();
 
-                setTimeout(() => AnimationManager.cycleInEvent(EventManager.nextEvent, timeFade, timeDisplay), timeFade);
+                AnimationManager.setTimeout(() => AnimationManager.cycleInEvent(EventManager.nextEvent, timeEventFade, timeEventDisplay), timeEventFade);
             },
-            timeFade + timeDisplay
+            timeEventFade + timeEventDisplay
         );
     }
 
     private static fadeInEvent(event: StreamEvent): void {
-        const slideElement = AnimationManager.currentBarSlideElement;
+        const slideElement = AnimationManager.barSlides[0];
         slideElement.innerHTML = event.html;
         slideElement.className = 'bar-item slide';
     }
 
     private static fadeOutEvent(): void {
-        AnimationManager.currentBarSlideElement.className = 'bar-item slide invisible';
+        AnimationManager.barSlides[0].className = 'bar-item slide invisible';
+    }
+
+    private static setTimeout(fn: () => void, delay: number): void {
+        if (AnimationManager.setTimeoutForbidden) {
+            return;
+        }
+
+        AnimationManager.currentTimeout = setTimeout(fn, delay);
     }
 }
 
@@ -247,12 +259,20 @@ class Utilities {
 window.addEventListener('onEventReceived', function (obj) {
 });
 
+let timeEventFade = 2000;
+let timeEventDisplay = 10000;
+let timeAlertSlide = 750;
+let timeAlertFade = 2000;
+
 window.addEventListener('onWidgetLoad', function (obj) {
     let data = obj['detail']['session']['data'];
     let fieldData = obj['detail']['fieldData'];
 
-    let timeIn = Utilities.parseFloatWithDefault(fieldData.fadeAnimationTime, 2) * 1000;
-    let timeDisplay = Utilities.parseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
+    timeEventFade = Utilities.parseFloatWithDefault(fieldData.eventCycleFadeTime, 2) * 1000;
+    timeEventDisplay = Utilities.parseFloatWithDefault(fieldData.eventCycleDisplayTime, 10) * 1000;
+
+    timeAlertSlide = Utilities.parseFloatWithDefault(fieldData.eventAlertSlideTime, 0.75) * 1000;
+    timeAlertFade = Utilities.parseFloatWithDefault(fieldData.eventAlertFadeTime, 2) * 1000;
 
     let latestFollowEvent: FollowEvent = new FollowEvent(data['follower-latest']);
     let latestSubscriptionEvent: SubscriptionEvent = new SubscriptionEvent(data['subscriber-latest']);
@@ -263,7 +283,7 @@ window.addEventListener('onWidgetLoad', function (obj) {
     if (Utilities.followEventIsValid(latestFollowEvent)) { events.push(latestFollowEvent); }
     if (Utilities.subscriptionEventIsValid(latestSubscriptionEvent)) { events.push(latestSubscriptionEvent); }
     if (Utilities.cheerEventIsValid(latestCheerEvent)) { events.push(latestCheerEvent); }
-    
+
     EventManager.registerEvents(events);
-    AnimationManager.initializeEventCycle(timeIn, timeDisplay);
+    AnimationManager.initializeEventCycle(timeEventFade, timeEventDisplay);
 });

@@ -135,33 +135,40 @@ class EventManager {
 EventManager.currentEventIndex = -1;
 EventManager.events = [];
 class AnimationManager {
-    static get barElement() {
+    static get bar() {
         return document.querySelector(AnimationManager.barSelector);
     }
-    static get currentBarSlideElement() {
-        return document.querySelector(AnimationManager.currentBarSlideSelector);
+    static get barSlides() {
+        return document.querySelectorAll(AnimationManager.barChildrenSelector);
     }
-    static initializeEventCycle(timeFade, timeDisplay) {
-        AnimationManager.cycleInEvent(EventManager.currentEvent, timeFade, timeDisplay);
+    static initializeEventCycle(timeEventFade, timeEventDisplay) {
+        AnimationManager.cycleInEvent(EventManager.currentEvent, timeEventFade, timeEventDisplay);
     }
-    static cycleInEvent(event, timeFade, timeDisplay) {
+    static cycleInEvent(event, timeEventFade, timeEventDisplay) {
         AnimationManager.fadeInEvent(event);
-        setTimeout(() => {
+        AnimationManager.setTimeout(() => {
             AnimationManager.fadeOutEvent();
-            setTimeout(() => AnimationManager.cycleInEvent(EventManager.nextEvent, timeFade, timeDisplay), timeFade);
-        }, timeFade + timeDisplay);
+            AnimationManager.setTimeout(() => AnimationManager.cycleInEvent(EventManager.nextEvent, timeEventFade, timeEventDisplay), timeEventFade);
+        }, timeEventFade + timeEventDisplay);
     }
     static fadeInEvent(event) {
-        const slideElement = AnimationManager.currentBarSlideElement;
+        const slideElement = AnimationManager.barSlides[0];
         slideElement.innerHTML = event.html;
         slideElement.className = 'bar-item slide';
     }
     static fadeOutEvent() {
-        AnimationManager.currentBarSlideElement.className = 'bar-item slide invisible';
+        AnimationManager.barSlides[0].className = 'bar-item slide invisible';
+    }
+    static setTimeout(fn, delay) {
+        if (AnimationManager.setTimeoutForbidden) {
+            return;
+        }
+        AnimationManager.currentTimeout = setTimeout(fn, delay);
     }
 }
 AnimationManager.barSelector = '.bar.slide-frame';
-AnimationManager.currentBarSlideSelector = '.bar-item.slide:first-child';
+AnimationManager.barChildrenSelector = '.bar.slide-frame > .bar-item.slide';
+AnimationManager.setTimeoutForbidden = false;
 class Utilities {
     static parseFloatWithDefault(float, defaultValue) {
         let result = parseFloat(float);
@@ -179,11 +186,17 @@ class Utilities {
 }
 window.addEventListener('onEventReceived', function (obj) {
 });
+let timeEventFade = 2000;
+let timeEventDisplay = 10000;
+let timeAlertSlide = 750;
+let timeAlertFade = 2000;
 window.addEventListener('onWidgetLoad', function (obj) {
     let data = obj['detail']['session']['data'];
     let fieldData = obj['detail']['fieldData'];
-    let timeIn = Utilities.parseFloatWithDefault(fieldData.fadeAnimationTime, 2) * 1000;
-    let timeDisplay = Utilities.parseFloatWithDefault(fieldData.eventDisplayTime, 10) * 1000;
+    timeEventFade = Utilities.parseFloatWithDefault(fieldData.eventCycleFadeTime, 2) * 1000;
+    timeEventDisplay = Utilities.parseFloatWithDefault(fieldData.eventCycleDisplayTime, 10) * 1000;
+    timeAlertSlide = Utilities.parseFloatWithDefault(fieldData.eventAlertSlideTime, 0.75) * 1000;
+    timeAlertFade = Utilities.parseFloatWithDefault(fieldData.eventAlertFadeTime, 2) * 1000;
     let latestFollowEvent = new FollowEvent(data['follower-latest']);
     let latestSubscriptionEvent = new SubscriptionEvent(data['subscriber-latest']);
     let latestCheerEvent = new CheerEvent(data['cheer-latest']);
@@ -198,5 +211,5 @@ window.addEventListener('onWidgetLoad', function (obj) {
         events.push(latestCheerEvent);
     }
     EventManager.registerEvents(events);
-    AnimationManager.initializeEventCycle(timeIn, timeDisplay);
+    AnimationManager.initializeEventCycle(timeEventFade, timeEventDisplay);
 });

@@ -2,11 +2,42 @@
  * Global styles
  */
 
+:root {
+    /* List UI parameter as CSS variables */
+
+    --fontFamily: {{fontFamily}};
+    --fontColor: {{fontColor}};
+    --fontSize: {{fontSize}}px;
+    --fontWeight: {{fontWeight}};
+    --letterSpacing: {{letterSpacing}}px;
+
+    --borderRadius: {{borderRadius}}px;
+
+    --badgeBarHeight: {{badgeBarHeight}}px;
+
+    --badgeWidth: {{badgeWidth}}px;
+    --badgeBackgroundColor: {{badgeBackgroundColor}};
+
+    --barWidth: {{barWidth}}px;
+    --barBackgroundColor: {{barBackgroundColor}};
+
+    --accentColor: {{accentColor}};
+
+    --dropShadowOffsetX: {{dropShadowOffsetX}}px;
+    --dropShadowOffsetY: {{dropShadowOffsetY}}px;
+    --dropShadowBlurRadius: {{dropShadowBlurRadius}}px;
+    --dropShadowColor: {{dropShadowColor}};
+
+    --eventCycleFadeTime: {{eventCycleFadeTime}}s;
+    --eventAlertSlideTime: {{eventAlertSlideTime}}s;
+    --eventAlertFadeTime: {{eventAlertFadeTime}}s;
+}
+
 html {
-    font-family: {{fontFamily}};
-    font-size: {{fontSize}}px;
-    font-weight: {{fontWeight}};
-    letter-spacing: {{textLetterSpacing}}px;
+    font-family: var(--fontFamily);
+    font-size: var(--fontSize);
+    font-weight: var(--fontWeight);
+    letter-spacing: var(--letterSpacing);
 }
 
 .invisible {
@@ -66,7 +97,23 @@ html {
 
 .slide {
     position: absolute;
-    transition: opacity {{fadeAnimationTime}}s linear;
+    transition: opacity var(--eventCycleFadeTime) linear,
+                transform var(--eventAlertSlideTime) ease-out,
+                background-color var(--eventAlertFadeTime) linear;
+
+    transform: translateY(0px);
+}
+
+.slide.offscreen-top {
+    transform: translateY(calc(var(--badgeBarHeight) * -1));
+}
+
+.slide.offscreen-bottom {
+    transform: translateY(var(--badgeBarHeight));
+}
+
+.slide.alert {
+    background-color: var(--accentColor);
 }
 
 /**
@@ -74,12 +121,12 @@ html {
  */
 
 .badge, .bar {
-    filter: drop-shadow({{dropShadowOffsetX}}px {{dropShadowOffsetY}}px {{dropShadowBlurRadius}}px {{dropShadowColor}});
-    border-radius: {{borderRadius}}px;
+    filter: drop-shadow(var(--dropShadowOffsetX) var(--dropShadowOffsetY) var(--dropShadowBlurRadius) var(--dropShadowColor));
+    border-radius: var(--borderRadius);
 }
 
 .badge, .badge-item, .badge-item > *, .bar, .bar-item {
-    height: {{badgeBarHeight}}px;
+    height: var(--badgeBarHeight);
 }
 
 /**
@@ -87,11 +134,11 @@ html {
  */
 
 .badge {
-    background-color: {{badgeBackgroundColor}};
+    background-color: var(--badgeBackgroundColor);
 }
 
 .badge, .badge-item, .badge-item > * {
-    width: {{badgeWidth}}px;
+    width: var(--badgeWidth);
 }
 
 .container.flex.column .badge {
@@ -119,11 +166,11 @@ html {
     align-items: center;
     justify-content: flex-start;
 
-    background-color: {{barBackgroundColor}};
+    background-color: var(--barBackgroundColor);
 }
 
 .bar, .bar-item {
-    width: {{barWidth}}px;
+    width: var(--barWidth);
 }
 
 .bar-item {
@@ -137,9 +184,17 @@ html {
 }
 
 .bar-icon {
-    flex: none;
     margin: 0px 24px;
-    color: {{accentColor}};
+}
+
+i.bar-icon {
+    flex: none;
+    color: var(--accentColor);
+    transition: color var(--eventAlertFadeTime) linear;
+}
+
+.bar-item.alert i.bar-icon {
+    color: #FFFFFF;
 }
 
 svg.bar-icon {
@@ -148,7 +203,13 @@ svg.bar-icon {
 }
 
 svg.bar-icon path {
-    fill: {{accentColor}};
+    transition: fill var(--eventAlertFadeTime) linear;
+
+    fill: var(--accentColor);
+}
+
+.bar-item.alert svg.bar-icon path {
+    fill: #FFFFFF;
 }
 
 .bar-text {
@@ -157,5 +218,5 @@ svg.bar-icon path {
     overflow: hidden;
     text-overflow: ellipsis;
     margin-right: 24px;
-    color: {{fontColor}};
+    color: var(--fontColor);
 }
