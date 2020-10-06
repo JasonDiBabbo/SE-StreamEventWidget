@@ -11,6 +11,8 @@ enum StreamEventType {
 }
 
 abstract class StreamEvent {
+    public abstract get isValid(): boolean;
+
     public abstract html: string;
 
     constructor(public eventType: StreamEventType) { }
@@ -34,51 +36,83 @@ abstract class StreamEvent {
 }
 
 class FollowEvent extends StreamEvent {
+    public get isValid(): boolean {
+        return !!this.html && !!this.name;
+    }
+
     public html: string;
 
     public name: string;
 
-    constructor(follower: any) {
+    constructor(event: any) {
         super(StreamEventType.Follow);
 
-        this.name = follower.name;
+        this.name = !!event ? event.name : null;
         this.html = this.getHtml();
     }
 
-    private getHtml(): string {
-        const iconHtml = `<i class="bar-icon ${StreamEvent.lookupIconCss(this.eventType)}"></i>`;
-        const spanHtml = `<span class="bar-text">${this.name}</span>`;
-        const html = `${iconHtml}${spanHtml}`;
+    protected static SInit = (() => {
+        FollowEvent.prototype.name = null;
+        FollowEvent.prototype.html = null;
+    })();
 
-        return html;
+    private getHtml(): string {
+        const iconCss = StreamEvent.lookupIconCss(this.eventType);
+
+        if (!!iconCss && !!this.name) {
+            const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name}</span>`;
+            const html = `${iconHtml}${spanHtml}`;
+
+            return html;
+        }
+
+        return null;
     }
 }
 
 class SubscriptionEvent extends StreamEvent {
+    public get isValid(): boolean {
+        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+    }
+
     public html: string;
 
     public name: string;
 
     public amount: number;
 
-    constructor(subscriber: any) {
+    constructor(event: any) {
         super(StreamEventType.Subscription);
 
-        this.name = subscriber.name;
-        this.amount = subscriber.amount
+        this.name = event.name;
+        this.amount = event.amount
         this.html = this.getHtml();
     }
 
-    private getHtml(): string {
-        const iconHtml = `<i class="bar-icon ${StreamEvent.lookupIconCss(this.eventType)}"></i>`;
-        const spanHtml = `<span class="bar-text">${this.name} ${this.getSubAmountString()}</span>`;
-        const html = ` ${iconHtml}${spanHtml}`;
+    protected static SInit = (() => {
+        SubscriptionEvent.prototype.name = null;
+        SubscriptionEvent.prototype.amount = 0;
+        SubscriptionEvent.prototype.html = null;
+    })();
 
-        return html;
+    private getHtml(): string {
+        const iconCss = StreamEvent.lookupIconCss(this.eventType);
+        const subAmount = this.getSubAmountString();
+
+        if (!!iconCss && !!this.name && !!subAmount) {
+            const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${this.getSubAmountString()}</span>`;
+            const html = ` ${iconHtml}${spanHtml}`;
+
+            return html;
+        }
+
+        return null;
     }
 
     private getSubAmountString(): string {
-        if (typeof this.amount === 'number' && this.amount > 1) {
+        if (!!this.amount && this.amount > 0) {
             return `X${this.amount.toString()}`;
         } else {
             return '';
@@ -87,31 +121,52 @@ class SubscriptionEvent extends StreamEvent {
 }
 
 class CheerEvent extends StreamEvent {
+    public get isValid(): boolean {
+        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+    }
+
     public html: string;
 
     public name: string;
 
     public amount: number;
 
-    constructor(cheer: any) {
+    constructor(event: any) {
         super(StreamEventType.Cheer);
 
-        this.name = cheer.name;
-        this.amount = cheer.amount;
+        if (event) {
+            this.name = event.name;
+            this.amount = event.amount;
+        }
+
+        this.name = event.name;
+        this.amount = event.amount;
         this.html = this.getHtml();
     }
 
+    protected static SInit = (() => {
+        SubscriptionEvent.prototype.name = null;
+        SubscriptionEvent.prototype.amount = 0;
+        SubscriptionEvent.prototype.html = null;
+    })();
+
     private getHtml(): string {
-        const iconHtml =
-            `<svg class="bar-icon" viewBox="0 0 187.35 242.67">
+        const cheerAmount = this.getCheerAmountString();
+
+        if (!!cheerAmount) {
+            const iconHtml =
+                `<svg class="bar-icon" viewBox="0 0 187.35 242.67">
                 <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>
                 <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>
              </svg>`;
 
-        const spanHtml = `<span class="bar-text">${this.name} ${this.getCheerAmountString()}</span>`;
-        const html = `${iconHtml}${spanHtml}`;
+            const spanHtml = `<span class="bar-text">${this.name} ${cheerAmount}</span>`;
+            const html = `${iconHtml}${spanHtml}`;
 
-        return html;
+            return html;
+        }
+
+        return null;
     }
 
     private getCheerAmountString(): string {
@@ -123,167 +178,218 @@ class CheerEvent extends StreamEvent {
     }
 }
 
-class EventManager {
-    private static currentEventIndex = -1;
+interface WidgetOptions {
+    events?: StreamEvent[];
 
-    private static events: StreamEvent[] = [];
+    timeEventDisplay: number;
 
-    public static get currentEvent(): StreamEvent {
-        if (EventManager.events.length === 0) {
+    timeEventAlertSlide: number;
+
+    timeEventAlertFade: number;
+}
+
+class Widget {
+    private timeEventDisplay: number;
+
+    private timeEventAlertSlide: number;
+
+    private timeEventAlertFade: number;
+
+    private currentEventIndex: number;
+
+    private events: StreamEvent[];
+
+    private get currentEvent(): StreamEvent {
+        if (!this.events || this.events.length === 0) {
             return null;
         }
 
-        if (EventManager.currentEventIndex >= EventManager.events.length) {
-            throw new Error(`EventManager.CurrentEvent - '_currentEventIndex' value has become out of bounds.`);
-        }
-
-        return EventManager.events[EventManager.currentEventIndex];
+        return this.events[this.currentEventIndex];
     }
 
-    public static get nextEvent(): StreamEvent {
-        if (EventManager.events.length === 0) {
+    private get nextEvent(): StreamEvent {
+        if (!this.events || this.events.length === 0) {
             return null;
         }
 
-        EventManager.incrementEventIndex();
+        this.incrementCurrentEventIndex();
 
-        if (EventManager.currentEventIndex >= EventManager.events.length) {
-            throw new Error(`EventManager.NextEvent - '_currentEventIndex' value has become out of bounds.`);
-        }
+        if (this.currentEventIndex >= this.events.length) {
+            throw new Error('Widget::nextEvent() - Current event index value has become out of bounds');
+        };
 
-        return EventManager.events[EventManager.currentEventIndex];
+        return this.events[this.currentEventIndex];
     }
 
-    public static registerEvent(event: StreamEvent): void {
+    private get barSlides(): HTMLCollection    
+    {
+        return document.querySelector('.bar').children;
+    }
+
+    private get currentBarSlide(): HTMLElement {
+        const barSlides = this.barSlides;
+
+        if (!!barSlides && barSlides.length > 0) {
+            return barSlides[0] as HTMLElement;
+        }
+
+        return null;
+    }
+
+    constructor(options: WidgetOptions) {
+        if (options) {
+            this.timeEventDisplay = options.timeEventDisplay ? options.timeEventDisplay : this.timeEventDisplay;
+            this.timeEventAlertSlide = options.timeEventAlertSlide ? options.timeEventAlertSlide : this.timeEventAlertSlide;
+            this.timeEventAlertFade = options.timeEventAlertFade ? options.timeEventAlertFade : this.timeEventAlertFade;
+
+            this.registerEvents(options.events);
+        }
+    }
+
+    protected static SInit = (() => {
+        Widget.prototype.timeEventDisplay = 10000;
+        Widget.prototype.timeEventAlertSlide = 750;
+        Widget.prototype.timeEventAlertFade = 2000;
+        Widget.prototype.currentEventIndex = -1;
+        Widget.prototype.events = [];
+    })();
+
+    public initializeEventDisplayCycle(): void {
+        const currentBarSlide = this.currentBarSlide;
+        const currentBarSlideContent = currentBarSlide.children[0] as HTMLElement;
+
+        currentBarSlideContent.addEventListener('transitionend', (event: TransitionEvent) => {
+            const property = event.propertyName;
+
+            if (property === 'opacity') {
+                if (currentBarSlideContent.style.opacity === '1') {
+                    setTimeout(() => {
+                        this.makeElementInvisible(currentBarSlideContent);
+                    }, this.timeEventDisplay);
+                } else {
+                    currentBarSlideContent.innerHTML = this.nextEvent.html;
+                    this.makeElementVisible(currentBarSlideContent);
+                }
+            }
+        });
+
+        if (!currentBarSlideContent.innerHTML.trim()) {
+            currentBarSlideContent.innerHTML = this.currentEvent.html;
+
+            setTimeout(() => {
+                this.makeElementInvisible(currentBarSlideContent);
+            }, this.timeEventDisplay);
+        } else {
+            this.makeElementInvisible(currentBarSlideContent);
+        }
+    }
+
+    public registerEvent(event: StreamEvent): void {
         if (!event) {
             return;
         }
 
-        let index = EventManager.events.findIndex((x) => x.eventType === event.eventType);
+        const index = this.events.findIndex((x) => x.eventType === event.eventType);
 
         if (index === -1) {
-            EventManager.events.push(event);
+            this.events.push(event);
         } else {
-            EventManager.events.splice(index, 1, event);
+            this.events.splice(index, 1, event);
         }
 
-        if (EventManager.events.length === 1) {
-            EventManager.currentEventIndex = 0;
+        if (this.events.length === 1) {
+            this.currentEventIndex = 0;
         }
     }
 
-    public static registerEvents(events: StreamEvent[]) {
+    public registerEvents(events: StreamEvent[]): void {
         if (events) {
-            events.forEach((event) => EventManager.registerEvent(event));
+            events.forEach((event) => this.registerEvent(event));
         }
     }
 
-    private static incrementEventIndex(): void {
-        EventManager.currentEventIndex = EventManager.currentEventIndex + 1 >= EventManager.events.length ? 0 : EventManager.currentEventIndex + 1;
-    }
-}
+    private incrementCurrentEventIndex(): void {
+        const nextEventIndexIsOutOfBounds = this.currentEventIndex + 1 >= this.events.length;
 
-class AnimationManager {
-    private static readonly barSelector = '.bar.slide-frame';
-
-    private static readonly barChildrenSelector = '.bar.slide-frame > .bar-item.slide';
-
-    private static currentTimeout: number;
-
-    private static setTimeoutForbidden = false;
-
-    public static get bar(): Element {
-        return document.querySelector(AnimationManager.barSelector);
-    }
-
-    public static get barSlides(): NodeListOf<Element> {
-        return document.querySelectorAll(AnimationManager.barChildrenSelector);
-    }
-
-    public static initializeEventCycle(timeEventFade: number, timeEventDisplay: number): void {
-        AnimationManager.cycleInEvent(EventManager.currentEvent, timeEventFade, timeEventDisplay);
-    }
-
-    private static cycleInEvent(event: StreamEvent, timeEventFade: number, timeEventDisplay: number): void {
-        AnimationManager.fadeInEvent(event);
-
-        AnimationManager.setTimeout(
-            () => {
-                AnimationManager.fadeOutEvent();
-
-                AnimationManager.setTimeout(() => AnimationManager.cycleInEvent(EventManager.nextEvent, timeEventFade, timeEventDisplay), timeEventFade);
-            },
-            timeEventFade + timeEventDisplay
-        );
-    }
-
-    private static fadeInEvent(event: StreamEvent): void {
-        const slideElement = AnimationManager.barSlides[0];
-        slideElement.innerHTML = event.html;
-        slideElement.className = 'bar-item slide';
-    }
-
-    private static fadeOutEvent(): void {
-        AnimationManager.barSlides[0].className = 'bar-item slide invisible';
-    }
-
-    private static setTimeout(fn: () => void, delay: number): void {
-        if (AnimationManager.setTimeoutForbidden) {
-            return;
+        if (nextEventIndexIsOutOfBounds) {
+            this.currentEventIndex = 0;
+        } else {
+            this.currentEventIndex += 1;
         }
+    }
 
-        AnimationManager.currentTimeout = setTimeout(fn, delay);
+    private makeElementVisible(element: HTMLElement): void {
+        if (element) {
+            element.style.opacity = '1';
+        }
+    }
+
+    private makeElementInvisible(element: HTMLElement): void {
+        if (element) {
+            element.style.opacity = '0';
+        }
     }
 }
 
-class Utilities {
-    public static parseFloatWithDefault(float: string, defaultValue: number): number {
-        let result = parseFloat(float);
+let timeEventDisplay: number;
+let timeEventAlertSlide: number;
+let timeEventAlertFade: number;
 
-        return isNaN(result) ? defaultValue : result;
-    }
-
-    public static cheerEventIsValid(event: CheerEvent): boolean {
-        return event.name && event.amount > 0;
-    }
-
-    public static followEventIsValid(event: FollowEvent): boolean {
-        return !!event.name;
-    }
-
-    public static subscriptionEventIsValid(event: SubscriptionEvent): boolean {
-        return event.name && event.amount > 0;
-    }
-}
+let widget: Widget;
 
 window.addEventListener('onEventReceived', function (obj) {
-});
+    const listener: string = obj['detail']['listener'];
+    const event = obj['detail']['event'];
 
-let timeEventFade = 2000;
-let timeEventDisplay = 10000;
-let timeAlertSlide = 750;
-let timeAlertFade = 2000;
+    switch (listener) {
+        case 'follower-latest':
+            break;
+        case 'subscriber-latest':
+            break;
+        case 'cheer-latest':
+            break;
+        default:
+            break;
+    }
+});
 
 window.addEventListener('onWidgetLoad', function (obj) {
     let data = obj['detail']['session']['data'];
     let fieldData = obj['detail']['fieldData'];
 
-    timeEventFade = Utilities.parseFloatWithDefault(fieldData.eventCycleFadeTime, 2) * 1000;
-    timeEventDisplay = Utilities.parseFloatWithDefault(fieldData.eventCycleDisplayTime, 10) * 1000;
+    if (isNaN(fieldData.eventCycleDisplayTime) || fieldData.eventCycleDisplayTime < 0) {
+        throw new Error(`onWidgetLoad::Field data parameter 'eventCycleDisplayTime' has to be a positive number.`);
+    }
 
-    timeAlertSlide = Utilities.parseFloatWithDefault(fieldData.eventAlertSlideTime, 0.75) * 1000;
-    timeAlertFade = Utilities.parseFloatWithDefault(fieldData.eventAlertFadeTime, 2) * 1000;
+    if (isNaN(fieldData.eventAlertSlideTime) || fieldData.eventAlertSlideTime < 0) {
+        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertSlideTime' has to be a positive number.`);    
+    }
+
+    if (isNaN(fieldData.eventAlertFadeTime) || fieldData.eventAlertFadeTime < 0) {
+        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertFadeTime' has to be a positive number.`);    
+    }
+
+    timeEventDisplay = fieldData.eventCycleDisplayTime * 1000;
+    timeEventAlertSlide = fieldData.eventAlertSlideTime * 1000;
+    timeEventAlertFade = fieldData.eventAlertFadeTime * 1000;
 
     let latestFollowEvent: FollowEvent = new FollowEvent(data['follower-latest']);
     let latestSubscriptionEvent: SubscriptionEvent = new SubscriptionEvent(data['subscriber-latest']);
-    let latestCheerEvent: CheerEvent = new CheerEvent(data['cheer-latest']);
+    // let latestCheerEvent: CheerEvent = new CheerEvent(data['cheer-latest']);
+    let latestCheerEvent: CheerEvent = new CheerEvent({ name: 'RandomName', amount: 1000 });
 
-    let events: StreamEvent[] = [latestFollowEvent, latestSubscriptionEvent];
+    let events: StreamEvent[] = [];
 
-    if (Utilities.followEventIsValid(latestFollowEvent)) { events.push(latestFollowEvent); }
-    if (Utilities.subscriptionEventIsValid(latestSubscriptionEvent)) { events.push(latestSubscriptionEvent); }
-    if (Utilities.cheerEventIsValid(latestCheerEvent)) { events.push(latestCheerEvent); }
+    if (latestFollowEvent.isValid) { events.push(latestFollowEvent); }
+    if (latestSubscriptionEvent.isValid) { events.push(latestSubscriptionEvent); }
+    if (latestCheerEvent.isValid) { events.push(latestCheerEvent); }
 
-    EventManager.registerEvents(events);
-    AnimationManager.initializeEventCycle(timeEventFade, timeEventDisplay);
+    widget = new Widget({
+        events,
+        timeEventDisplay,
+        timeEventAlertSlide,
+        timeEventAlertFade
+    });
+
+    widget.initializeEventDisplayCycle();
 });

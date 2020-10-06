@@ -40,10 +40,6 @@ html {
     letter-spacing: var(--letterSpacing);
 }
 
-.invisible {
-    opacity: 0;
-}
-
 /**
  * Flex styles
  */
@@ -97,11 +93,6 @@ html {
 
 .slide {
     position: absolute;
-    transition: opacity var(--eventCycleFadeTime) linear,
-                transform var(--eventAlertSlideTime) ease-out,
-                background-color var(--eventAlertFadeTime) linear;
-
-    transform: translateY(0px);
 }
 
 .slide.offscreen-top {
@@ -112,33 +103,20 @@ html {
     transform: translateY(var(--badgeBarHeight));
 }
 
-.slide.alert {
-    background-color: var(--accentColor);
-}
-
-/**
- * Badge & Bar styles
- */
-
-.badge, .bar {
-    filter: drop-shadow(var(--dropShadowOffsetX) var(--dropShadowOffsetY) var(--dropShadowBlurRadius) var(--dropShadowColor));
-    border-radius: var(--borderRadius);
-}
-
-.badge, .badge-item, .badge-item > *, .bar, .bar-item {
-    height: var(--badgeBarHeight);
-}
-
 /**
  * Badge styles
  */
+ 
+.badge,
+.badge .slide,
+.badge-content,
+.badge-content > * {
+    height: var(--badgeBarHeight);
+    width: var(--badgeWidth);
+}
 
 .badge {
     background-color: var(--badgeBackgroundColor);
-}
-
-.badge, .badge-item, .badge-item > * {
-    width: var(--badgeWidth);
 }
 
 .container.flex.column .badge {
@@ -161,26 +139,35 @@ html {
  * Bar styles
  */
 
+.bar,
+.bar .slide,
+.bar-content {
+    height: var(--badgeBarHeight);
+    width: var(--barWidth);
+}
+ 
 .bar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
     background-color: var(--barBackgroundColor);
 }
 
-.bar, .bar-item {
-    width: var(--barWidth);
+.bar .slide {
+    transition: transform var(--eventAlertSlideTime) ease-out;
 }
 
-.bar-item {
-    /** Flex box with items vertically centered and aligned to the left */
+.bar .slide.follow-event-alert .bar-content,
+.bar .slide.sub-event-alert .bar-content,
+.bar .slide.cheer-event-alert .bar-content {
+    background-color: var(--accentColor);
+}
 
+.bar-content {
     display: flex;
     align-items: center;
     justify-content: flex-start;
 
     background-color: transparent;
+    transition: opacity var(--eventCycleFadeTime) linear,
+                background-color var(--eventAlertFadeTime) linear;
 }
 
 .bar-icon {
@@ -193,8 +180,13 @@ i.bar-icon {
     transition: color var(--eventAlertFadeTime) linear;
 }
 
-.bar-item.alert i.bar-icon {
+.bar .slide.follow-event-alert .bar-content i.bar-icon,
+.bar .slide.sub-event-alert .bar-content i.bar-icon {
     color: #FFFFFF;
+}
+
+.bar .slide.cheer-event-alert .bar-content svg.bar-icon path {
+    fill: #FFFFFF;
 }
 
 svg.bar-icon {
@@ -208,7 +200,7 @@ svg.bar-icon path {
     fill: var(--accentColor);
 }
 
-.bar-item.alert svg.bar-icon path {
+.bar .slide.cheer-event-alert .bar-content svg.bar-icon path {
     fill: #FFFFFF;
 }
 
@@ -219,4 +211,13 @@ svg.bar-icon path {
     text-overflow: ellipsis;
     margin-right: 24px;
     color: var(--fontColor);
+}
+
+/**
+ * Shared styles
+ */
+
+.badge, .bar {
+    filter: drop-shadow(var(--dropShadowOffsetX) var(--dropShadowOffsetY) var(--dropShadowBlurRadius) var(--dropShadowColor));
+    border-radius: var(--borderRadius);
 }
