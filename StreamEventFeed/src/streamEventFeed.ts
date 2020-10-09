@@ -83,18 +83,16 @@ export class StreamEventFeed {
     public handleEventAlert(event: StreamEvent): void {
         clearTimeout(this.currentEventAlertTimeout);
 
-        const eventAlertSlide = this.bar.createEventAlertSlide(event);
-        eventAlertSlide.classList.add('offscreen-bottom');
-    
-        this.bar.addSlide(eventAlertSlide);
-        this.bar.currentSlide.classList.add('offscreen-top');
-
-        void eventAlertSlide.offsetWidth;
-        eventAlertSlide.classList.remove('offscreen-bottom');
+        const newSlide = this.bar.createEventAlertSlide(event);
+        
+        this.bar.animateSlideDownOut(newSlide);
+        this.bar.addSlide(newSlide);
+        this.bar.animateSlideUpOut(this.bar.currentSlide);
+        this.bar.animateSlideUpIn(newSlide, true);
 
         this.currentEventAlertTimeout = setTimeout(() => {
             this.bar.currentSlide.remove();
-            this.bar.resetSlideStyles(eventAlertSlide);
+            this.bar.resetSlideStyles(newSlide);
 
             this.currentEventAlertTimeout = setTimeout(() => {
                 this.registerEvent(event);

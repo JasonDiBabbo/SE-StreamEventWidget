@@ -16,6 +16,30 @@ export class StreamEventFeedBar {
         this.bar.appendChild(slide);
     }
 
+    public animateSlideDownOut(slide: HTMLElement, requestAnimationReflow: boolean = false): void {
+        if (requestAnimationReflow) {
+            this.requestBrowserAnimation(slide);
+        }
+        
+        slide.classList.add('offscreen-bottom');
+    }
+
+    public animateSlideUpIn(slide: HTMLElement, requestAnimationReflow: boolean = false): void {
+        if (requestAnimationReflow) {
+            this.requestBrowserAnimation(slide);
+        }
+
+        slide.classList.remove('offscreen-bottom');
+    }
+
+    public animateSlideUpOut(slide: HTMLElement, requestAnimationReflow: boolean = false): void {
+        if (requestAnimationReflow) {
+            this.requestBrowserAnimation(slide);
+        }
+
+        slide.classList.add('offscreen-top');
+    }
+
     public createEventAlertSlide(event: StreamEvent): HTMLElement {
         const content = document.createElement('div');
         content.classList.add('bar-content');
@@ -42,5 +66,9 @@ export class StreamEventFeedBar {
 
     public resetSlideStyles(slide: HTMLElement): void {
         slide.classList.value = 'slide'
+    }
+
+    private requestBrowserAnimation(element: HTMLElement): void {
+        void element.offsetWidth;
     }
 }

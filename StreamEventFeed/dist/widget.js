@@ -99,6 +99,24 @@ class StreamEventFeedBar {
     addSlide(slide) {
         this.bar.appendChild(slide);
     }
+    animateSlideDownOut(slide, requestAnimationReflow = false) {
+        if (requestAnimationReflow) {
+            this.requestBrowserAnimation(slide);
+        }
+        slide.classList.add('offscreen-bottom');
+    }
+    animateSlideUpIn(slide, requestAnimationReflow = false) {
+        if (requestAnimationReflow) {
+            this.requestBrowserAnimation(slide);
+        }
+        slide.classList.remove('offscreen-bottom');
+    }
+    animateSlideUpOut(slide, requestAnimationReflow = false) {
+        if (requestAnimationReflow) {
+            this.requestBrowserAnimation(slide);
+        }
+        slide.classList.add('offscreen-top');
+    }
     createEventAlertSlide(event) {
         const content = document.createElement('div');
         content.classList.add('bar-content');
@@ -119,6 +137,9 @@ class StreamEventFeedBar {
     }
     resetSlideStyles(slide) {
         slide.classList.value = 'slide';
+    }
+    requestBrowserAnimation(element) {
+        void element.offsetWidth;
     }
 }
 
@@ -168,15 +189,14 @@ class StreamEventFeed {
     }
     handleEventAlert(event) {
         clearTimeout(this.currentEventAlertTimeout);
-        const eventAlertSlide = this.bar.createEventAlertSlide(event);
-        eventAlertSlide.classList.add('offscreen-bottom');
-        this.bar.addSlide(eventAlertSlide);
-        this.bar.currentSlide.classList.add('offscreen-top');
-        void eventAlertSlide.offsetWidth;
-        eventAlertSlide.classList.remove('offscreen-bottom');
+        const newSlide = this.bar.createEventAlertSlide(event);
+        this.bar.animateSlideDownOut(newSlide);
+        this.bar.addSlide(newSlide);
+        this.bar.animateSlideUpOut(this.bar.currentSlide);
+        this.bar.animateSlideUpIn(newSlide, true);
         this.currentEventAlertTimeout = setTimeout(() => {
             this.bar.currentSlide.remove();
-            this.bar.resetSlideStyles(eventAlertSlide);
+            this.bar.resetSlideStyles(newSlide);
             this.currentEventAlertTimeout = setTimeout(() => {
                 this.registerEvent(event);
                 this.displayEvents();
