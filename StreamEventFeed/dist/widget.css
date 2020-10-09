@@ -155,8 +155,7 @@ html {
 }
 
 .bar .slide.follow-event-alert .bar-content,
-.bar .slide.sub-event-alert .bar-content,
-.bar .slide.cheer-event-alert .bar-content {
+.bar .slide.sub-event-alert .bar-content {
     background-color: var(--accentColor);
 }
 
@@ -183,10 +182,6 @@ i.bar-icon {
 .bar .slide.follow-event-alert .bar-content i.bar-icon,
 .bar .slide.sub-event-alert .bar-content i.bar-icon {
     color: #FFFFFF;
-}
-
-.bar .slide.cheer-event-alert .bar-content svg.bar-icon path {
-    fill: #FFFFFF;
 }
 
 svg.bar-icon {

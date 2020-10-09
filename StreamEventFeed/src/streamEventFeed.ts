@@ -15,6 +15,8 @@ export class StreamEventFeed {
 
     private events: StreamEvent[];
 
+    private currentEventAlertTimeout: number;
+
     private get currentEvent(): StreamEvent {
         const event = this.events[this.currentEventIndex];
 
@@ -76,6 +78,29 @@ export class StreamEventFeed {
         }
 
         setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
+    }
+
+    public handleEventAlert(event: StreamEvent): void {
+        clearTimeout(this.currentEventAlertTimeout);
+
+        const eventAlertSlide = this.bar.createEventAlertSlide(event);
+        eventAlertSlide.classList.add('offscreen-bottom');
+    
+        this.bar.addSlide(eventAlertSlide);
+        this.bar.currentSlide.classList.add('offscreen-top');
+
+        void eventAlertSlide.offsetWidth;
+        eventAlertSlide.classList.remove('offscreen-bottom');
+
+        this.currentEventAlertTimeout = setTimeout(() => {
+            this.bar.currentSlide.remove();
+            eventAlertSlide.classList.remove('follow-event-alert');
+
+            this.currentEventAlertTimeout = setTimeout(() => {
+                this.registerEvent(event);
+                this.displayEvents();
+            }, this.timeEventAlertFade);
+        }, this.timeEventAlertSlide)
     }
 
     public registerEvent(event: StreamEvent): void {

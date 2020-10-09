@@ -89,10 +89,33 @@ FollowEvent.SInit = (() => {
 })();
 
 class StreamEventFeedBar {
+    get bar() {
+        return document.querySelector('.bar');
+    }
     get currentSlide() {
-        const bar = document.querySelector('.bar');
-        const slides = bar.children;
+        const slides = this.bar.children;
         return slides[0];
+    }
+    addSlide(slide) {
+        this.bar.appendChild(slide);
+    }
+    createEventAlertSlide(event) {
+        const content = document.createElement('div');
+        content.classList.add('bar-content');
+        content.innerHTML = event.html;
+        const slide = document.createElement('div');
+        slide.classList.add('slide');
+        slide.appendChild(content);
+        switch (event.eventType) {
+            case StreamEventType.Cheer:
+                break;
+            case StreamEventType.Follow:
+                slide.classList.add('follow-event-alert');
+                break;
+            case StreamEventType.Subscription:
+                break;
+        }
+        return slide;
     }
 }
 
@@ -139,6 +162,23 @@ class StreamEventFeed {
             currentBarSlideContent.innerHTML = this.currentEvent.html;
         }
         setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
+    }
+    handleEventAlert(event) {
+        clearTimeout(this.currentEventAlertTimeout);
+        const eventAlertSlide = this.bar.createEventAlertSlide(event);
+        eventAlertSlide.classList.add('offscreen-bottom');
+        this.bar.addSlide(eventAlertSlide);
+        this.bar.currentSlide.classList.add('offscreen-top');
+        void eventAlertSlide.offsetWidth;
+        eventAlertSlide.classList.remove('offscreen-bottom');
+        this.currentEventAlertTimeout = setTimeout(() => {
+            this.bar.currentSlide.remove();
+            eventAlertSlide.classList.remove('follow-event-alert');
+            this.currentEventAlertTimeout = setTimeout(() => {
+                this.registerEvent(event);
+                this.displayEvents();
+            }, this.timeEventAlertFade);
+        }, this.timeEventAlertSlide);
     }
     registerEvent(event) {
         if (!event) {
@@ -237,6 +277,11 @@ let streamEventFeed;
 window.addEventListener('onEventReceived', function (obj) {
     const listener = obj['detail']['listener'];
     const event = obj['detail']['event'];
+    switch (listener) {
+        case 'follower-latest':
+            streamEventFeed.handleEventAlert(new FollowEvent(event.name));
+            break;
+    }
 });
 window.addEventListener('onWidgetLoad', function (obj) {
     const data = obj['detail']['session']['data'];
