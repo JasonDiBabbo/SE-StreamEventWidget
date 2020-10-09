@@ -39,4 +39,8 @@ export class StreamEventFeedBar {
 
         return slide;
     }
+
+    public resetSlideStyles(slide: HTMLElement): void {
+        slide.classList.value = 'slide'
+    }
 }

@@ -94,7 +94,7 @@ export class StreamEventFeed {
 
         this.currentEventAlertTimeout = setTimeout(() => {
             this.bar.currentSlide.remove();
-            eventAlertSlide.classList.remove('follow-event-alert');
+            this.bar.resetSlideStyles(eventAlertSlide);
 
             this.currentEventAlertTimeout = setTimeout(() => {
                 this.registerEvent(event);

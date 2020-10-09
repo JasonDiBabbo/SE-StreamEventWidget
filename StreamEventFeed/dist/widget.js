@@ -117,6 +117,9 @@ class StreamEventFeedBar {
         }
         return slide;
     }
+    resetSlideStyles(slide) {
+        slide.classList.value = 'slide';
+    }
 }
 
 class StreamEventFeed {
@@ -173,7 +176,7 @@ class StreamEventFeed {
         eventAlertSlide.classList.remove('offscreen-bottom');
         this.currentEventAlertTimeout = setTimeout(() => {
             this.bar.currentSlide.remove();
-            eventAlertSlide.classList.remove('follow-event-alert');
+            this.bar.resetSlideStyles(eventAlertSlide);
             this.currentEventAlertTimeout = setTimeout(() => {
                 this.registerEvent(event);
                 this.displayEvents();
