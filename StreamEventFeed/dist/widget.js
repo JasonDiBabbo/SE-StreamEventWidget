@@ -131,6 +131,7 @@ class StreamEventFeedBar {
                 slide.classList.add('follow-event-alert');
                 break;
             case StreamEventType.Subscription:
+                slide.classList.add('sub-event-alert');
                 break;
         }
         return slide;
@@ -303,6 +304,9 @@ window.addEventListener('onEventReceived', function (obj) {
     switch (listener) {
         case 'follower-latest':
             streamEventFeed.handleEventAlert(new FollowEvent(event.name));
+            break;
+        case 'subscriber-latest':
+            streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
             break;
     }
 });

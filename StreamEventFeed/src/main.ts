@@ -19,6 +19,7 @@ window.addEventListener('onEventReceived', function (obj) {
             streamEventFeed.handleEventAlert(new FollowEvent(event.name));
             break;
         case 'subscriber-latest':
+            streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
             break;
         case 'cheer-latest':
             break;

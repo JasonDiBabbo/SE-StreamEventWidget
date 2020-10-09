@@ -56,6 +56,7 @@ export class StreamEventFeedBar {
                 slide.classList.add('follow-event-alert');
                 break;
             case StreamEventType.Subscription:
+                slide.classList.add('sub-event-alert');
                 break;
             default:
                 break;
