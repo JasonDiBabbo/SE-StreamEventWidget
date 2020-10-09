@@ -151,12 +151,32 @@ html {
 }
 
 .bar .slide {
-    transition: transform var(--eventAlertSlideTime) ease-out;
+    transition: transform var(--eventAlertSlideTime) cubic-bezier(.45,.43,.53,.96);
 }
 
 .bar .slide.follow-event-alert .bar-content,
 .bar .slide.sub-event-alert .bar-content {
     background-color: var(--accentColor);
+}
+
+.bar .slide.cheer-event-alert-tier-1 .bar-content {
+    background-color: #a8a8a8;
+}
+
+.bar .slide.cheer-event-alert-tier-2 .bar-content {
+    background-color: #724f93;
+}
+
+.bar .slide.cheer-event-alert-tier-3 .bar-content {
+    background-color: #4aa38f;
+}
+
+.bar .slide.cheer-event-alert-tier-4 .bar-content {
+    background-color: #4c98d9; 
+}
+
+.bar .slide.cheer-event-alert-tier-5 .bar-content {
+    background-color: #f03d81;
 }
 
 .bar-content {
@@ -195,7 +215,11 @@ svg.bar-icon path {
     fill: var(--accentColor);
 }
 
-.bar .slide.cheer-event-alert .bar-content svg.bar-icon path {
+.bar .slide.cheer-event-alert-tier-1 .bar-content svg.bar-icon path,
+.bar .slide.cheer-event-alert-tier-2 .bar-content svg.bar-icon path,
+.bar .slide.cheer-event-alert-tier-3 .bar-content svg.bar-icon path,
+.bar .slide.cheer-event-alert-tier-4 .bar-content svg.bar-icon path,
+.bar .slide.cheer-event-alert-tier-5 .bar-content svg.bar-icon path {
     fill: #FFFFFF;
 }
 

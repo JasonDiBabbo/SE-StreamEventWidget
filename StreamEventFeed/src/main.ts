@@ -5,6 +5,7 @@ import { StreamEventFeed } from './streamEventFeed';
 import { SubscriptionEvent } from './subscriptionEvent'
 
 let timeEventDisplay: number;
+let timeEventAlertDisplay: number;
 let timeEventAlertSlide: number;
 let timeEventAlertFade: number;
 
@@ -22,6 +23,7 @@ window.addEventListener('onEventReceived', function (obj) {
             streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
             break;
         case 'cheer-latest':
+            streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
             break;
         default:
             break;
@@ -37,16 +39,21 @@ window.addEventListener('onWidgetLoad', function (obj) {
     }
 
     if (isNaN(fieldData.eventAlertSlideTime) || fieldData.eventAlertSlideTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertSlideTime' has to be a positive number.`);    
+        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertSlideTime' has to be a positive number.`);
     }
 
     if (isNaN(fieldData.eventAlertFadeTime) || fieldData.eventAlertFadeTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertFadeTime' has to be a positive number.`);    
+        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertFadeTime' has to be a positive number.`);
+    }
+
+    if (isNaN(fieldData.eventAlertDisplayTime) || fieldData.eventAlertDisplayTime < 0) {
+        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertDisplayTime' has to be a positive number.`);
     }
 
     timeEventDisplay = fieldData.eventCycleDisplayTime * 1000;
     timeEventAlertSlide = fieldData.eventAlertSlideTime * 1000;
     timeEventAlertFade = fieldData.eventAlertFadeTime * 1000;
+    timeEventAlertDisplay = fieldData.eventAlertDisplayTime * 1000;
 
     const followEventData = data['follower-latest'];
     const subscriptionEventData = data['subscriber-latest'];
@@ -63,6 +70,7 @@ window.addEventListener('onWidgetLoad', function (obj) {
     if (latestCheerEvent.isValid) { events.push(latestCheerEvent); }
 
     streamEventFeed = new StreamEventFeed({
+        timeEventAlertDisplay,
         timeEventAlertFade,
         timeEventAlertSlide,
         timeEventDisplay

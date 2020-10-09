@@ -1,7 +1,9 @@
 export interface StreamEventFeedParameters {
+    timeEventAlertDisplay: number;
+
     timeEventDisplay: number;
 
-    timeEventAlertSlide: number;
-
     timeEventAlertFade: number;
+
+    timeEventAlertSlide: number;
 }

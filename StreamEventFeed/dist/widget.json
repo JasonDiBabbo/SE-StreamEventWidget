@@ -43,7 +43,7 @@
         "group": "DIMENSIONS",
         "type": "number",
         "label": " Badge/Bar height (px)",
-        "value": 100,
+        "value": 80,
         "min": 0,
         "step": 1
     },
@@ -51,7 +51,7 @@
         "group": "DIMENSIONS",
         "type": "number",
         "label": "Badge width (px)",
-        "value": 100,
+        "value": 80,
         "min": 0,
         "step": 1
     },
@@ -59,7 +59,7 @@
         "group": "DIMENSIONS",
         "type": "number",
         "label": "Bar width (px)",
-        "value": 100,
+        "value": 600,
         "min": 0,
         "step": 1
     },
@@ -67,7 +67,7 @@
         "group": "DIMENSIONS",
         "type": "number",
         "label": "Roundness (px)",
-        "value": 100,
+        "value": 18,
         "min": 0,
         "step": 1
     },
@@ -152,6 +152,12 @@
         "type": "text",
         "label": "Alert - Slide in/out time (s)",
         "value": ".75"
+    },
+    "eventAlertDisplayTime": {
+        "group": "ANIMATION",
+        "type": "text",
+        "label": "Alert - Display time (s)",
+        "value": "2"
     },
     "eventAlertFadeTime": {
         "group": "ANIMATION",

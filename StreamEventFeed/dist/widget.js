@@ -126,6 +126,7 @@ class StreamEventFeedBar {
         slide.appendChild(content);
         switch (event.eventType) {
             case StreamEventType.Cheer:
+                slide.classList.add(this.getCheerEventAlertCSS(event));
                 break;
             case StreamEventType.Follow:
                 slide.classList.add('follow-event-alert');
@@ -139,6 +140,26 @@ class StreamEventFeedBar {
     resetSlideStyles(slide) {
         slide.classList.value = 'slide';
     }
+    getCheerEventAlertCSS(event) {
+        if (event.amount < 1) {
+            return null;
+        }
+        if (event.amount < 100) {
+            return 'cheer-event-alert-tier-1';
+        }
+        else if (event.amount < 1000) {
+            return 'cheer-event-alert-tier-2';
+        }
+        else if (event.amount < 5000) {
+            return 'cheer-event-alert-tier-3';
+        }
+        else if (event.amount < 10000) {
+            return 'cheer-event-alert-tier-4';
+        }
+        else {
+            return 'cheer-event-alert-tier-5';
+        }
+    }
     requestBrowserAnimation(element) {
         void element.offsetWidth;
     }
@@ -147,6 +168,7 @@ class StreamEventFeedBar {
 class StreamEventFeed {
     constructor(params) {
         if (params) {
+            this.timeEventAlertDisplay = params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0 ? params.timeEventAlertDisplay : this.timeEventAlertDisplay;
             this.timeEventDisplay = params.timeEventDisplay && params.timeEventDisplay > 0 ? params.timeEventDisplay : this.timeEventDisplay;
             this.timeEventAlertSlide = params.timeEventAlertSlide && params.timeEventAlertSlide > 0 ? params.timeEventAlertSlide : this.timeEventAlertSlide;
             this.timeEventAlertFade = params.timeEventAlertFade && params.timeEventAlertFade > 0 ? params.timeEventAlertFade : this.timeEventAlertFade;
@@ -197,11 +219,13 @@ class StreamEventFeed {
         this.bar.animateSlideUpIn(newSlide, true);
         this.currentEventAlertTimeout = setTimeout(() => {
             this.bar.currentSlide.remove();
-            this.bar.resetSlideStyles(newSlide);
+            this.registerEvent(event);
             this.currentEventAlertTimeout = setTimeout(() => {
-                this.registerEvent(event);
-                this.displayEvents();
-            }, this.timeEventAlertFade);
+                this.bar.resetSlideStyles(newSlide);
+                this.currentEventAlertTimeout = setTimeout(() => {
+                    this.displayEvents();
+                }, this.timeEventAlertFade);
+            }, this.timeEventAlertDisplay);
         }, this.timeEventAlertSlide);
     }
     registerEvent(event) {
@@ -251,6 +275,7 @@ class StreamEventFeed {
     }
 }
 StreamEventFeed.SInit = (() => {
+    StreamEventFeed.prototype.timeEventAlertDisplay = 2000;
     StreamEventFeed.prototype.timeEventDisplay = 10000;
     StreamEventFeed.prototype.timeEventAlertSlide = 750;
     StreamEventFeed.prototype.timeEventAlertFade = 2000;
@@ -295,6 +320,7 @@ SubscriptionEvent.SInit = (() => {
 })();
 
 let timeEventDisplay;
+let timeEventAlertDisplay;
 let timeEventAlertSlide;
 let timeEventAlertFade;
 let streamEventFeed;
@@ -307,6 +333,9 @@ window.addEventListener('onEventReceived', function (obj) {
             break;
         case 'subscriber-latest':
             streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
+            break;
+        case 'cheer-latest':
+            streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
             break;
     }
 });
@@ -322,9 +351,13 @@ window.addEventListener('onWidgetLoad', function (obj) {
     if (isNaN(fieldData.eventAlertFadeTime) || fieldData.eventAlertFadeTime < 0) {
         throw new Error(`onWidgetLoad::Field data parameter 'eventAlertFadeTime' has to be a positive number.`);
     }
+    if (isNaN(fieldData.eventAlertDisplayTime) || fieldData.eventAlertDisplayTime < 0) {
+        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertDisplayTime' has to be a positive number.`);
+    }
     timeEventDisplay = fieldData.eventCycleDisplayTime * 1000;
     timeEventAlertSlide = fieldData.eventAlertSlideTime * 1000;
     timeEventAlertFade = fieldData.eventAlertFadeTime * 1000;
+    timeEventAlertDisplay = fieldData.eventAlertDisplayTime * 1000;
     const followEventData = data['follower-latest'];
     const subscriptionEventData = data['subscriber-latest'];
     const cheerEventData = data['cheer-latest'];
@@ -342,6 +375,7 @@ window.addEventListener('onWidgetLoad', function (obj) {
         events.push(latestCheerEvent);
     }
     streamEventFeed = new StreamEventFeed({
+        timeEventAlertDisplay,
         timeEventAlertFade,
         timeEventAlertSlide,
         timeEventDisplay

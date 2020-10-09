@@ -7,6 +7,8 @@ export class StreamEventFeed {
 
     private timeEventDisplay: number;
 
+    private timeEventAlertDisplay: number;
+
     private timeEventAlertSlide: number;
 
     private timeEventAlertFade: number;
@@ -40,6 +42,7 @@ export class StreamEventFeed {
 
     constructor(params: StreamEventFeedParameters) {
         if (params) {
+            this.timeEventAlertDisplay = params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0 ? params.timeEventAlertDisplay : this.timeEventAlertDisplay;
             this.timeEventDisplay = params.timeEventDisplay && params.timeEventDisplay > 0 ? params.timeEventDisplay : this.timeEventDisplay;
             this.timeEventAlertSlide = params.timeEventAlertSlide && params.timeEventAlertSlide > 0 ? params.timeEventAlertSlide : this.timeEventAlertSlide;
             this.timeEventAlertFade = params.timeEventAlertFade && params.timeEventAlertFade > 0 ? params.timeEventAlertFade : this.timeEventAlertFade;
@@ -49,6 +52,7 @@ export class StreamEventFeed {
     }
 
     protected static SInit = (() => {
+        StreamEventFeed.prototype.timeEventAlertDisplay = 2000;
         StreamEventFeed.prototype.timeEventDisplay = 10000;
         StreamEventFeed.prototype.timeEventAlertSlide = 750;
         StreamEventFeed.prototype.timeEventAlertFade = 2000;
@@ -84,7 +88,7 @@ export class StreamEventFeed {
         clearTimeout(this.currentEventAlertTimeout);
 
         const newSlide = this.bar.createEventAlertSlide(event);
-        
+
         this.bar.animateSlideDownOut(newSlide);
         this.bar.addSlide(newSlide);
         this.bar.animateSlideUpOut(this.bar.currentSlide);
@@ -92,12 +96,15 @@ export class StreamEventFeed {
 
         this.currentEventAlertTimeout = setTimeout(() => {
             this.bar.currentSlide.remove();
-            this.bar.resetSlideStyles(newSlide);
+            this.registerEvent(event);
 
             this.currentEventAlertTimeout = setTimeout(() => {
-                this.registerEvent(event);
-                this.displayEvents();
-            }, this.timeEventAlertFade);
+                this.bar.resetSlideStyles(newSlide);
+
+                this.currentEventAlertTimeout = setTimeout(() => {
+                    this.displayEvents();
+                }, this.timeEventAlertFade);
+            }, this.timeEventAlertDisplay);
         }, this.timeEventAlertSlide)
     }
 
