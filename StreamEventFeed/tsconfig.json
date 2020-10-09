@@ -1,8 +1,9 @@
 {
-    "compileOnSave": true,
     "compilerOptions": {
         "target": "es6",
-        "module": "commonjs",
+        "module": "ESNext",
         "sourceMap": false
-    }
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules"]
 }

@@ -1,0 +1,38 @@
+import { StreamEvent } from './streamEvent';
+import { StreamEventType } from './streamEventType';
+
+export class FollowEvent extends StreamEvent {
+    public get isValid(): boolean {
+        return !!this.html && !!this.name;
+    }
+
+    public html: string;
+
+    public name: string;
+
+    constructor(name: string) {
+        super(StreamEventType.Follow);
+
+        this.name = name ? name : this.name;
+        this.html = this.getHtml();
+    }
+
+    protected static SInit = (() => {
+        FollowEvent.prototype.name = null;
+        FollowEvent.prototype.html = null;
+    })();
+
+    private getHtml(): string {
+        const iconCss = StreamEvent.lookupIconCss(this.eventType);
+
+        if (iconCss && this.name) {
+            const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name}</span>`;
+            const html = `${iconHtml}${spanHtml}`;
+
+            return html;
+        }
+
+        return null;
+    }
+}
