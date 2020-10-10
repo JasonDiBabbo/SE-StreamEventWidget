@@ -7,22 +7,22 @@
     },
     "fontSize": {
         "group": "TEXT OPTIONS",
-        "type": "number",
         "label": "Font size (px)",
-        "value": 80,
+        "type": "number",
+        "value": 30,
+        "min": 1,
         "step": 1
     },
     "fontColor": {
         "group": "TEXT OPTIONS",
-        "type": "colorpicker",
         "label": "Font color",
+        "type": "colorpicker",
         "value": "#FFFFFF"
     },
     "fontWeight": {
         "group": "TEXT OPTIONS",
-        "type": "dropdown",
         "label": "Font weight",
-        "value": "400",
+        "type": "dropdown",
         "options": {
             "100": "100 - Thin",
             "300": "300 - Light",
@@ -30,145 +30,153 @@
             "500": "500 - Medium",
             "700": "700 - Bold",
             "900": "900 - Black"
-        }
+        },
+        "value": "400"
     },
     "letterSpacing": {
         "group": "TEXT OPTIONS",
-        "type": "number",
         "label": "Letter spacing (px)",
+        "type": "number",
         "value": 0,
+        "min": 0,
         "step": 1
     },
     "badgeBarHeight": {
         "group": "DIMENSIONS",
-        "type": "number",
         "label": " Badge/Bar height (px)",
+        "type": "number",
         "value": 80,
         "min": 0,
         "step": 1
     },
     "badgeWidth": {
         "group": "DIMENSIONS",
-        "type": "number",
         "label": "Badge width (px)",
+        "type": "number",
         "value": 80,
         "min": 0,
         "step": 1
     },
     "barWidth": {
         "group": "DIMENSIONS",
-        "type": "number",
         "label": "Bar width (px)",
+        "type": "number",
         "value": 600,
         "min": 0,
         "step": 1
     },
     "borderRadius": {
         "group": "DIMENSIONS",
-        "type": "number",
         "label": "Roundness (px)",
+        "type": "number",
         "value": 18,
         "min": 0,
         "step": 1
     },
     "badgeVideo": {
         "group": "BADGE",
-        "type": "video-input",
-        "label": "Badge video"
+        "label": "Badge video",
+        "type": "video-input"
     },
     "badgeBackgroundColor": {
         "group": "BADGE",
-        "type": "colorpicker",
         "label": "Background color",
+        "type": "colorpicker",
         "value": "#231F20"
     },
     "feedOrientation": {
         "group": "BADGE",
-        "type": "dropdown",
         "label": "Location:",
-        "value": "row",
+        "type": "dropdown",
         "options": {
             "row": "Left",
             "row-reverse": "Right",
             "column": "Top",
             "column-reverse": "Bottom"
-        }
+        },
+        "value": "row"
     },
     "barBackgroundColor": {
         "group": "BAR",
-        "type": "colorpicker",
         "label": "Background color",
+        "type": "colorpicker",
         "value": "#231F20"
     },
     "accentColor": {
         "group": "BAR",
-        "type": "colorpicker",
         "label": "Accent color",
+        "type": "colorpicker",
         "value": "#3985FE"
     },
     "dropShadowOffsetX": {
         "group": "SHADOWS",
-        "type": "number",
         "label": "Drop shadow x-offset (px)",
+        "type": "number",
         "value": 0,
         "min": 0,
         "step": 1
     },
     "dropShadowOffsetY": {
         "group": "SHADOWS",
-        "type": "number",
         "label": "Drop shadow y-offset (px)",
+        "type": "number",
         "value": 0,
         "min": 0,
         "step": 1
     },
     "dropShadowBlurRadius": {
         "group": "SHADOWS",
-        "type": "number",
         "label": "Drop shadow blur radius (px)",
+        "type": "number",
         "value": 0,
         "min": 0,
         "step": 1
     },
     "dropShadowColor": {
         "group": "SHADOWS",
-        "type": "colorpicker",
         "label": "Shadow color",
+        "type": "colorpicker",
         "value": "#303030"
     },
     "eventCycleFadeTime": {
         "group": "ANIMATION",
-        "type": "text",
-        "label": "Cycle - Fade in/out time (s)"
+        "label": "Cycle - Fade in/out time (s)",
+        "type": "number",
+        "value": 2,
+        "min": 1
     },
     "eventCycleDisplayTime": {
         "group": "ANIMATION",
-        "type": "text",
         "label": "Cycle - Display time (s)",
-        "value": "10"
+        "type": "number",
+        "value": 10,
+        "min": 4
     },
     "eventAlertSlideTime": {
         "group": "ANIMATION",
-        "type": "text",
         "label": "Alert - Slide in/out time (s)",
-        "value": ".75"
+        "type": "number",
+        "value": 0.75,
+        "min": 0.25
     },
     "eventAlertDisplayTime": {
         "group": "ANIMATION",
-        "type": "text",
         "label": "Alert - Display time (s)",
-        "value": "2"
+        "type": "number",
+        "value": 2,
+        "min": 0.5
     },
     "eventAlertFadeTime": {
         "group": "ANIMATION",
-        "type": "text",
         "label": "Alert - Fade time (s)",
-        "value": "2"
+        "type": "number",
+        "value": 2,
+        "min": 1
     },
     "widgetDuration": {
         "group": "MISC.",
-        "type": "number",
         "label": "Event queue wait time (s)",
+        "type": "number",
         "value": 5,
         "min": 5,
         "step": 1

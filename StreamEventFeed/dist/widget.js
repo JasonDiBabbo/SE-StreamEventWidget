@@ -13,7 +13,7 @@ class StreamEvent {
         this.eventType = eventType;
     }
     static lookupIconCSS(eventType) {
-        let iconCSS = null;
+        let iconCSS = '';
         switch (eventType) {
             case StreamEventType.Follow:
                 iconCSS = 'fas fa-heart';
@@ -130,8 +130,7 @@ class StreamEventFeedBar {
         return document.querySelector('.bar');
     }
     get currentSlide() {
-        const slides = this.bar.children;
-        return slides[0];
+        return this.slides[0];
     }
     get slides() {
         return this.bar.children;
@@ -408,18 +407,6 @@ window.addEventListener('onEventReceived', function (obj) {
 window.addEventListener('onWidgetLoad', function (obj) {
     const data = obj['detail']['session']['data'];
     const fieldData = obj['detail']['fieldData'];
-    if (isNaN(fieldData.eventCycleDisplayTime) || fieldData.eventCycleDisplayTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventCycleDisplayTime' has to be a positive number.`);
-    }
-    if (isNaN(fieldData.eventAlertSlideTime) || fieldData.eventAlertSlideTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertSlideTime' has to be a positive number.`);
-    }
-    if (isNaN(fieldData.eventAlertFadeTime) || fieldData.eventAlertFadeTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertFadeTime' has to be a positive number.`);
-    }
-    if (isNaN(fieldData.eventAlertDisplayTime) || fieldData.eventAlertDisplayTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertDisplayTime' has to be a positive number.`);
-    }
     timeEventDisplay = fieldData.eventCycleDisplayTime * 1000;
     timeEventAlertSlide = fieldData.eventAlertSlideTime * 1000;
     timeEventAlertFade = fieldData.eventAlertFadeTime * 1000;

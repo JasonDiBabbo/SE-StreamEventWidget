@@ -53,22 +53,6 @@ window.addEventListener('onWidgetLoad', function (obj) {
     const data = obj['detail']['session']['data'];
     const fieldData = obj['detail']['fieldData'];
 
-    if (isNaN(fieldData.eventCycleDisplayTime) || fieldData.eventCycleDisplayTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventCycleDisplayTime' has to be a positive number.`);
-    }
-
-    if (isNaN(fieldData.eventAlertSlideTime) || fieldData.eventAlertSlideTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertSlideTime' has to be a positive number.`);
-    }
-
-    if (isNaN(fieldData.eventAlertFadeTime) || fieldData.eventAlertFadeTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertFadeTime' has to be a positive number.`);
-    }
-
-    if (isNaN(fieldData.eventAlertDisplayTime) || fieldData.eventAlertDisplayTime < 0) {
-        throw new Error(`onWidgetLoad::Field data parameter 'eventAlertDisplayTime' has to be a positive number.`);
-    }
-
     timeEventDisplay = fieldData.eventCycleDisplayTime * 1000;
     timeEventAlertSlide = fieldData.eventAlertSlideTime * 1000;
     timeEventAlertFade = fieldData.eventAlertFadeTime * 1000;
