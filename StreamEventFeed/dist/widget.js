@@ -3,25 +3,28 @@
 var StreamEventType;
 (function (StreamEventType) {
     StreamEventType[StreamEventType["Follow"] = 0] = "Follow";
-    StreamEventType[StreamEventType["Subscription"] = 1] = "Subscription";
-    StreamEventType[StreamEventType["Cheer"] = 2] = "Cheer";
+    StreamEventType[StreamEventType["GiftedSubscription"] = 1] = "GiftedSubscription";
+    StreamEventType[StreamEventType["Subscription"] = 2] = "Subscription";
+    StreamEventType[StreamEventType["Cheer"] = 3] = "Cheer";
 })(StreamEventType || (StreamEventType = {}));
 
 class StreamEvent {
     constructor(eventType) {
         this.eventType = eventType;
     }
-    static lookupIconCss(eventType) {
-        let iconCss = null;
+    static lookupIconCSS(eventType) {
+        let iconCSS = null;
         switch (eventType) {
             case StreamEventType.Follow:
-                iconCss = 'fas fa-heart';
+                iconCSS = 'fas fa-heart';
                 break;
             case StreamEventType.Subscription:
-                iconCss = 'fas fa-star';
+                iconCSS = 'fas fa-star';
                 break;
+            case StreamEventType.GiftedSubscription:
+                iconCSS = 'fas fa-gift';
         }
-        return iconCss;
+        return iconCSS;
     }
 }
 
@@ -30,12 +33,12 @@ class CheerEvent extends StreamEvent {
         super(StreamEventType.Cheer);
         this.name = name ? name : this.name;
         this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHtml();
+        this.html = this.getHTML();
     }
     get isValid() {
         return !!this.html && !!this.name && !!this.amount && this.amount > 0;
     }
-    getHtml() {
+    getHTML() {
         const cheerAmount = this.getCheerAmountString();
         if (cheerAmount) {
             const iconHtml = `<svg class="bar-icon" viewBox="0 0 187.35 242.67">
@@ -67,13 +70,13 @@ class FollowEvent extends StreamEvent {
     constructor(name) {
         super(StreamEventType.Follow);
         this.name = name ? name : this.name;
-        this.html = this.getHtml();
+        this.html = this.getHTML();
     }
     get isValid() {
         return !!this.html && !!this.name;
     }
-    getHtml() {
-        const iconCss = StreamEvent.lookupIconCss(this.eventType);
+    getHTML() {
+        const iconCss = StreamEvent.lookupIconCSS(this.eventType);
         if (iconCss && this.name) {
             const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;
             const spanHtml = `<span class="bar-text">${this.name}</span>`;
@@ -88,6 +91,40 @@ FollowEvent.SInit = (() => {
     FollowEvent.prototype.html = null;
 })();
 
+class GiftedSubscriptionEvent extends StreamEvent {
+    constructor(name, amount) {
+        super(StreamEventType.GiftedSubscription);
+        this.name = name ? name : this.name;
+        this.amount = amount && amount > 0 ? amount : this.amount;
+        this.html = this.getHTML();
+    }
+    get isValid() {
+        return !!this.html && !!this.name;
+    }
+    getHTML() {
+        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
+        const giftedSubsAmount = this.getGiftedSubCountString();
+        if (!!iconCSS && !!this.name) {
+            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${giftedSubsAmount}</span>`;
+            const html = ` ${iconHtml}${spanHtml}`;
+            return html;
+        }
+        return null;
+    }
+    getGiftedSubCountString() {
+        if (!!this.amount && this.amount > 1) {
+            return `X${this.amount.toString()}`;
+        }
+        return '';
+    }
+}
+GiftedSubscriptionEvent.SInit = (() => {
+    GiftedSubscriptionEvent.prototype.name = null;
+    GiftedSubscriptionEvent.prototype.amount = 0;
+    GiftedSubscriptionEvent.prototype.html = null;
+})();
+
 class StreamEventFeedBar {
     get bar() {
         return document.querySelector('.bar');
@@ -95,6 +132,9 @@ class StreamEventFeedBar {
     get currentSlide() {
         const slides = this.bar.children;
         return slides[0];
+    }
+    get slides() {
+        return this.bar.children;
     }
     addSlide(slide) {
         this.bar.appendChild(slide);
@@ -133,6 +173,9 @@ class StreamEventFeedBar {
                 break;
             case StreamEventType.Subscription:
                 slide.classList.add('sub-event-alert');
+                break;
+            case StreamEventType.GiftedSubscription:
+                slide.classList.add('gifted-sub-event-alert');
                 break;
         }
         return slide;
@@ -212,14 +255,17 @@ class StreamEventFeed {
     }
     handleEventAlert(event) {
         clearTimeout(this.currentEventAlertTimeout);
+        this.registerEvent(event);
         const newSlide = this.bar.createEventAlertSlide(event);
         this.bar.animateSlideDownOut(newSlide);
         this.bar.addSlide(newSlide);
         this.bar.animateSlideUpOut(this.bar.currentSlide);
         this.bar.animateSlideUpIn(newSlide, true);
         this.currentEventAlertTimeout = setTimeout(() => {
-            this.bar.currentSlide.remove();
-            this.registerEvent(event);
+            const slides = this.bar.slides;
+            for (let i = 0; i < slides.length - 1; i++) {
+                slides[i].remove();
+            }
             this.currentEventAlertTimeout = setTimeout(() => {
                 this.bar.resetSlideStyles(newSlide);
                 this.currentEventAlertTimeout = setTimeout(() => {
@@ -288,29 +334,27 @@ class SubscriptionEvent extends StreamEvent {
         super(StreamEventType.Subscription);
         this.name = name ? name : this.name;
         this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHtml();
+        this.html = this.getHTML();
     }
     get isValid() {
         return !!this.html && !!this.name && !!this.amount && this.amount > 0;
     }
-    getHtml() {
-        const iconCss = StreamEvent.lookupIconCss(this.eventType);
+    getHTML() {
+        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
         const subAmount = this.getSubAmountString();
-        if (!!iconCss && !!this.name && !!subAmount) {
-            const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${this.getSubAmountString()}</span>`;
+        if (!!iconCSS && !!this.name) {
+            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${subAmount}</span>`;
             const html = ` ${iconHtml}${spanHtml}`;
             return html;
         }
         return null;
     }
     getSubAmountString() {
-        if (!!this.amount && this.amount > 0) {
+        if (!!this.amount && this.amount > 1) {
             return `X${this.amount.toString()}`;
         }
-        else {
-            return '';
-        }
+        return '';
     }
 }
 SubscriptionEvent.SInit = (() => {
@@ -319,6 +363,13 @@ SubscriptionEvent.SInit = (() => {
     SubscriptionEvent.prototype.html = null;
 })();
 
+// An array of events that can come to the widget even though the queue may be on hold
+const skippableEvents = [
+    'bot:counter',
+    'event:test',
+    'event:skip',
+    'message'
+];
 let timeEventDisplay;
 let timeEventAlertDisplay;
 let timeEventAlertSlide;
@@ -327,16 +378,31 @@ let streamEventFeed;
 window.addEventListener('onEventReceived', function (obj) {
     const listener = obj['detail']['listener'];
     const event = obj['detail']['event'];
-    switch (listener) {
-        case 'follower-latest':
-            streamEventFeed.handleEventAlert(new FollowEvent(event.name));
-            break;
-        case 'subscriber-latest':
+    if (skippableEvents.indexOf(listener) !== -1) {
+        return;
+    }
+    if (listener === 'follower-latest') {
+        streamEventFeed.handleEventAlert(new FollowEvent(event.name));
+    }
+    else if (listener === 'cheer-latest') {
+        streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
+    }
+    else if (listener === 'subscriber-latest') {
+        if (event.gifted && event.isCommunityGift) {
+            SE_API.resumeQueue();
+        }
+        else if (event.bulkGifted) {
+            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender, event.amount));
+        }
+        else if (event.gifted) {
+            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender));
+        }
+        else {
             streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
-            break;
-        case 'cheer-latest':
-            streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
-            break;
+        }
+    }
+    else {
+        SE_API.resumeQueue();
     }
 });
 window.addEventListener('onWidgetLoad', function (obj) {

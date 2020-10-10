@@ -18,7 +18,7 @@ export class CheerEvent extends StreamEvent {
         this.name = name ? name : this.name;
         this.amount = amount && amount > 0 ? amount : this.amount;
 
-        this.html = this.getHtml();
+        this.html = this.getHTML();
     }
 
     protected static SInit = (() => {
@@ -27,7 +27,7 @@ export class CheerEvent extends StreamEvent {
         CheerEvent.prototype.html = null;
     })();
 
-    private getHtml(): string {
+    private getHTML(): string {
         const cheerAmount = this.getCheerAmountString();
 
         if (cheerAmount) {

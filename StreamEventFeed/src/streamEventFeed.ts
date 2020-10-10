@@ -86,6 +86,7 @@ export class StreamEventFeed {
 
     public handleEventAlert(event: StreamEvent): void {
         clearTimeout(this.currentEventAlertTimeout);
+        this.registerEvent(event);
 
         const newSlide = this.bar.createEventAlertSlide(event);
 
@@ -95,8 +96,10 @@ export class StreamEventFeed {
         this.bar.animateSlideUpIn(newSlide, true);
 
         this.currentEventAlertTimeout = setTimeout(() => {
-            this.bar.currentSlide.remove();
-            this.registerEvent(event);
+            const slides = this.bar.slides;
+            for (let i = 0; i < slides.length - 1; i++) {
+                slides[i].remove();
+            }
 
             this.currentEventAlertTimeout = setTimeout(() => {
                 this.bar.resetSlideStyles(newSlide);

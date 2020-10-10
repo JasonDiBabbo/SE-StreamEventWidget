@@ -14,7 +14,7 @@ export class FollowEvent extends StreamEvent {
         super(StreamEventType.Follow);
 
         this.name = name ? name : this.name;
-        this.html = this.getHtml();
+        this.html = this.getHTML();
     }
 
     protected static SInit = (() => {
@@ -22,8 +22,8 @@ export class FollowEvent extends StreamEvent {
         FollowEvent.prototype.html = null;
     })();
 
-    private getHtml(): string {
-        const iconCss = StreamEvent.lookupIconCss(this.eventType);
+    private getHTML(): string {
+        const iconCss = StreamEvent.lookupIconCSS(this.eventType);
 
         if (iconCss && this.name) {
             const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;

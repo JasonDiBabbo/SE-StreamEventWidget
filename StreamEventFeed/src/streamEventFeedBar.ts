@@ -8,9 +8,11 @@ export class StreamEventFeedBar {
     }
 
     public get currentSlide(): HTMLElement {
-        const slides = this.bar.children;
+        return this.slides[0] as HTMLElement;
+    }
 
-        return slides[0] as HTMLElement;
+    public get slides(): HTMLCollection {
+        return this.bar.children;
     }
 
     public addSlide(slide: HTMLElement): void {
@@ -59,6 +61,9 @@ export class StreamEventFeedBar {
                 break;
             case StreamEventType.Subscription:
                 slide.classList.add('sub-event-alert');
+                break;
+            case StreamEventType.GiftedSubscription:
+                slide.classList.add('gifted-sub-event-alert');
                 break;
             default:
                 break;

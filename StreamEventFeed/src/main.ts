@@ -1,8 +1,19 @@
 import { CheerEvent } from './cheerEvent';
 import { FollowEvent } from './followEvent';
+import { GiftedSubscriptionEvent } from './giftedSubscriptionEvent';
 import { StreamEvent } from './streamEvent';
 import { StreamEventFeed } from './streamEventFeed';
 import { SubscriptionEvent } from './subscriptionEvent'
+
+declare var SE_API: any;
+
+// An array of events that can come to the widget even though the queue may be on hold
+const skippableEvents =[
+    'bot:counter',
+    'event:test',
+    'event:skip',
+    'message'
+];
 
 let timeEventDisplay: number;
 let timeEventAlertDisplay: number;
@@ -15,18 +26,26 @@ window.addEventListener('onEventReceived', function (obj) {
     const listener: string = obj['detail']['listener'];
     const event = obj['detail']['event'];
 
-    switch (listener) {
-        case 'follower-latest':
-            streamEventFeed.handleEventAlert(new FollowEvent(event.name));
-            break;
-        case 'subscriber-latest':
+    if (skippableEvents.indexOf(listener) !== -1) {
+        return;
+    }
+
+    if (listener === 'follower-latest') {
+        streamEventFeed.handleEventAlert(new FollowEvent(event.name));
+    } else if (listener === 'cheer-latest') {
+        streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
+    } else if (listener === 'subscriber-latest') {
+        if (event.gifted && event.isCommunityGift) {
+            SE_API.resumeQueue();
+        } else if (event.bulkGifted) {
+            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender, event.amount));
+        } else if (event.gifted) {
+            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender));
+        } else {
             streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
-            break;
-        case 'cheer-latest':
-            streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
-            break;
-        default:
-            break;
+        }
+    } else {
+        SE_API.resumeQueue();
     }
 });
 

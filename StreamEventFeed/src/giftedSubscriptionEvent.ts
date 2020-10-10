@@ -1,9 +1,9 @@
 import { StreamEvent } from './streamEvent';
 import { StreamEventType } from './streamEventType';
 
-export class SubscriptionEvent extends StreamEvent {
+export class GiftedSubscriptionEvent extends StreamEvent {
     public get isValid(): boolean {
-        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+        return !!this.html && !!this.name;
     }
 
     public html: string;
@@ -12,28 +12,28 @@ export class SubscriptionEvent extends StreamEvent {
 
     public amount: number;
 
-    constructor(name: string, amount: number) {
-        super(StreamEventType.Subscription);
+    constructor(name: string, amount?: number) {
+        super(StreamEventType.GiftedSubscription);
 
         this.name = name ? name : this.name;
         this.amount = amount && amount > 0 ? amount : this.amount;
-
+        
         this.html = this.getHTML();
     }
 
     protected static SInit = (() => {
-        SubscriptionEvent.prototype.name = null;
-        SubscriptionEvent.prototype.amount = 0;
-        SubscriptionEvent.prototype.html = null;
+        GiftedSubscriptionEvent.prototype.name = null;
+        GiftedSubscriptionEvent.prototype.amount = 0;
+        GiftedSubscriptionEvent.prototype.html = null;
     })();
 
     private getHTML(): string {
         const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const subAmount = this.getSubAmountString();
+        const giftedSubsAmount = this.getGiftedSubCountString();
 
         if (!!iconCSS && !!this.name) {
             const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${subAmount}</span>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${giftedSubsAmount}</span>`;
             const html = ` ${iconHtml}${spanHtml}`;
 
             return html;
@@ -42,7 +42,7 @@ export class SubscriptionEvent extends StreamEvent {
         return null;
     }
 
-    private getSubAmountString(): string {
+    private getGiftedSubCountString(): string {
         if (!!this.amount && this.amount > 1) {
             return `X${this.amount.toString()}`;
         }

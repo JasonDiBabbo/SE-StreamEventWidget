@@ -7,20 +7,22 @@ export abstract class StreamEvent {
 
     constructor(public eventType: StreamEventType) { }
 
-    public static lookupIconCss(eventType: StreamEventType): string {
-        let iconCss = null;
+    public static lookupIconCSS(eventType: StreamEventType): string {
+        let iconCSS = '';
 
         switch (eventType) {
             case StreamEventType.Follow:
-                iconCss = 'fas fa-heart';
+                iconCSS = 'fas fa-heart';
                 break;
             case StreamEventType.Subscription:
-                iconCss = 'fas fa-star';
+                iconCSS = 'fas fa-star';
                 break;
+            case StreamEventType.GiftedSubscription:
+                iconCSS = 'fas fa-gift';
             default:
                 break;
         }
 
-        return iconCss;
+        return iconCSS;
     }
 }
