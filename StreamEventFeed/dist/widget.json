@@ -170,7 +170,7 @@
         "type": "number",
         "label": "Event queue wait time (s)",
         "value": 5,
-        "min": 0,
+        "min": 5,
         "step": 1
     }
 }
