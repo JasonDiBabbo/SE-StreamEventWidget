@@ -413,9 +413,11 @@ window.addEventListener('onWidgetLoad', function (obj) {
     timeEventAlertDisplay = fieldData.eventAlertDisplayTime * 1000;
     const followEventData = data['follower-latest'];
     const subscriptionEventData = data['subscriber-latest'];
+    const giftedSubscriptionData = data['subscriber-gifted-latest'];
     const cheerEventData = data['cheer-latest'];
     const latestFollowEvent = new FollowEvent(followEventData.name);
     const latestSubscriptionEvent = new SubscriptionEvent(subscriptionEventData.name, subscriptionEventData.amount);
+    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(giftedSubscriptionData.sender, giftedSubscriptionData.amount);
     const latestCheerEvent = new CheerEvent(cheerEventData.name, cheerEventData.amount);
     const events = [];
     if (latestFollowEvent.isValid) {
@@ -423,6 +425,9 @@ window.addEventListener('onWidgetLoad', function (obj) {
     }
     if (latestSubscriptionEvent.isValid) {
         events.push(latestSubscriptionEvent);
+    }
+    if (latestGiftedSubscriptionEvent.isValid) {
+        events.push(latestGiftedSubscriptionEvent);
     }
     if (latestCheerEvent.isValid) {
         events.push(latestCheerEvent);

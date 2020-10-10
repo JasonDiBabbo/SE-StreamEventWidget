@@ -60,16 +60,19 @@ window.addEventListener('onWidgetLoad', function (obj) {
 
     const followEventData = data['follower-latest'];
     const subscriptionEventData = data['subscriber-latest'];
+    const giftedSubscriptionData = data['subscriber-gifted-latest'];
     const cheerEventData = data['cheer-latest'];
 
     const latestFollowEvent: FollowEvent = new FollowEvent(followEventData.name);
     const latestSubscriptionEvent: SubscriptionEvent = new SubscriptionEvent(subscriptionEventData.name, subscriptionEventData.amount);
+    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(giftedSubscriptionData.sender, giftedSubscriptionData.amount);
     const latestCheerEvent: CheerEvent = new CheerEvent(cheerEventData.name, cheerEventData.amount);
 
     const events: StreamEvent[] = [];
 
     if (latestFollowEvent.isValid) { events.push(latestFollowEvent); }
     if (latestSubscriptionEvent.isValid) { events.push(latestSubscriptionEvent); }
+    if (latestGiftedSubscriptionEvent.isValid) { events.push(latestGiftedSubscriptionEvent); }
     if (latestCheerEvent.isValid) { events.push(latestCheerEvent); }
 
     streamEventFeed = new StreamEventFeed({
