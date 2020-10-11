@@ -1,7 +1,7 @@
 import { StreamEvent } from './streamEvent';
 import { StreamEventType } from './streamEventType';
 
-export class HostEvent extends StreamEvent {
+export class RaidEvent extends StreamEvent {
     public get isValid(): boolean {
         return !!this.html && !!this.name && !!this.amount && this.amount > 0;
     }
@@ -13,7 +13,7 @@ export class HostEvent extends StreamEvent {
     public amount: number;
 
     constructor(name: string, amount: number) {
-        super(StreamEventType.Host);
+        super(StreamEventType.Raid);
 
         this.name = name ? name : this.name;
         this.amount = amount && amount > 0 ? amount : this.amount;
@@ -22,15 +22,15 @@ export class HostEvent extends StreamEvent {
     }
 
     protected static SInit = (() => {
-        HostEvent.prototype.name = null;
-        HostEvent.prototype.amount = 0;
-        HostEvent.prototype.html = null;
+        RaidEvent.prototype.name = null;
+        RaidEvent.prototype.amount = 0;
+        RaidEvent.prototype.html = null;
     })();
 
 
     private getHTML(): string {
         const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const hostAmount = this.getHostAmountString();
+        const hostAmount = this.getRaidAmountString();
 
         if (!!iconCSS && !!this.name) {
             const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
@@ -43,7 +43,7 @@ export class HostEvent extends StreamEvent {
         return null;
     }
 
-    private getHostAmountString(): string {
+    private getRaidAmountString(): string {
         if (!!this.amount && this.amount > 0) {
             return `X${this.amount.toString()}`;
         }

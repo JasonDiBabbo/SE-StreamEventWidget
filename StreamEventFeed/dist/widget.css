@@ -157,7 +157,8 @@ html {
 .bar .slide.follow-event-alert .bar-content,
 .bar .slide.sub-event-alert .bar-content,
 .bar .slide.gifted-sub-event-alert .bar-content,
-.bar .slide.host-event-alert .bar-content {
+.bar .slide.host-event-alert .bar-content,
+.bar .slide.raid-event-alert .bar-content {
     background-color: var(--accentColor);
 }
 
@@ -204,7 +205,8 @@ i.bar-icon {
 .bar .slide.follow-event-alert .bar-content i.bar-icon,
 .bar .slide.sub-event-alert .bar-content i.bar-icon,
 .bar .slide.gifted-sub-event-alert .bar-content i.bar-icon,
-.bar .slide.slide.host-event-alert .bar-content i.bar-icon {
+.bar .slide.slide.host-event-alert .bar-content i.bar-icon,
+.bar .slide.slide.raid-event-alert .bar-content i.bar-icon {
     color: #FFFFFF;
 }
 

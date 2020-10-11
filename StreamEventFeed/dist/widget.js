@@ -5,8 +5,9 @@ var StreamEventType;
     StreamEventType[StreamEventType["Cheer"] = 0] = "Cheer";
     StreamEventType[StreamEventType["Follow"] = 1] = "Follow";
     StreamEventType[StreamEventType["GiftedSubscription"] = 2] = "GiftedSubscription";
-    StreamEventType[StreamEventType["HostEvent"] = 3] = "HostEvent";
-    StreamEventType[StreamEventType["Subscription"] = 4] = "Subscription";
+    StreamEventType[StreamEventType["Host"] = 3] = "Host";
+    StreamEventType[StreamEventType["Raid"] = 4] = "Raid";
+    StreamEventType[StreamEventType["Subscription"] = 5] = "Subscription";
 })(StreamEventType || (StreamEventType = {}));
 
 class StreamEvent {
@@ -25,8 +26,11 @@ class StreamEvent {
             case StreamEventType.GiftedSubscription:
                 iconCSS = 'fas fa-gift';
                 break;
-            case StreamEventType.HostEvent:
+            case StreamEventType.Host:
                 iconCSS = 'fas fa-desktop';
+                break;
+            case StreamEventType.Raid:
+                iconCSS = 'fas fa-users';
                 break;
         }
         return iconCSS;
@@ -132,7 +136,7 @@ GiftedSubscriptionEvent.SInit = (() => {
 
 class HostEvent extends StreamEvent {
     constructor(name, amount) {
-        super(StreamEventType.HostEvent);
+        super(StreamEventType.Host);
         this.name = name ? name : this.name;
         this.amount = amount && amount > 0 ? amount : this.amount;
         this.html = this.getHTML();
@@ -162,6 +166,40 @@ HostEvent.SInit = (() => {
     HostEvent.prototype.name = null;
     HostEvent.prototype.amount = 0;
     HostEvent.prototype.html = null;
+})();
+
+class RaidEvent extends StreamEvent {
+    constructor(name, amount) {
+        super(StreamEventType.Raid);
+        this.name = name ? name : this.name;
+        this.amount = amount && amount > 0 ? amount : this.amount;
+        this.html = this.getHTML();
+    }
+    get isValid() {
+        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+    }
+    getHTML() {
+        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
+        const hostAmount = this.getRaidAmountString();
+        if (!!iconCSS && !!this.name) {
+            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${hostAmount}</span>`;
+            const html = ` ${iconHtml}${spanHtml}`;
+            return html;
+        }
+        return null;
+    }
+    getRaidAmountString() {
+        if (!!this.amount && this.amount > 0) {
+            return `X${this.amount.toString()}`;
+        }
+        return '';
+    }
+}
+RaidEvent.SInit = (() => {
+    RaidEvent.prototype.name = null;
+    RaidEvent.prototype.amount = 0;
+    RaidEvent.prototype.html = null;
 })();
 
 class StreamEventFeedBar {
@@ -215,8 +253,11 @@ class StreamEventFeedBar {
             case StreamEventType.GiftedSubscription:
                 slide.classList.add('gifted-sub-event-alert');
                 break;
-            case StreamEventType.HostEvent:
+            case StreamEventType.Host:
                 slide.classList.add('host-event-alert');
+                break;
+            case StreamEventType.Raid:
+                slide.classList.add('raid-event-alert');
                 break;
         }
         return slide;
@@ -449,6 +490,9 @@ window.addEventListener('onEventReceived', function (obj) {
     }
     else if (listener === 'host-latest') {
         streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
+    }
+    else if (listener === 'raid-latest') {
+        streamEventFeed.handleEventAlert(new RaidEvent(event.name, event.amount), false);
     }
     else {
         SE_API.resumeQueue();
