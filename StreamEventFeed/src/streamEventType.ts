@@ -1,6 +1,7 @@
 export enum StreamEventType {
+    Cheer,
     Follow,
     GiftedSubscription,
-    Subscription,
-    Cheer
+    HostEvent,
+    Subscription
 }

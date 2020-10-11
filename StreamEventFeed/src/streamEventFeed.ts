@@ -84,13 +84,16 @@ export class StreamEventFeed {
         setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
     }
 
-    public handleEventAlert(event: StreamEvent): void {
+    public handleEventAlert(event: StreamEvent, addToCyclingEvents: boolean = true): void {
         if (!event.isValid) {
             return;
         }
         
         clearTimeout(this.currentEventAlertTimeout);
-        this.registerEvent(event);
+
+        if (addToCyclingEvents) {
+            this.registerEvent(event);
+        }
 
         const newSlide = this.bar.createEventAlertSlide(event);
 

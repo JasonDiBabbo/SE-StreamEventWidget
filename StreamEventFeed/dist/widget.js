@@ -2,10 +2,11 @@
 
 var StreamEventType;
 (function (StreamEventType) {
-    StreamEventType[StreamEventType["Follow"] = 0] = "Follow";
-    StreamEventType[StreamEventType["GiftedSubscription"] = 1] = "GiftedSubscription";
-    StreamEventType[StreamEventType["Subscription"] = 2] = "Subscription";
-    StreamEventType[StreamEventType["Cheer"] = 3] = "Cheer";
+    StreamEventType[StreamEventType["Cheer"] = 0] = "Cheer";
+    StreamEventType[StreamEventType["Follow"] = 1] = "Follow";
+    StreamEventType[StreamEventType["GiftedSubscription"] = 2] = "GiftedSubscription";
+    StreamEventType[StreamEventType["HostEvent"] = 3] = "HostEvent";
+    StreamEventType[StreamEventType["Subscription"] = 4] = "Subscription";
 })(StreamEventType || (StreamEventType = {}));
 
 class StreamEvent {
@@ -23,6 +24,10 @@ class StreamEvent {
                 break;
             case StreamEventType.GiftedSubscription:
                 iconCSS = 'fas fa-gift';
+                break;
+            case StreamEventType.HostEvent:
+                iconCSS = 'fas fa-desktop';
+                break;
         }
         return iconCSS;
     }
@@ -125,6 +130,40 @@ GiftedSubscriptionEvent.SInit = (() => {
     GiftedSubscriptionEvent.prototype.html = null;
 })();
 
+class HostEvent extends StreamEvent {
+    constructor(name, amount) {
+        super(StreamEventType.HostEvent);
+        this.name = name ? name : this.name;
+        this.amount = amount && amount > 0 ? amount : this.amount;
+        this.html = this.getHTML();
+    }
+    get isValid() {
+        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+    }
+    getHTML() {
+        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
+        const hostAmount = this.getHostAmountString();
+        if (!!iconCSS && !!this.name) {
+            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${hostAmount}</span>`;
+            const html = ` ${iconHtml}${spanHtml}`;
+            return html;
+        }
+        return null;
+    }
+    getHostAmountString() {
+        if (!!this.amount && this.amount > 0) {
+            return `X${this.amount.toString()}`;
+        }
+        return '';
+    }
+}
+HostEvent.SInit = (() => {
+    HostEvent.prototype.name = null;
+    HostEvent.prototype.amount = 0;
+    HostEvent.prototype.html = null;
+})();
+
 class StreamEventFeedBar {
     get bar() {
         return document.querySelector('.bar');
@@ -175,6 +214,9 @@ class StreamEventFeedBar {
                 break;
             case StreamEventType.GiftedSubscription:
                 slide.classList.add('gifted-sub-event-alert');
+                break;
+            case StreamEventType.HostEvent:
+                slide.classList.add('host-event-alert');
                 break;
         }
         return slide;
@@ -252,9 +294,14 @@ class StreamEventFeed {
         }
         setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
     }
-    handleEventAlert(event) {
+    handleEventAlert(event, addToCyclingEvents = true) {
+        if (!event.isValid) {
+            return;
+        }
         clearTimeout(this.currentEventAlertTimeout);
-        this.registerEvent(event);
+        if (addToCyclingEvents) {
+            this.registerEvent(event);
+        }
         const newSlide = this.bar.createEventAlertSlide(event);
         this.bar.animateSlideDownOut(newSlide);
         this.bar.addSlide(newSlide);
@@ -399,6 +446,9 @@ window.addEventListener('onEventReceived', function (obj) {
         else {
             streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
         }
+    }
+    else if (listener === 'host-latest') {
+        streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
     }
     else {
         SE_API.resumeQueue();

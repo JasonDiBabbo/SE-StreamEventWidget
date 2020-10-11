@@ -65,6 +65,9 @@ export class StreamEventFeedBar {
             case StreamEventType.GiftedSubscription:
                 slide.classList.add('gifted-sub-event-alert');
                 break;
+            case StreamEventType.HostEvent:
+                slide.classList.add('host-event-alert');
+                break;
             default:
                 break;
         }

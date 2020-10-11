@@ -19,6 +19,10 @@ export abstract class StreamEvent {
                 break;
             case StreamEventType.GiftedSubscription:
                 iconCSS = 'fas fa-gift';
+                break;
+            case StreamEventType.HostEvent:
+                iconCSS = 'fas fa-desktop';
+                break;
             default:
                 break;
         }

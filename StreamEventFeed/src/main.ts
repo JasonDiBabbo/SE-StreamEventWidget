@@ -1,6 +1,7 @@
 import { CheerEvent } from './cheerEvent';
 import { FollowEvent } from './followEvent';
 import { GiftedSubscriptionEvent } from './giftedSubscriptionEvent';
+import { HostEvent } from './hostEvent';
 import { StreamEvent } from './streamEvent';
 import { StreamEventFeed } from './streamEventFeed';
 import { SubscriptionEvent } from './subscriptionEvent'
@@ -44,6 +45,8 @@ window.addEventListener('onEventReceived', function (obj) {
         } else {
             streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
         }
+    } else if (listener === 'host-latest') {
+        streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
     } else {
         SE_API.resumeQueue();
     }
