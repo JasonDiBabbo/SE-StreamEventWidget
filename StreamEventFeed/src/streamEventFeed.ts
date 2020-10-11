@@ -85,6 +85,10 @@ export class StreamEventFeed {
     }
 
     public handleEventAlert(event: StreamEvent): void {
+        if (!event.isValid) {
+            return;
+        }
+        
         clearTimeout(this.currentEventAlertTimeout);
         this.registerEvent(event);
 
