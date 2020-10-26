@@ -4,16 +4,14 @@
         "@typescript-eslint/parser": "^4.4.0",
         "eslint": "^7.10.0",
         "rollup": "^2.29.0",
-        "rollup-plugin-typescript": "^1.0.1",
         "rollup-plugin-typescript2": "^0.27.3",
-        "rollup-watch": "^4.3.1",
+        "rollup-watch": "^3.2.2",
         "tslib": "^2.0.2",
         "typescript": "^4.0.3"
     },
     "scripts": {
-        "build": "rollup -c rollup.dev.config.js",
-        "build:prod": "rollup -c rollup.prod.config.js",
-        "build:watch": "rollup -c rollup.dev.config.js -w",
-        "lint": "eslint . --ext .ts"
+        "build": "rollup -c rollup.config.js",
+        "build:watch": "rollup -c rollup.config.js -w",
+        "lint": "eslint . --ext .ts --config .eslint.json"
     }
 }

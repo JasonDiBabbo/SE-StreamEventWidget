@@ -1,2 +1,2 @@
-# NPM 
-**/node_modules
+# Don't commit node modules
+/node_modules
