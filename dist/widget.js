@@ -201,6 +201,40 @@ RaidEvent.SInit = (() => {
     RaidEvent.prototype.html = null;
 })();
 
+class SubscriptionEvent extends StreamEvent {
+    constructor(name, amount) {
+        super(StreamEventType.Subscription);
+        this.name = name ? name : this.name;
+        this.amount = amount && amount > 0 ? amount : this.amount;
+        this.html = this.getHTML();
+    }
+    get isValid() {
+        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+    }
+    getHTML() {
+        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
+        const subAmount = this.getSubAmountString();
+        if (!!iconCSS && !!this.name) {
+            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${subAmount}</span>`;
+            const html = ` ${iconHtml}${spanHtml}`;
+            return html;
+        }
+        return null;
+    }
+    getSubAmountString() {
+        if (!!this.amount && this.amount > 1) {
+            return `X${this.amount.toString()}`;
+        }
+        return '';
+    }
+}
+SubscriptionEvent.SInit = (() => {
+    SubscriptionEvent.prototype.name = null;
+    SubscriptionEvent.prototype.amount = 0;
+    SubscriptionEvent.prototype.html = null;
+})();
+
 class StreamEventFeedBar {
     get bar() {
         return document.querySelector('.bar');
@@ -426,40 +460,6 @@ StreamEventFeed.SInit = (() => {
     StreamEventFeed.prototype.timeEventAlertFade = 2000;
     StreamEventFeed.prototype.currentEventIndex = -1;
     StreamEventFeed.prototype.events = [];
-})();
-
-class SubscriptionEvent extends StreamEvent {
-    constructor(name, amount) {
-        super(StreamEventType.Subscription);
-        this.name = name ? name : this.name;
-        this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHTML();
-    }
-    get isValid() {
-        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
-    }
-    getHTML() {
-        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const subAmount = this.getSubAmountString();
-        if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${subAmount}</span>`;
-            const html = ` ${iconHtml}${spanHtml}`;
-            return html;
-        }
-        return null;
-    }
-    getSubAmountString() {
-        if (!!this.amount && this.amount > 1) {
-            return `X${this.amount.toString()}`;
-        }
-        return '';
-    }
-}
-SubscriptionEvent.SInit = (() => {
-    SubscriptionEvent.prototype.name = null;
-    SubscriptionEvent.prototype.amount = 0;
-    SubscriptionEvent.prototype.html = null;
 })();
 
 /* eslint-enable @typescript-eslint/no-explicit-any */

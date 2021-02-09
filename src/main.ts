@@ -1,23 +1,20 @@
-import { CheerEvent } from './cheerEvent';
-import { FollowEvent } from './followEvent';
-import { GiftedSubscriptionEvent } from './giftedSubscriptionEvent';
-import { HostEvent } from './hostEvent';
-import { RaidEvent } from './raidEvent';
-import { StreamEvent } from './streamEvent';
+import {
+    CheerEvent,
+    FollowEvent,
+    GiftedSubscriptionEvent,
+    HostEvent,
+    RaidEvent,
+    StreamEvent,
+    SubscriptionEvent,
+} from './models';
 import { StreamEventFeed } from './streamEventFeed';
-import { SubscriptionEvent } from './subscriptionEvent'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const SE_API: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 // An array of events that can come to the widget even though the queue may be on hold
-const skippableEvents =[
-    'bot:counter',
-    'event:test',
-    'event:skip',
-    'message'
-];
+const skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
 
 let timeEventDisplay: number;
 let timeEventAlertDisplay: number;
@@ -42,7 +39,9 @@ window.addEventListener('onEventReceived', function (obj) {
         if (event.gifted && event.isCommunityGift) {
             SE_API.resumeQueue();
         } else if (event.bulkGifted) {
-            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender, event.amount));
+            streamEventFeed.handleEventAlert(
+                new GiftedSubscriptionEvent(event.sender, event.amount)
+            );
         } else if (event.gifted) {
             streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender));
         } else {
@@ -72,22 +71,39 @@ window.addEventListener('onWidgetLoad', function (obj) {
     const cheerEventData = data['cheer-latest'];
 
     const latestFollowEvent: FollowEvent = new FollowEvent(followEventData.name);
-    const latestSubscriptionEvent: SubscriptionEvent = new SubscriptionEvent(subscriptionEventData.name, subscriptionEventData.amount);
-    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(giftedSubscriptionData.sender, giftedSubscriptionData.amount);
+    const latestSubscriptionEvent: SubscriptionEvent = new SubscriptionEvent(
+        subscriptionEventData.name,
+        subscriptionEventData.amount
+    );
+    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(
+        giftedSubscriptionData.sender,
+        giftedSubscriptionData.amount
+    );
     const latestCheerEvent: CheerEvent = new CheerEvent(cheerEventData.name, cheerEventData.amount);
 
     const events: StreamEvent[] = [];
 
-    if (latestFollowEvent.isValid) { events.push(latestFollowEvent); }
-    if (latestSubscriptionEvent.isValid) { events.push(latestSubscriptionEvent); }
-    if (latestGiftedSubscriptionEvent.isValid) { events.push(latestGiftedSubscriptionEvent); }
-    if (latestCheerEvent.isValid) { events.push(latestCheerEvent); }
+    if (latestFollowEvent.isValid) {
+        events.push(latestFollowEvent);
+    }
+
+    if (latestSubscriptionEvent.isValid) {
+        events.push(latestSubscriptionEvent);
+    }
+
+    if (latestGiftedSubscriptionEvent.isValid) {
+        events.push(latestGiftedSubscriptionEvent);
+    }
+
+    if (latestCheerEvent.isValid) {
+        events.push(latestCheerEvent);
+    }
 
     streamEventFeed = new StreamEventFeed({
         timeEventAlertDisplay,
         timeEventAlertFade,
         timeEventAlertSlide,
-        timeEventDisplay
+        timeEventDisplay,
     });
 
     streamEventFeed.registerEvents(events);

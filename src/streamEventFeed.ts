@@ -1,4 +1,4 @@
-import { StreamEvent } from './streamEvent';
+import { StreamEvent } from './models';
 import { StreamEventFeedBar } from './streamEventFeedBar';
 import { StreamEventFeedParameters } from './streamEventFeedParameters';
 
@@ -23,7 +23,7 @@ export class StreamEventFeed {
         const event = this.events[this.currentEventIndex];
 
         if (!event) {
-            throw new Error('')
+            throw new Error('');
         }
 
         return event;
@@ -42,10 +42,22 @@ export class StreamEventFeed {
 
     constructor(params: StreamEventFeedParameters) {
         if (params) {
-            this.timeEventAlertDisplay = params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0 ? params.timeEventAlertDisplay : this.timeEventAlertDisplay;
-            this.timeEventDisplay = params.timeEventDisplay && params.timeEventDisplay > 0 ? params.timeEventDisplay : this.timeEventDisplay;
-            this.timeEventAlertSlide = params.timeEventAlertSlide && params.timeEventAlertSlide > 0 ? params.timeEventAlertSlide : this.timeEventAlertSlide;
-            this.timeEventAlertFade = params.timeEventAlertFade && params.timeEventAlertFade > 0 ? params.timeEventAlertFade : this.timeEventAlertFade;
+            this.timeEventAlertDisplay =
+                params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0
+                    ? params.timeEventAlertDisplay
+                    : this.timeEventAlertDisplay;
+            this.timeEventDisplay =
+                params.timeEventDisplay && params.timeEventDisplay > 0
+                    ? params.timeEventDisplay
+                    : this.timeEventDisplay;
+            this.timeEventAlertSlide =
+                params.timeEventAlertSlide && params.timeEventAlertSlide > 0
+                    ? params.timeEventAlertSlide
+                    : this.timeEventAlertSlide;
+            this.timeEventAlertFade =
+                params.timeEventAlertFade && params.timeEventAlertFade > 0
+                    ? params.timeEventAlertFade
+                    : this.timeEventAlertFade;
         }
 
         this.bar = new StreamEventFeedBar();
@@ -69,7 +81,10 @@ export class StreamEventFeed {
 
             if (property === 'opacity') {
                 if (currentBarSlideContent.style.opacity === '1') {
-                    setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
+                    setTimeout(
+                        () => this.hideElement(currentBarSlideContent),
+                        this.timeEventDisplay
+                    );
                 } else {
                     currentBarSlideContent.innerHTML = this.nextEvent.html;
                     this.revealElement(currentBarSlideContent);
@@ -88,7 +103,7 @@ export class StreamEventFeed {
         if (!event.isValid) {
             return;
         }
-        
+
         clearTimeout(this.currentEventAlertTimeout);
 
         if (addToCyclingEvents) {
@@ -115,7 +130,7 @@ export class StreamEventFeed {
                     this.displayEvents();
                 }, this.timeEventAlertFade);
             }, this.timeEventAlertDisplay);
-        }, this.timeEventAlertSlide)
+        }, this.timeEventAlertSlide);
     }
 
     public registerEvent(event: StreamEvent): void {
@@ -132,11 +147,17 @@ export class StreamEventFeed {
 
             if (originalEventIndex > this.currentEventIndex) {
                 this.events.splice(originalEventIndex, 1);
-                newEventIndex = this.currentEventIndex === this.events.length - 1 ? 0 : this.currentEventIndex + 1;
+                newEventIndex =
+                    this.currentEventIndex === this.events.length - 1
+                        ? 0
+                        : this.currentEventIndex + 1;
                 this.events.splice(newEventIndex, 0, event);
             } else if (originalEventIndex < this.currentEventIndex) {
                 this.events.splice(originalEventIndex, 1);
-                newEventIndex = this.currentEventIndex - 1 === 0 ? this.events.length - 1 : this.currentEventIndex - 2;
+                newEventIndex =
+                    this.currentEventIndex - 1 === 0
+                        ? this.events.length - 1
+                        : this.currentEventIndex - 2;
                 this.events.splice(newEventIndex, 0, event);
             } else {
                 this.events.splice(originalEventIndex, 1, event);

@@ -1,6 +1,4 @@
-import { CheerEvent } from './cheerEvent';
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
+import { CheerEvent, StreamEvent, StreamEventType } from './models';
 
 export class StreamEventFeedBar {
     private get bar(): HTMLElement {
@@ -23,7 +21,7 @@ export class StreamEventFeedBar {
         if (requestAnimationReflow) {
             this.requestBrowserAnimation(slide);
         }
-        
+
         slide.classList.add('offscreen-bottom');
     }
 
@@ -79,7 +77,7 @@ export class StreamEventFeedBar {
     }
 
     public resetSlideStyles(slide: HTMLElement): void {
-        slide.classList.value = 'slide'
+        slide.classList.value = 'slide';
     }
 
     private getCheerEventAlertCSS(event: CheerEvent): string {
