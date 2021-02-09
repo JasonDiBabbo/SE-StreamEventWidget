@@ -1,4 +1,4 @@
-import { StreamEvent } from './models';
+import { StreamEvent } from '../models';
 import { StreamEventFeedBar } from './streamEventFeedBar';
 import { StreamEventFeedParameters } from './streamEventFeedParameters';
 

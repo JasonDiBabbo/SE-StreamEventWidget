@@ -1,4 +1,4 @@
-import { CheerEvent, StreamEvent, StreamEventType } from './models';
+import { CheerEvent, StreamEvent, StreamEventType } from '../models';
 
 export class StreamEventFeedBar {
     private get bar(): HTMLElement {

@@ -7,7 +7,7 @@ import {
     StreamEvent,
     SubscriptionEvent,
 } from './models';
-import { StreamEventFeed } from './streamEventFeed';
+import { StreamEventFeed } from './components';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const SE_API: any;

@@ -11,7 +11,7 @@ function build() {
 
     return rollup
         .rollup({
-            input: 'src/main.ts',
+            input: 'src/widget.ts',
             plugins: [rollupTypeScript()],
         })
         .then((bundle) => {
