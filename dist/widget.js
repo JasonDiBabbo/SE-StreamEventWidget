@@ -2,12 +2,12 @@
 
 var StreamEventType;
 (function (StreamEventType) {
-    StreamEventType[StreamEventType["Cheer"] = 0] = "Cheer";
-    StreamEventType[StreamEventType["Follow"] = 1] = "Follow";
-    StreamEventType[StreamEventType["GiftedSubscription"] = 2] = "GiftedSubscription";
-    StreamEventType[StreamEventType["Host"] = 3] = "Host";
-    StreamEventType[StreamEventType["Raid"] = 4] = "Raid";
-    StreamEventType[StreamEventType["Subscription"] = 5] = "Subscription";
+    StreamEventType[(StreamEventType['Cheer'] = 0)] = 'Cheer';
+    StreamEventType[(StreamEventType['Follow'] = 1)] = 'Follow';
+    StreamEventType[(StreamEventType['GiftedSubscription'] = 2)] = 'GiftedSubscription';
+    StreamEventType[(StreamEventType['Host'] = 3)] = 'Host';
+    StreamEventType[(StreamEventType['Raid'] = 4)] = 'Raid';
+    StreamEventType[(StreamEventType['Subscription'] = 5)] = 'Subscription';
 })(StreamEventType || (StreamEventType = {}));
 
 class StreamEvent {
@@ -63,8 +63,7 @@ class CheerEvent extends StreamEvent {
     getCheerAmountString() {
         if (typeof this.amount === 'number' && this.amount > 0) {
             return `X${this.amount.toString()}`;
-        }
-        else {
+        } else {
             return '';
         }
     }
@@ -271,17 +270,13 @@ class StreamEventFeedBar {
         }
         if (event.amount < 100) {
             return 'cheer-event-alert-tier-1';
-        }
-        else if (event.amount < 1000) {
+        } else if (event.amount < 1000) {
             return 'cheer-event-alert-tier-2';
-        }
-        else if (event.amount < 5000) {
+        } else if (event.amount < 5000) {
             return 'cheer-event-alert-tier-3';
-        }
-        else if (event.amount < 10000) {
+        } else if (event.amount < 10000) {
             return 'cheer-event-alert-tier-4';
-        }
-        else {
+        } else {
             return 'cheer-event-alert-tier-5';
         }
     }
@@ -293,10 +288,22 @@ class StreamEventFeedBar {
 class StreamEventFeed {
     constructor(params) {
         if (params) {
-            this.timeEventAlertDisplay = params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0 ? params.timeEventAlertDisplay : this.timeEventAlertDisplay;
-            this.timeEventDisplay = params.timeEventDisplay && params.timeEventDisplay > 0 ? params.timeEventDisplay : this.timeEventDisplay;
-            this.timeEventAlertSlide = params.timeEventAlertSlide && params.timeEventAlertSlide > 0 ? params.timeEventAlertSlide : this.timeEventAlertSlide;
-            this.timeEventAlertFade = params.timeEventAlertFade && params.timeEventAlertFade > 0 ? params.timeEventAlertFade : this.timeEventAlertFade;
+            this.timeEventAlertDisplay =
+                params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0
+                    ? params.timeEventAlertDisplay
+                    : this.timeEventAlertDisplay;
+            this.timeEventDisplay =
+                params.timeEventDisplay && params.timeEventDisplay > 0
+                    ? params.timeEventDisplay
+                    : this.timeEventDisplay;
+            this.timeEventAlertSlide =
+                params.timeEventAlertSlide && params.timeEventAlertSlide > 0
+                    ? params.timeEventAlertSlide
+                    : this.timeEventAlertSlide;
+            this.timeEventAlertFade =
+                params.timeEventAlertFade && params.timeEventAlertFade > 0
+                    ? params.timeEventAlertFade
+                    : this.timeEventAlertFade;
         }
         this.bar = new StreamEventFeedBar();
     }
@@ -322,9 +329,11 @@ class StreamEventFeed {
             const property = event.propertyName;
             if (property === 'opacity') {
                 if (currentBarSlideContent.style.opacity === '1') {
-                    setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
-                }
-                else {
+                    setTimeout(
+                        () => this.hideElement(currentBarSlideContent),
+                        this.timeEventDisplay
+                    );
+                } else {
                     currentBarSlideContent.innerHTML = this.nextEvent.html;
                     this.revealElement(currentBarSlideContent);
                 }
@@ -368,20 +377,23 @@ class StreamEventFeed {
         const originalEventIndex = this.events.findIndex((x) => x.eventType === event.eventType);
         if (originalEventIndex === -1) {
             this.currentEventIndex = this.events.push(event) - 1;
-        }
-        else {
+        } else {
             let newEventIndex;
             if (originalEventIndex > this.currentEventIndex) {
                 this.events.splice(originalEventIndex, 1);
-                newEventIndex = this.currentEventIndex === this.events.length - 1 ? 0 : this.currentEventIndex + 1;
+                newEventIndex =
+                    this.currentEventIndex === this.events.length - 1
+                        ? 0
+                        : this.currentEventIndex + 1;
                 this.events.splice(newEventIndex, 0, event);
-            }
-            else if (originalEventIndex < this.currentEventIndex) {
+            } else if (originalEventIndex < this.currentEventIndex) {
                 this.events.splice(originalEventIndex, 1);
-                newEventIndex = this.currentEventIndex - 1 === 0 ? this.events.length - 1 : this.currentEventIndex - 2;
+                newEventIndex =
+                    this.currentEventIndex - 1 === 0
+                        ? this.events.length - 1
+                        : this.currentEventIndex - 2;
                 this.events.splice(newEventIndex, 0, event);
-            }
-            else {
+            } else {
                 this.events.splice(originalEventIndex, 1, event);
                 newEventIndex = originalEventIndex;
             }
@@ -450,13 +462,9 @@ SubscriptionEvent.SInit = (() => {
     SubscriptionEvent.prototype.html = null;
 })();
 
+/* eslint-enable @typescript-eslint/no-explicit-any */
 // An array of events that can come to the widget even though the queue may be on hold
-const skippableEvents = [
-    'bot:counter',
-    'event:test',
-    'event:skip',
-    'message'
-];
+const skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
 let timeEventDisplay;
 let timeEventAlertDisplay;
 let timeEventAlertSlide;
@@ -470,31 +478,25 @@ window.addEventListener('onEventReceived', function (obj) {
     }
     if (listener === 'follower-latest') {
         streamEventFeed.handleEventAlert(new FollowEvent(event.name));
-    }
-    else if (listener === 'cheer-latest') {
+    } else if (listener === 'cheer-latest') {
         streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
-    }
-    else if (listener === 'subscriber-latest') {
+    } else if (listener === 'subscriber-latest') {
         if (event.gifted && event.isCommunityGift) {
             SE_API.resumeQueue();
-        }
-        else if (event.bulkGifted) {
-            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender, event.amount));
-        }
-        else if (event.gifted) {
+        } else if (event.bulkGifted) {
+            streamEventFeed.handleEventAlert(
+                new GiftedSubscriptionEvent(event.sender, event.amount)
+            );
+        } else if (event.gifted) {
             streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender));
-        }
-        else {
+        } else {
             streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
         }
-    }
-    else if (listener === 'host-latest') {
+    } else if (listener === 'host-latest') {
         streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
-    }
-    else if (listener === 'raid-latest') {
+    } else if (listener === 'raid-latest') {
         streamEventFeed.handleEventAlert(new RaidEvent(event.name, event.amount), false);
-    }
-    else {
+    } else {
         SE_API.resumeQueue();
     }
 });
@@ -510,8 +512,14 @@ window.addEventListener('onWidgetLoad', function (obj) {
     const giftedSubscriptionData = data['subscriber-gifted-latest'];
     const cheerEventData = data['cheer-latest'];
     const latestFollowEvent = new FollowEvent(followEventData.name);
-    const latestSubscriptionEvent = new SubscriptionEvent(subscriptionEventData.name, subscriptionEventData.amount);
-    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(giftedSubscriptionData.sender, giftedSubscriptionData.amount);
+    const latestSubscriptionEvent = new SubscriptionEvent(
+        subscriptionEventData.name,
+        subscriptionEventData.amount
+    );
+    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(
+        giftedSubscriptionData.sender,
+        giftedSubscriptionData.amount
+    );
     const latestCheerEvent = new CheerEvent(cheerEventData.name, cheerEventData.amount);
     const events = [];
     if (latestFollowEvent.isValid) {
@@ -530,7 +538,7 @@ window.addEventListener('onWidgetLoad', function (obj) {
         timeEventAlertDisplay,
         timeEventAlertFade,
         timeEventAlertSlide,
-        timeEventDisplay
+        timeEventDisplay,
     });
     streamEventFeed.registerEvents(events);
     streamEventFeed.displayEvents();

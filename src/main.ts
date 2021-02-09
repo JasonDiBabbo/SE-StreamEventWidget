@@ -7,7 +7,9 @@ import { StreamEvent } from './streamEvent';
 import { StreamEventFeed } from './streamEventFeed';
 import { SubscriptionEvent } from './subscriptionEvent'
 
-declare var SE_API: any;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare const SE_API: any;
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // An array of events that can come to the widget even though the queue may be on hold
 const skippableEvents =[
