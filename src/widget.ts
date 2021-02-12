@@ -1,3 +1,4 @@
+import { StreamEventFeed } from '@components';
 import {
     CheerEvent,
     FollowEvent,
@@ -7,7 +8,6 @@ import {
     StreamEvent,
     SubscriptionEvent,
 } from './models';
-import { StreamEventFeed } from './components';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const SE_API: any;
