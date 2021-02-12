@@ -1,4 +1,4 @@
-import { StreamEvent } from '../models';
+import { StreamEvent } from '@models';
 import { StreamEventFeedBar } from './streamEventFeedBar';
 import { StreamEventFeedParameters } from './streamEventFeedParameters';
 
@@ -117,16 +117,16 @@ export class StreamEventFeed {
         this.bar.animateSlideUpOut(this.bar.currentSlide);
         this.bar.animateSlideUpIn(newSlide, true);
 
-        this.currentEventAlertTimeout = setTimeout(() => {
+        this.currentEventAlertTimeout = window.setTimeout(() => {
             const slides = this.bar.slides;
             for (let i = 0; i < slides.length - 1; i++) {
                 slides[i].remove();
             }
 
-            this.currentEventAlertTimeout = setTimeout(() => {
+            this.currentEventAlertTimeout = window.setTimeout(() => {
                 this.bar.resetSlideStyles(newSlide);
 
-                this.currentEventAlertTimeout = setTimeout(() => {
+                this.currentEventAlertTimeout = window.setTimeout(() => {
                     this.displayEvents();
                 }, this.timeEventAlertFade);
             }, this.timeEventAlertDisplay);

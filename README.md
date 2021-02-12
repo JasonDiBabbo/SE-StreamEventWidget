@@ -8,23 +8,24 @@ If you're new to the StreamElements platform and/or have any questions about cus
 
 ## Using the widget with StreamElements
 
-To use the widget on your StreamElements overlay, copy the content of the `widget.html|css|js|json` files in the `dist` folder to a custom widget defined in your overlay.
+To use the widget on your StreamElements overlay, copy the content of the `widget.html|css|js|json` files in `dist/` to a custom widget defined in your overlay.
 
 ## Building the widget
 
-This widget is built using TypeScript instead of vanilla JavaScript. Because the StreamElements custom widget interface requires the JavaScript to be submitted in a single file, the transpiled code will need to be bundled. This is achieved using [Rollup.js](https://rollupjs.org/guide/en/).
+This widget is built with TypeScript. The StreamElements custom widget interface requires a single JavaScript file. This is achieved using [Webpack](https://webpack.js.org/) for the bundling process. All of the transpiled TypeScript code is bundled into a single `widget.js` file in `dist/`.
 
-If you want to fork the project or clone it and make any changes, building is really simple. Make sure you have the latest version of [Node.js](https://nodejs.org/en/) installed and install all of the development packages. The table below describes the different NPM scripts you can use.
+If you want to fork the project or clone it and make any changes, building is really simple. Make sure you have the latest version of [Node.js](https://nodejs.org/en/) installed and install all of the development packages by running `npm install` in the project. The table below describes the different NPM scripts you can use by running `npm run {script_name}`.
 
 | **Name**      | **Description**                                                                                                    |
-|---------------|--------------------------------------------------------------------------------------------------------------------|
-| `build`       | Transpiles TypeScript code and bundles the JavaScript code into `widget.js` file in the `dist` folder.             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `build`       | Transpiles TypeScript code and bundles the JAvaScript code into `widget.js` in `dist/`.                            |
 | `build:watch` | Runs the `build` script in watch mode. This will rerun the transpile/bundle process whenever changes are detected. |
+| `clean`       | Cleans build output.                                                                                               |
 | `lint`        | Lints the project to report on best practice patterns in TypeScript code.                                          |
 
 # Contact
 
 If you have questions about this widget or anything about streaming, feel free to drop by my stream or send me a DM on Twitter.
 
-- [Twitch](https://twitch.tv/monsterabe)
-- [Twitter](https://twitter.com/jasondibabbo)
+-   [Twitch](https://twitch.tv/monsterabe)
+-   [Twitter](https://twitter.com/jasondibabbo)

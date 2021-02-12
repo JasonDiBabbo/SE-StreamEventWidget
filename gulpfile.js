@@ -3,23 +3,16 @@ const del = require('del');
 const eslint = require('gulp-eslint');
 const log = require('fancy-log');
 const prettier = require('gulp-prettier');
-const rollup = require('rollup');
-const rollupTypeScript = require('rollup-plugin-typescript2');
+const gulpWebpack = require('webpack-stream');
+const webpackCompiler = require('webpack');
+const webpackConfig = require('./webpack.config')
 
 function build() {
     log(`Transpiling TypeScript to 'dist/widget.js'`);
 
-    return rollup
-        .rollup({
-            input: 'src/widget.ts',
-            plugins: [rollupTypeScript()],
-        })
-        .then((bundle) => {
-            return bundle.write({
-                file: 'dist/widget.js',
-                format: 'cjs',
-            });
-        });
+    return src('src/widget.ts')
+        .pipe(gulpWebpack(webpackConfig, webpackCompiler, function(err, stats) { }))
+        .pipe(dest('dist/'));
 }
 
 function clean() {

@@ -1,545 +1,392 @@
-'use strict';
-
-var StreamEventType;
-(function (StreamEventType) {
-    StreamEventType[(StreamEventType['Cheer'] = 0)] = 'Cheer';
-    StreamEventType[(StreamEventType['Follow'] = 1)] = 'Follow';
-    StreamEventType[(StreamEventType['GiftedSubscription'] = 2)] = 'GiftedSubscription';
-    StreamEventType[(StreamEventType['Host'] = 3)] = 'Host';
-    StreamEventType[(StreamEventType['Raid'] = 4)] = 'Raid';
-    StreamEventType[(StreamEventType['Subscription'] = 5)] = 'Subscription';
-})(StreamEventType || (StreamEventType = {}));
-
-class StreamEvent {
-    constructor(eventType) {
-        this.eventType = eventType;
-    }
-    static lookupIconCSS(eventType) {
-        let iconCSS = '';
-        switch (eventType) {
-            case StreamEventType.Follow:
-                iconCSS = 'fas fa-heart';
-                break;
-            case StreamEventType.Subscription:
-                iconCSS = 'fas fa-star';
-                break;
-            case StreamEventType.GiftedSubscription:
-                iconCSS = 'fas fa-gift';
-                break;
-            case StreamEventType.Host:
-                iconCSS = 'fas fa-desktop';
-                break;
-            case StreamEventType.Raid:
-                iconCSS = 'fas fa-users';
-                break;
+(() => {
+    'use strict';
+    var t;
+    !(function (t) {
+        (t[(t.Cheer = 0)] = 'Cheer'),
+            (t[(t.Follow = 1)] = 'Follow'),
+            (t[(t.GiftedSubscription = 2)] = 'GiftedSubscription'),
+            (t[(t.Host = 3)] = 'Host'),
+            (t[(t.Raid = 4)] = 'Raid'),
+            (t[(t.Subscription = 5)] = 'Subscription');
+    })(t || (t = {}));
+    class e {
+        constructor(t) {
+            this.eventType = t;
         }
-        return iconCSS;
-    }
-}
-
-class CheerEvent extends StreamEvent {
-    constructor(name, amount) {
-        super(StreamEventType.Cheer);
-        this.name = name ? name : this.name;
-        this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHTML();
-    }
-    get isValid() {
-        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
-    }
-    getHTML() {
-        const cheerAmount = this.getCheerAmountString();
-        if (cheerAmount) {
-            const iconHtml = `<svg class="bar-icon" viewBox="0 0 187.35 242.67">
-                <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>
-                <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>
-             </svg>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${cheerAmount}</span>`;
-            const html = `${iconHtml}${spanHtml}`;
-            return html;
-        }
-        return null;
-    }
-    getCheerAmountString() {
-        if (typeof this.amount === 'number' && this.amount > 0) {
-            return `X${this.amount.toString()}`;
-        } else {
-            return '';
-        }
-    }
-}
-CheerEvent.SInit = (() => {
-    CheerEvent.prototype.name = null;
-    CheerEvent.prototype.amount = 0;
-    CheerEvent.prototype.html = null;
-})();
-
-class FollowEvent extends StreamEvent {
-    constructor(name) {
-        super(StreamEventType.Follow);
-        this.name = name ? name : this.name;
-        this.html = this.getHTML();
-    }
-    get isValid() {
-        return !!this.html && !!this.name;
-    }
-    getHTML() {
-        const iconCss = StreamEvent.lookupIconCSS(this.eventType);
-        if (iconCss && this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name}</span>`;
-            const html = `${iconHtml}${spanHtml}`;
-            return html;
-        }
-        return null;
-    }
-}
-FollowEvent.SInit = (() => {
-    FollowEvent.prototype.name = null;
-    FollowEvent.prototype.html = null;
-})();
-
-class GiftedSubscriptionEvent extends StreamEvent {
-    constructor(name, amount) {
-        super(StreamEventType.GiftedSubscription);
-        this.name = name ? name : this.name;
-        this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHTML();
-    }
-    get isValid() {
-        return !!this.html && !!this.name;
-    }
-    getHTML() {
-        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const giftedSubsAmount = this.getGiftedSubCountString();
-        if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${giftedSubsAmount}</span>`;
-            const html = ` ${iconHtml}${spanHtml}`;
-            return html;
-        }
-        return null;
-    }
-    getGiftedSubCountString() {
-        if (!!this.amount && this.amount > 1) {
-            return `X${this.amount.toString()}`;
-        }
-        return '';
-    }
-}
-GiftedSubscriptionEvent.SInit = (() => {
-    GiftedSubscriptionEvent.prototype.name = null;
-    GiftedSubscriptionEvent.prototype.amount = 0;
-    GiftedSubscriptionEvent.prototype.html = null;
-})();
-
-class HostEvent extends StreamEvent {
-    constructor(name, amount) {
-        super(StreamEventType.Host);
-        this.name = name ? name : this.name;
-        this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHTML();
-    }
-    get isValid() {
-        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
-    }
-    getHTML() {
-        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const hostAmount = this.getHostAmountString();
-        if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${hostAmount}</span>`;
-            const html = ` ${iconHtml}${spanHtml}`;
-            return html;
-        }
-        return null;
-    }
-    getHostAmountString() {
-        if (!!this.amount && this.amount > 0) {
-            return `X${this.amount.toString()}`;
-        }
-        return '';
-    }
-}
-HostEvent.SInit = (() => {
-    HostEvent.prototype.name = null;
-    HostEvent.prototype.amount = 0;
-    HostEvent.prototype.html = null;
-})();
-
-class RaidEvent extends StreamEvent {
-    constructor(name, amount) {
-        super(StreamEventType.Raid);
-        this.name = name ? name : this.name;
-        this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHTML();
-    }
-    get isValid() {
-        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
-    }
-    getHTML() {
-        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const hostAmount = this.getRaidAmountString();
-        if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${hostAmount}</span>`;
-            const html = ` ${iconHtml}${spanHtml}`;
-            return html;
-        }
-        return null;
-    }
-    getRaidAmountString() {
-        if (!!this.amount && this.amount > 0) {
-            return `X${this.amount.toString()}`;
-        }
-        return '';
-    }
-}
-RaidEvent.SInit = (() => {
-    RaidEvent.prototype.name = null;
-    RaidEvent.prototype.amount = 0;
-    RaidEvent.prototype.html = null;
-})();
-
-class SubscriptionEvent extends StreamEvent {
-    constructor(name, amount) {
-        super(StreamEventType.Subscription);
-        this.name = name ? name : this.name;
-        this.amount = amount && amount > 0 ? amount : this.amount;
-        this.html = this.getHTML();
-    }
-    get isValid() {
-        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
-    }
-    getHTML() {
-        const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const subAmount = this.getSubAmountString();
-        if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${subAmount}</span>`;
-            const html = ` ${iconHtml}${spanHtml}`;
-            return html;
-        }
-        return null;
-    }
-    getSubAmountString() {
-        if (!!this.amount && this.amount > 1) {
-            return `X${this.amount.toString()}`;
-        }
-        return '';
-    }
-}
-SubscriptionEvent.SInit = (() => {
-    SubscriptionEvent.prototype.name = null;
-    SubscriptionEvent.prototype.amount = 0;
-    SubscriptionEvent.prototype.html = null;
-})();
-
-class StreamEventFeedBar {
-    get bar() {
-        return document.querySelector('.bar');
-    }
-    get currentSlide() {
-        return this.slides[0];
-    }
-    get slides() {
-        return this.bar.children;
-    }
-    addSlide(slide) {
-        this.bar.appendChild(slide);
-    }
-    animateSlideDownOut(slide, requestAnimationReflow = false) {
-        if (requestAnimationReflow) {
-            this.requestBrowserAnimation(slide);
-        }
-        slide.classList.add('offscreen-bottom');
-    }
-    animateSlideUpIn(slide, requestAnimationReflow = false) {
-        if (requestAnimationReflow) {
-            this.requestBrowserAnimation(slide);
-        }
-        slide.classList.remove('offscreen-bottom');
-    }
-    animateSlideUpOut(slide, requestAnimationReflow = false) {
-        if (requestAnimationReflow) {
-            this.requestBrowserAnimation(slide);
-        }
-        slide.classList.add('offscreen-top');
-    }
-    createEventAlertSlide(event) {
-        const content = document.createElement('div');
-        content.classList.add('bar-content');
-        content.innerHTML = event.html;
-        const slide = document.createElement('div');
-        slide.classList.add('slide');
-        slide.appendChild(content);
-        switch (event.eventType) {
-            case StreamEventType.Cheer:
-                slide.classList.add(this.getCheerEventAlertCSS(event));
-                break;
-            case StreamEventType.Follow:
-                slide.classList.add('follow-event-alert');
-                break;
-            case StreamEventType.Subscription:
-                slide.classList.add('sub-event-alert');
-                break;
-            case StreamEventType.GiftedSubscription:
-                slide.classList.add('gifted-sub-event-alert');
-                break;
-            case StreamEventType.Host:
-                slide.classList.add('host-event-alert');
-                break;
-            case StreamEventType.Raid:
-                slide.classList.add('raid-event-alert');
-                break;
-        }
-        return slide;
-    }
-    resetSlideStyles(slide) {
-        slide.classList.value = 'slide';
-    }
-    getCheerEventAlertCSS(event) {
-        if (event.amount < 1) {
-            return null;
-        }
-        if (event.amount < 100) {
-            return 'cheer-event-alert-tier-1';
-        } else if (event.amount < 1000) {
-            return 'cheer-event-alert-tier-2';
-        } else if (event.amount < 5000) {
-            return 'cheer-event-alert-tier-3';
-        } else if (event.amount < 10000) {
-            return 'cheer-event-alert-tier-4';
-        } else {
-            return 'cheer-event-alert-tier-5';
-        }
-    }
-    requestBrowserAnimation(element) {
-        void element.offsetWidth;
-    }
-}
-
-class StreamEventFeed {
-    constructor(params) {
-        if (params) {
-            this.timeEventAlertDisplay =
-                params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0
-                    ? params.timeEventAlertDisplay
-                    : this.timeEventAlertDisplay;
-            this.timeEventDisplay =
-                params.timeEventDisplay && params.timeEventDisplay > 0
-                    ? params.timeEventDisplay
-                    : this.timeEventDisplay;
-            this.timeEventAlertSlide =
-                params.timeEventAlertSlide && params.timeEventAlertSlide > 0
-                    ? params.timeEventAlertSlide
-                    : this.timeEventAlertSlide;
-            this.timeEventAlertFade =
-                params.timeEventAlertFade && params.timeEventAlertFade > 0
-                    ? params.timeEventAlertFade
-                    : this.timeEventAlertFade;
-        }
-        this.bar = new StreamEventFeedBar();
-    }
-    get currentEvent() {
-        const event = this.events[this.currentEventIndex];
-        if (!event) {
-            throw new Error('');
-        }
-        return event;
-    }
-    get nextEvent() {
-        this.currentEventIndex = this.calculateNextEventIndex();
-        const event = this.events[this.currentEventIndex];
-        if (!event) {
-            throw new Error('');
-        }
-        return event;
-    }
-    displayEvents() {
-        const currentBarSlide = this.bar.currentSlide;
-        const currentBarSlideContent = currentBarSlide.children[0];
-        currentBarSlide.addEventListener('transitionend', (event) => {
-            const property = event.propertyName;
-            if (property === 'opacity') {
-                if (currentBarSlideContent.style.opacity === '1') {
-                    setTimeout(
-                        () => this.hideElement(currentBarSlideContent),
-                        this.timeEventDisplay
-                    );
-                } else {
-                    currentBarSlideContent.innerHTML = this.nextEvent.html;
-                    this.revealElement(currentBarSlideContent);
-                }
+        static lookupIconCSS(e) {
+            let n = '';
+            switch (e) {
+                case t.Follow:
+                    n = 'fas fa-heart';
+                    break;
+                case t.Subscription:
+                    n = 'fas fa-star';
+                    break;
+                case t.GiftedSubscription:
+                    n = 'fas fa-gift';
+                    break;
+                case t.Host:
+                    n = 'fas fa-desktop';
+                    break;
+                case t.Raid:
+                    n = 'fas fa-users';
             }
+            return n;
+        }
+    }
+    class n extends e {
+        constructor(e, n) {
+            super(t.Cheer),
+                (this.name = e || this.name),
+                (this.amount = n && n > 0 ? n : this.amount),
+                (this.html = this.getHTML());
+        }
+        get isValid() {
+            return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+        }
+        getHTML() {
+            const t = this.getCheerAmountString();
+            return t
+                ? `<svg class="bar-icon" viewBox="0 0 187.35 242.67">\n                <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>\n                <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>\n             </svg><span class="bar-text">${this.name} ${t}</span>`
+                : null;
+        }
+        getCheerAmountString() {
+            return 'number' == typeof this.amount && this.amount > 0
+                ? `X${this.amount.toString()}`
+                : '';
+        }
+    }
+    n.SInit = ((n.prototype.name = null), (n.prototype.amount = 0), void (n.prototype.html = null));
+    class s extends e {
+        constructor(e) {
+            super(t.Follow), (this.name = e || this.name), (this.html = this.getHTML());
+        }
+        get isValid() {
+            return !!this.html && !!this.name;
+        }
+        getHTML() {
+            const t = e.lookupIconCSS(this.eventType);
+            return t && this.name
+                ? `<i class="bar-icon ${t}"></i><span class="bar-text">${this.name}</span>`
+                : null;
+        }
+    }
+    s.SInit = ((s.prototype.name = null), void (s.prototype.html = null));
+    class i extends e {
+        constructor(e, n) {
+            super(t.GiftedSubscription),
+                (this.name = e || this.name),
+                (this.amount = n && n > 0 ? n : this.amount),
+                (this.html = this.getHTML());
+        }
+        get isValid() {
+            return !!this.html && !!this.name;
+        }
+        getHTML() {
+            const t = e.lookupIconCSS(this.eventType),
+                n = this.getGiftedSubCountString();
+            return t && this.name
+                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+                : null;
+        }
+        getGiftedSubCountString() {
+            return this.amount && this.amount > 1 ? `X${this.amount.toString()}` : '';
+        }
+    }
+    i.SInit = ((i.prototype.name = null), (i.prototype.amount = 0), void (i.prototype.html = null));
+    class r extends e {
+        constructor(e, n) {
+            super(t.Host),
+                (this.name = e || this.name),
+                (this.amount = n && n > 0 ? n : this.amount),
+                (this.html = this.getHTML());
+        }
+        get isValid() {
+            return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+        }
+        getHTML() {
+            const t = e.lookupIconCSS(this.eventType),
+                n = this.getHostAmountString();
+            return t && this.name
+                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+                : null;
+        }
+        getHostAmountString() {
+            return this.amount && this.amount > 0 ? `X${this.amount.toString()}` : '';
+        }
+    }
+    r.SInit = ((r.prototype.name = null), (r.prototype.amount = 0), void (r.prototype.html = null));
+    class a extends e {
+        constructor(e, n) {
+            super(t.Raid),
+                (this.name = e || this.name),
+                (this.amount = n && n > 0 ? n : this.amount),
+                (this.html = this.getHTML());
+        }
+        get isValid() {
+            return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+        }
+        getHTML() {
+            const t = e.lookupIconCSS(this.eventType),
+                n = this.getRaidAmountString();
+            return t && this.name
+                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+                : null;
+        }
+        getRaidAmountString() {
+            return this.amount && this.amount > 0 ? `X${this.amount.toString()}` : '';
+        }
+    }
+    a.SInit = ((a.prototype.name = null), (a.prototype.amount = 0), void (a.prototype.html = null));
+    class l extends e {
+        constructor(e, n) {
+            super(t.Subscription),
+                (this.name = e || this.name),
+                (this.amount = n && n > 0 ? n : this.amount),
+                (this.html = this.getHTML());
+        }
+        get isValid() {
+            return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+        }
+        getHTML() {
+            const t = e.lookupIconCSS(this.eventType),
+                n = this.getSubAmountString();
+            return t && this.name
+                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+                : null;
+        }
+        getSubAmountString() {
+            return this.amount && this.amount > 1 ? `X${this.amount.toString()}` : '';
+        }
+    }
+    l.SInit = ((l.prototype.name = null), (l.prototype.amount = 0), void (l.prototype.html = null));
+    class o {
+        get bar() {
+            return document.querySelector('.bar');
+        }
+        get currentSlide() {
+            return this.slides[0];
+        }
+        get slides() {
+            return this.bar.children;
+        }
+        addSlide(t) {
+            this.bar.appendChild(t);
+        }
+        animateSlideDownOut(t, e = !1) {
+            e && this.requestBrowserAnimation(t), t.classList.add('offscreen-bottom');
+        }
+        animateSlideUpIn(t, e = !1) {
+            e && this.requestBrowserAnimation(t), t.classList.remove('offscreen-bottom');
+        }
+        animateSlideUpOut(t, e = !1) {
+            e && this.requestBrowserAnimation(t), t.classList.add('offscreen-top');
+        }
+        createEventAlertSlide(e) {
+            const n = document.createElement('div');
+            n.classList.add('bar-content'), (n.innerHTML = e.html);
+            const s = document.createElement('div');
+            switch ((s.classList.add('slide'), s.appendChild(n), e.eventType)) {
+                case t.Cheer:
+                    s.classList.add(this.getCheerEventAlertCSS(e));
+                    break;
+                case t.Follow:
+                    s.classList.add('follow-event-alert');
+                    break;
+                case t.Subscription:
+                    s.classList.add('sub-event-alert');
+                    break;
+                case t.GiftedSubscription:
+                    s.classList.add('gifted-sub-event-alert');
+                    break;
+                case t.Host:
+                    s.classList.add('host-event-alert');
+                    break;
+                case t.Raid:
+                    s.classList.add('raid-event-alert');
+            }
+            return s;
+        }
+        resetSlideStyles(t) {
+            t.classList.value = 'slide';
+        }
+        getCheerEventAlertCSS(t) {
+            return t.amount < 1
+                ? null
+                : t.amount < 100
+                ? 'cheer-event-alert-tier-1'
+                : t.amount < 1e3
+                ? 'cheer-event-alert-tier-2'
+                : t.amount < 5e3
+                ? 'cheer-event-alert-tier-3'
+                : t.amount < 1e4
+                ? 'cheer-event-alert-tier-4'
+                : 'cheer-event-alert-tier-5';
+        }
+        requestBrowserAnimation(t) {
+            t.offsetWidth;
+        }
+    }
+    class h {
+        constructor(t) {
+            t &&
+                ((this.timeEventAlertDisplay =
+                    t.timeEventAlertDisplay && t.timeEventAlertDisplay > 0
+                        ? t.timeEventAlertDisplay
+                        : this.timeEventAlertDisplay),
+                (this.timeEventDisplay =
+                    t.timeEventDisplay && t.timeEventDisplay > 0
+                        ? t.timeEventDisplay
+                        : this.timeEventDisplay),
+                (this.timeEventAlertSlide =
+                    t.timeEventAlertSlide && t.timeEventAlertSlide > 0
+                        ? t.timeEventAlertSlide
+                        : this.timeEventAlertSlide),
+                (this.timeEventAlertFade =
+                    t.timeEventAlertFade && t.timeEventAlertFade > 0
+                        ? t.timeEventAlertFade
+                        : this.timeEventAlertFade)),
+                (this.bar = new o());
+        }
+        get currentEvent() {
+            const t = this.events[this.currentEventIndex];
+            if (!t) throw new Error('');
+            return t;
+        }
+        get nextEvent() {
+            this.currentEventIndex = this.calculateNextEventIndex();
+            const t = this.events[this.currentEventIndex];
+            if (!t) throw new Error('');
+            return t;
+        }
+        displayEvents() {
+            const t = this.bar.currentSlide,
+                e = t.children[0];
+            t.addEventListener('transitionend', (t) => {
+                'opacity' === t.propertyName &&
+                    ('1' === e.style.opacity
+                        ? setTimeout(() => this.hideElement(e), this.timeEventDisplay)
+                        : ((e.innerHTML = this.nextEvent.html), this.revealElement(e)));
+            }),
+                e.innerHTML.trim() || (e.innerHTML = this.currentEvent.html),
+                setTimeout(() => this.hideElement(e), this.timeEventDisplay);
+        }
+        handleEventAlert(t, e = !0) {
+            if (!t.isValid) return;
+            clearTimeout(this.currentEventAlertTimeout), e && this.registerEvent(t);
+            const n = this.bar.createEventAlertSlide(t);
+            this.bar.animateSlideDownOut(n),
+                this.bar.addSlide(n),
+                this.bar.animateSlideUpOut(this.bar.currentSlide),
+                this.bar.animateSlideUpIn(n, !0),
+                (this.currentEventAlertTimeout = window.setTimeout(() => {
+                    const t = this.bar.slides;
+                    for (let e = 0; e < t.length - 1; e++) t[e].remove();
+                    this.currentEventAlertTimeout = window.setTimeout(() => {
+                        this.bar.resetSlideStyles(n),
+                            (this.currentEventAlertTimeout = window.setTimeout(() => {
+                                this.displayEvents();
+                            }, this.timeEventAlertFade));
+                    }, this.timeEventAlertDisplay);
+                }, this.timeEventAlertSlide));
+        }
+        registerEvent(t) {
+            if (!t) return;
+            const e = this.events.findIndex((e) => e.eventType === t.eventType);
+            if (-1 === e) this.currentEventIndex = this.events.push(t) - 1;
+            else {
+                let n;
+                e > this.currentEventIndex
+                    ? (this.events.splice(e, 1),
+                      (n =
+                          this.currentEventIndex === this.events.length - 1
+                              ? 0
+                              : this.currentEventIndex + 1),
+                      this.events.splice(n, 0, t))
+                    : e < this.currentEventIndex
+                    ? (this.events.splice(e, 1),
+                      (n =
+                          this.currentEventIndex - 1 == 0
+                              ? this.events.length - 1
+                              : this.currentEventIndex - 2),
+                      this.events.splice(n, 0, t))
+                    : (this.events.splice(e, 1, t), (n = e)),
+                    (this.currentEventIndex = n);
+            }
+        }
+        registerEvents(t) {
+            t && t.forEach((t) => this.registerEvent(t));
+        }
+        calculateNextEventIndex() {
+            return this.currentEventIndex === this.events.length - 1
+                ? 0
+                : this.currentEventIndex + 1;
+        }
+        hideElement(t) {
+            t && (t.style.opacity = '0');
+        }
+        revealElement(t) {
+            t && (t.style.opacity = '1');
+        }
+    }
+    h.SInit =
+        ((h.prototype.timeEventAlertDisplay = 2e3),
+        (h.prototype.timeEventDisplay = 1e4),
+        (h.prototype.timeEventAlertSlide = 750),
+        (h.prototype.timeEventAlertFade = 2e3),
+        (h.prototype.currentEventIndex = -1),
+        void (h.prototype.events = []));
+    const u = ['bot:counter', 'event:test', 'event:skip', 'message'];
+    let m, d, c, p, v;
+    window.addEventListener('onEventReceived', function (t) {
+        const e = t.detail.listener,
+            o = t.detail.event;
+        -1 === u.indexOf(e) &&
+            ('follower-latest' === e
+                ? v.handleEventAlert(new s(o.name))
+                : 'cheer-latest' === e
+                ? v.handleEventAlert(new n(o.name, o.amount))
+                : 'subscriber-latest' === e
+                ? o.gifted && o.isCommunityGift
+                    ? SE_API.resumeQueue()
+                    : o.bulkGifted
+                    ? v.handleEventAlert(new i(o.sender, o.amount))
+                    : o.gifted
+                    ? v.handleEventAlert(new i(o.sender))
+                    : v.handleEventAlert(new l(o.name, o.amount))
+                : 'host-latest' === e
+                ? v.handleEventAlert(new r(o.name, o.amount), !1)
+                : 'raid-latest' === e
+                ? v.handleEventAlert(new a(o.name, o.amount), !1)
+                : SE_API.resumeQueue());
+    }),
+        window.addEventListener('onWidgetLoad', function (t) {
+            const e = t.detail.session.data,
+                r = t.detail.fieldData;
+            (m = 1e3 * r.eventCycleDisplayTime),
+                (c = 1e3 * r.eventAlertSlideTime),
+                (p = 1e3 * r.eventAlertFadeTime),
+                (d = 1e3 * r.eventAlertDisplayTime);
+            const a = e['follower-latest'],
+                o = e['subscriber-latest'],
+                u = e['subscriber-gifted-latest'],
+                E = e['cheer-latest'],
+                S = new s(a.name),
+                g = new l(o.name, o.amount),
+                y = new i(u.sender, u.amount),
+                b = new n(E.name, E.amount),
+                A = [];
+            S.isValid && A.push(S),
+                g.isValid && A.push(g),
+                y.isValid && A.push(y),
+                b.isValid && A.push(b),
+                (v = new h({
+                    timeEventAlertDisplay: d,
+                    timeEventAlertFade: p,
+                    timeEventAlertSlide: c,
+                    timeEventDisplay: m,
+                })),
+                v.registerEvents(A),
+                v.displayEvents();
         });
-        if (!currentBarSlideContent.innerHTML.trim()) {
-            currentBarSlideContent.innerHTML = this.currentEvent.html;
-        }
-        setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
-    }
-    handleEventAlert(event, addToCyclingEvents = true) {
-        if (!event.isValid) {
-            return;
-        }
-        clearTimeout(this.currentEventAlertTimeout);
-        if (addToCyclingEvents) {
-            this.registerEvent(event);
-        }
-        const newSlide = this.bar.createEventAlertSlide(event);
-        this.bar.animateSlideDownOut(newSlide);
-        this.bar.addSlide(newSlide);
-        this.bar.animateSlideUpOut(this.bar.currentSlide);
-        this.bar.animateSlideUpIn(newSlide, true);
-        this.currentEventAlertTimeout = setTimeout(() => {
-            const slides = this.bar.slides;
-            for (let i = 0; i < slides.length - 1; i++) {
-                slides[i].remove();
-            }
-            this.currentEventAlertTimeout = setTimeout(() => {
-                this.bar.resetSlideStyles(newSlide);
-                this.currentEventAlertTimeout = setTimeout(() => {
-                    this.displayEvents();
-                }, this.timeEventAlertFade);
-            }, this.timeEventAlertDisplay);
-        }, this.timeEventAlertSlide);
-    }
-    registerEvent(event) {
-        if (!event) {
-            return;
-        }
-        const originalEventIndex = this.events.findIndex((x) => x.eventType === event.eventType);
-        if (originalEventIndex === -1) {
-            this.currentEventIndex = this.events.push(event) - 1;
-        } else {
-            let newEventIndex;
-            if (originalEventIndex > this.currentEventIndex) {
-                this.events.splice(originalEventIndex, 1);
-                newEventIndex =
-                    this.currentEventIndex === this.events.length - 1
-                        ? 0
-                        : this.currentEventIndex + 1;
-                this.events.splice(newEventIndex, 0, event);
-            } else if (originalEventIndex < this.currentEventIndex) {
-                this.events.splice(originalEventIndex, 1);
-                newEventIndex =
-                    this.currentEventIndex - 1 === 0
-                        ? this.events.length - 1
-                        : this.currentEventIndex - 2;
-                this.events.splice(newEventIndex, 0, event);
-            } else {
-                this.events.splice(originalEventIndex, 1, event);
-                newEventIndex = originalEventIndex;
-            }
-            this.currentEventIndex = newEventIndex;
-        }
-    }
-    registerEvents(events) {
-        if (events) {
-            events.forEach((event) => this.registerEvent(event));
-        }
-    }
-    calculateNextEventIndex() {
-        return this.currentEventIndex === this.events.length - 1 ? 0 : this.currentEventIndex + 1;
-    }
-    hideElement(element) {
-        if (element) {
-            element.style.opacity = '0';
-        }
-    }
-    revealElement(element) {
-        if (element) {
-            element.style.opacity = '1';
-        }
-    }
-}
-StreamEventFeed.SInit = (() => {
-    StreamEventFeed.prototype.timeEventAlertDisplay = 2000;
-    StreamEventFeed.prototype.timeEventDisplay = 10000;
-    StreamEventFeed.prototype.timeEventAlertSlide = 750;
-    StreamEventFeed.prototype.timeEventAlertFade = 2000;
-    StreamEventFeed.prototype.currentEventIndex = -1;
-    StreamEventFeed.prototype.events = [];
 })();
-
-/* eslint-enable @typescript-eslint/no-explicit-any */
-// An array of events that can come to the widget even though the queue may be on hold
-const skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
-let timeEventDisplay;
-let timeEventAlertDisplay;
-let timeEventAlertSlide;
-let timeEventAlertFade;
-let streamEventFeed;
-window.addEventListener('onEventReceived', function (obj) {
-    const listener = obj['detail']['listener'];
-    const event = obj['detail']['event'];
-    if (skippableEvents.indexOf(listener) !== -1) {
-        return;
-    }
-    if (listener === 'follower-latest') {
-        streamEventFeed.handleEventAlert(new FollowEvent(event.name));
-    } else if (listener === 'cheer-latest') {
-        streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
-    } else if (listener === 'subscriber-latest') {
-        if (event.gifted && event.isCommunityGift) {
-            SE_API.resumeQueue();
-        } else if (event.bulkGifted) {
-            streamEventFeed.handleEventAlert(
-                new GiftedSubscriptionEvent(event.sender, event.amount)
-            );
-        } else if (event.gifted) {
-            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender));
-        } else {
-            streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
-        }
-    } else if (listener === 'host-latest') {
-        streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
-    } else if (listener === 'raid-latest') {
-        streamEventFeed.handleEventAlert(new RaidEvent(event.name, event.amount), false);
-    } else {
-        SE_API.resumeQueue();
-    }
-});
-window.addEventListener('onWidgetLoad', function (obj) {
-    const data = obj['detail']['session']['data'];
-    const fieldData = obj['detail']['fieldData'];
-    timeEventDisplay = fieldData.eventCycleDisplayTime * 1000;
-    timeEventAlertSlide = fieldData.eventAlertSlideTime * 1000;
-    timeEventAlertFade = fieldData.eventAlertFadeTime * 1000;
-    timeEventAlertDisplay = fieldData.eventAlertDisplayTime * 1000;
-    const followEventData = data['follower-latest'];
-    const subscriptionEventData = data['subscriber-latest'];
-    const giftedSubscriptionData = data['subscriber-gifted-latest'];
-    const cheerEventData = data['cheer-latest'];
-    const latestFollowEvent = new FollowEvent(followEventData.name);
-    const latestSubscriptionEvent = new SubscriptionEvent(
-        subscriptionEventData.name,
-        subscriptionEventData.amount
-    );
-    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(
-        giftedSubscriptionData.sender,
-        giftedSubscriptionData.amount
-    );
-    const latestCheerEvent = new CheerEvent(cheerEventData.name, cheerEventData.amount);
-    const events = [];
-    if (latestFollowEvent.isValid) {
-        events.push(latestFollowEvent);
-    }
-    if (latestSubscriptionEvent.isValid) {
-        events.push(latestSubscriptionEvent);
-    }
-    if (latestGiftedSubscriptionEvent.isValid) {
-        events.push(latestGiftedSubscriptionEvent);
-    }
-    if (latestCheerEvent.isValid) {
-        events.push(latestCheerEvent);
-    }
-    streamEventFeed = new StreamEventFeed({
-        timeEventAlertDisplay,
-        timeEventAlertFade,
-        timeEventAlertSlide,
-        timeEventDisplay,
-    });
-    streamEventFeed.registerEvents(events);
-    streamEventFeed.displayEvents();
-});
