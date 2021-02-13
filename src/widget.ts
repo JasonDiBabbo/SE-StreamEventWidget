@@ -7,7 +7,8 @@ import {
     RaidEvent,
     StreamEvent,
     SubscriptionEvent,
-} from './models';
+} from '@models';
+import { FieldKeys, FieldStore, Time } from '@utilities';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const SE_API: any;
@@ -15,15 +16,22 @@ declare const SE_API: any;
 
 // An array of events that can come to the widget even though the queue may be on hold
 const skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
-
-let timeEventDisplay: number;
-let timeEventAlertDisplay: number;
-let timeEventAlertSlide: number;
-let timeEventAlertFade: number;
+const canSkipEvent: (obj: unknown) => boolean = (obj) => {
+    try {
+        const listener: string = obj['detail']['listener'];
+        return skippableEvents.includes(listener);
+    } catch {
+        return false;
+    }
+};
 
 let streamEventFeed: StreamEventFeed;
 
 window.addEventListener('onEventReceived', function (obj) {
+    if (canSkipEvent(obj)) {
+        return;
+    }
+
     const listener: string = obj['detail']['listener'];
     const event = obj['detail']['event'];
 
@@ -60,10 +68,15 @@ window.addEventListener('onWidgetLoad', function (obj) {
     const data = obj['detail']['session']['data'];
     const fieldData = obj['detail']['fieldData'];
 
-    timeEventDisplay = fieldData.eventCycleDisplayTime * 1000;
-    timeEventAlertSlide = fieldData.eventAlertSlideTime * 1000;
-    timeEventAlertFade = fieldData.eventAlertFadeTime * 1000;
-    timeEventAlertDisplay = fieldData.eventAlertDisplayTime * 1000;
+    const eventCycleDisplayTime = Time.toMilliseconds(fieldData.eventCycleDisplayTime);
+    const eventAlertDisplayTime = Time.toMilliseconds(fieldData.eventAlertDisplayTime);
+    const eventAlertSlideTime = Time.toMilliseconds(fieldData.eventAlertSlideTime);
+    const eventAlertFadeTime = Time.toMilliseconds(fieldData.eventAlertFadeTime);
+
+    FieldStore.Set(FieldKeys.EventCycleDisplayTime, eventCycleDisplayTime);
+    FieldStore.Set(FieldKeys.EventAlertDisplayTime, eventAlertDisplayTime);
+    FieldStore.Set(FieldKeys.EventAlertSlideTime, eventAlertSlideTime);
+    FieldStore.Set(FieldKeys.EventAlertFadeTime, eventAlertFadeTime);
 
     const followEventData = data['follower-latest'];
     const subscriptionEventData = data['subscriber-latest'];
@@ -99,12 +112,7 @@ window.addEventListener('onWidgetLoad', function (obj) {
         events.push(latestCheerEvent);
     }
 
-    streamEventFeed = new StreamEventFeed({
-        timeEventAlertDisplay,
-        timeEventAlertFade,
-        timeEventAlertSlide,
-        timeEventDisplay,
-    });
+    streamEventFeed = new StreamEventFeed();
 
     streamEventFeed.registerEvents(events);
     streamEventFeed.displayEvents();

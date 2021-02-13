@@ -228,24 +228,33 @@
         }
     }
     class h {
-        constructor(t) {
-            t &&
-                ((this.timeEventAlertDisplay =
-                    t.timeEventAlertDisplay && t.timeEventAlertDisplay > 0
-                        ? t.timeEventAlertDisplay
-                        : this.timeEventAlertDisplay),
-                (this.timeEventDisplay =
-                    t.timeEventDisplay && t.timeEventDisplay > 0
-                        ? t.timeEventDisplay
-                        : this.timeEventDisplay),
-                (this.timeEventAlertSlide =
-                    t.timeEventAlertSlide && t.timeEventAlertSlide > 0
-                        ? t.timeEventAlertSlide
-                        : this.timeEventAlertSlide),
-                (this.timeEventAlertFade =
-                    t.timeEventAlertFade && t.timeEventAlertFade > 0
-                        ? t.timeEventAlertFade
-                        : this.timeEventAlertFade)),
+        static Get(t) {
+            if (Object.prototype.hasOwnProperty.call(this.fieldData, t)) return this.fieldData[t];
+        }
+        static Set(t, e) {
+            this.fieldData[t] = e;
+        }
+    }
+    h.fieldData = {};
+    class u {}
+    (u.EventCycleDisplayTime = 'EventCycleDisplayTime'),
+        (u.EventAlertSlideTime = 'EventAlertSlideTime'),
+        (u.EventAlertFadeTime = 'EventAlertFadeTime'),
+        (u.EventAlertDisplayTime = 'EventAlertDisplayTime');
+    class m {
+        static toMilliseconds(t) {
+            return 1e3 * t;
+        }
+        static toSeconds(t) {
+            return t / 1e3;
+        }
+    }
+    class c {
+        constructor() {
+            (this.timeEventAlertDisplay = h.Get(u.EventAlertDisplayTime)),
+                (this.timeEventDisplay = h.Get(u.EventAlertDisplayTime)),
+                (this.timeEventAlertSlide = h.Get(u.EventAlertSlideTime)),
+                (this.timeEventAlertFade = h.Get(u.EventAlertFadeTime)),
                 (this.bar = new o());
         }
         get currentEvent() {
@@ -329,64 +338,74 @@
             t && (t.style.opacity = '1');
         }
     }
-    h.SInit =
-        ((h.prototype.timeEventAlertDisplay = 2e3),
-        (h.prototype.timeEventDisplay = 1e4),
-        (h.prototype.timeEventAlertSlide = 750),
-        (h.prototype.timeEventAlertFade = 2e3),
-        (h.prototype.currentEventIndex = -1),
-        void (h.prototype.events = []));
-    const u = ['bot:counter', 'event:test', 'event:skip', 'message'];
-    let m, d, c, p, v;
+    c.SInit =
+        ((c.prototype.timeEventAlertDisplay = 2e3),
+        (c.prototype.timeEventDisplay = 1e4),
+        (c.prototype.timeEventAlertSlide = 750),
+        (c.prototype.timeEventAlertFade = 2e3),
+        (c.prototype.currentEventIndex = -1),
+        void (c.prototype.events = []));
+    const d = ['bot:counter', 'event:test', 'event:skip', 'message'];
+    let p;
     window.addEventListener('onEventReceived', function (t) {
+        if (
+            ((t) => {
+                try {
+                    const e = t.detail.listener;
+                    return d.includes(e);
+                } catch {
+                    return !1;
+                }
+            })(t)
+        )
+            return;
         const e = t.detail.listener,
             o = t.detail.event;
-        -1 === u.indexOf(e) &&
+        -1 === d.indexOf(e) &&
             ('follower-latest' === e
-                ? v.handleEventAlert(new s(o.name))
+                ? p.handleEventAlert(new s(o.name))
                 : 'cheer-latest' === e
-                ? v.handleEventAlert(new n(o.name, o.amount))
+                ? p.handleEventAlert(new n(o.name, o.amount))
                 : 'subscriber-latest' === e
                 ? o.gifted && o.isCommunityGift
                     ? SE_API.resumeQueue()
                     : o.bulkGifted
-                    ? v.handleEventAlert(new i(o.sender, o.amount))
+                    ? p.handleEventAlert(new i(o.sender, o.amount))
                     : o.gifted
-                    ? v.handleEventAlert(new i(o.sender))
-                    : v.handleEventAlert(new l(o.name, o.amount))
+                    ? p.handleEventAlert(new i(o.sender))
+                    : p.handleEventAlert(new l(o.name, o.amount))
                 : 'host-latest' === e
-                ? v.handleEventAlert(new r(o.name, o.amount), !1)
+                ? p.handleEventAlert(new r(o.name, o.amount), !1)
                 : 'raid-latest' === e
-                ? v.handleEventAlert(new a(o.name, o.amount), !1)
+                ? p.handleEventAlert(new a(o.name, o.amount), !1)
                 : SE_API.resumeQueue());
     }),
         window.addEventListener('onWidgetLoad', function (t) {
             const e = t.detail.session.data,
-                r = t.detail.fieldData;
-            (m = 1e3 * r.eventCycleDisplayTime),
-                (c = 1e3 * r.eventAlertSlideTime),
-                (p = 1e3 * r.eventAlertFadeTime),
-                (d = 1e3 * r.eventAlertDisplayTime);
-            const a = e['follower-latest'],
-                o = e['subscriber-latest'],
-                u = e['subscriber-gifted-latest'],
-                E = e['cheer-latest'],
-                S = new s(a.name),
-                g = new l(o.name, o.amount),
-                y = new i(u.sender, u.amount),
-                b = new n(E.name, E.amount),
-                A = [];
-            S.isValid && A.push(S),
-                g.isValid && A.push(g),
-                y.isValid && A.push(y),
-                b.isValid && A.push(b),
-                (v = new h({
-                    timeEventAlertDisplay: d,
-                    timeEventAlertFade: p,
-                    timeEventAlertSlide: c,
-                    timeEventDisplay: m,
-                })),
-                v.registerEvents(A),
-                v.displayEvents();
+                r = t.detail.fieldData,
+                a = m.toMilliseconds(r.eventCycleDisplayTime),
+                o = m.toMilliseconds(r.eventAlertDisplayTime),
+                d = m.toMilliseconds(r.eventAlertSlideTime),
+                v = m.toMilliseconds(r.eventAlertFadeTime);
+            h.Set(u.EventCycleDisplayTime, a),
+                h.Set(u.EventAlertDisplayTime, o),
+                h.Set(u.EventAlertSlideTime, d),
+                h.Set(u.EventAlertFadeTime, v);
+            const E = e['follower-latest'],
+                S = e['subscriber-latest'],
+                y = e['subscriber-gifted-latest'],
+                g = e['cheer-latest'],
+                b = new s(E.name),
+                f = new l(S.name, S.amount),
+                A = new i(y.sender, y.amount),
+                T = new n(g.name, g.amount),
+                w = [];
+            b.isValid && w.push(b),
+                f.isValid && w.push(f),
+                A.isValid && w.push(A),
+                T.isValid && w.push(T),
+                (p = new c()),
+                p.registerEvents(w),
+                p.displayEvents();
         });
 })();

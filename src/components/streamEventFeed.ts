@@ -1,6 +1,7 @@
 import { StreamEvent } from '@models';
 import { StreamEventFeedBar } from './streamEventFeedBar';
-import { StreamEventFeedParameters } from './streamEventFeedParameters';
+
+import { FieldKeys, FieldStore } from '@utilities';
 
 export class StreamEventFeed {
     private bar: StreamEventFeedBar;
@@ -40,25 +41,11 @@ export class StreamEventFeed {
         return event;
     }
 
-    constructor(params: StreamEventFeedParameters) {
-        if (params) {
-            this.timeEventAlertDisplay =
-                params.timeEventAlertDisplay && params.timeEventAlertDisplay > 0
-                    ? params.timeEventAlertDisplay
-                    : this.timeEventAlertDisplay;
-            this.timeEventDisplay =
-                params.timeEventDisplay && params.timeEventDisplay > 0
-                    ? params.timeEventDisplay
-                    : this.timeEventDisplay;
-            this.timeEventAlertSlide =
-                params.timeEventAlertSlide && params.timeEventAlertSlide > 0
-                    ? params.timeEventAlertSlide
-                    : this.timeEventAlertSlide;
-            this.timeEventAlertFade =
-                params.timeEventAlertFade && params.timeEventAlertFade > 0
-                    ? params.timeEventAlertFade
-                    : this.timeEventAlertFade;
-        }
+    constructor() {
+        this.timeEventAlertDisplay = FieldStore.Get<number>(FieldKeys.EventAlertDisplayTime);
+        this.timeEventDisplay = FieldStore.Get<number>(FieldKeys.EventAlertDisplayTime);
+        this.timeEventAlertSlide = FieldStore.Get<number>(FieldKeys.EventAlertSlideTime);
+        this.timeEventAlertFade = FieldStore.Get<number>(FieldKeys.EventAlertFadeTime);
 
         this.bar = new StreamEventFeedBar();
     }

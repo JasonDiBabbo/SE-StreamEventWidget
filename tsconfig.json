@@ -12,6 +12,9 @@
             ],
             "@models": [
                 "models"
+            ],
+            "@utilities": [
+                "utilities"
             ]
         }
     },
