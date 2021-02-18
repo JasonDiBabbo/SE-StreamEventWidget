@@ -2,12 +2,12 @@ import { StreamEventFeed } from '@components';
 import {
     CheerEvent,
     FollowEvent,
-    GiftedSubscriptionEvent,
+    GiftedSubEvent,
     HostEvent,
     RaidEvent,
     StreamElementsApi,
     StreamEvent,
-    SubscriptionEvent,
+    SubEvent,
 } from '@models';
 import { FieldKeys, FieldStore, Time } from '@utilities';
 
@@ -46,13 +46,11 @@ window.addEventListener('onEventReceived', function (obj) {
         if (event.gifted && event.isCommunityGift) {
             SE_API.resumeQueue();
         } else if (event.bulkGifted) {
-            streamEventFeed.handleEventAlert(
-                new GiftedSubscriptionEvent(event.sender, event.amount)
-            );
+            streamEventFeed.handleEventAlert(new GiftedSubEvent(event.sender, event.amount));
         } else if (event.gifted) {
-            streamEventFeed.handleEventAlert(new GiftedSubscriptionEvent(event.sender));
+            streamEventFeed.handleEventAlert(new GiftedSubEvent(event.sender));
         } else {
-            streamEventFeed.handleEventAlert(new SubscriptionEvent(event.name, event.amount));
+            streamEventFeed.handleEventAlert(new SubEvent(event.name, event.amount));
         }
     } else if (listener === 'host-latest') {
         streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
@@ -83,11 +81,11 @@ window.addEventListener('onWidgetLoad', function (obj) {
     const cheerEventData = data['cheer-latest'];
 
     const latestFollowEvent: FollowEvent = new FollowEvent(followEventData.name);
-    const latestSubscriptionEvent: SubscriptionEvent = new SubscriptionEvent(
+    const latestSubscriptionEvent: SubEvent = new SubEvent(
         subscriptionEventData.name,
         subscriptionEventData.amount
     );
-    const latestGiftedSubscriptionEvent = new GiftedSubscriptionEvent(
+    const latestGiftedSubscriptionEvent = new GiftedSubEvent(
         giftedSubscriptionData.sender,
         giftedSubscriptionData.amount
     );

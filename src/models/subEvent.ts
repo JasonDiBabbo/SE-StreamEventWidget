@@ -1,9 +1,9 @@
 import { StreamEvent } from './streamEvent';
 import { StreamEventType } from './streamEventType';
 
-export class GiftedSubscriptionEvent extends StreamEvent {
+export class SubEvent extends StreamEvent {
     public get isValid(): boolean {
-        return !!this.html && !!this.name;
+        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
     }
 
     public html: string;
@@ -12,28 +12,28 @@ export class GiftedSubscriptionEvent extends StreamEvent {
 
     public amount: number;
 
-    constructor(name: string, amount?: number) {
-        super(StreamEventType.GiftedSubscription);
+    constructor(name: string, amount: number) {
+        super(StreamEventType.Subscription);
 
         this.name = name ? name : this.name;
         this.amount = amount && amount > 0 ? amount : this.amount;
-        
+
         this.html = this.getHTML();
     }
 
     protected static SInit = (() => {
-        GiftedSubscriptionEvent.prototype.name = null;
-        GiftedSubscriptionEvent.prototype.amount = 0;
-        GiftedSubscriptionEvent.prototype.html = null;
+        SubEvent.prototype.name = null;
+        SubEvent.prototype.amount = 0;
+        SubEvent.prototype.html = null;
     })();
 
     private getHTML(): string {
         const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
-        const giftedSubsAmount = this.getGiftedSubCountString();
+        const subAmount = this.getSubAmountString();
 
         if (!!iconCSS && !!this.name) {
             const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${giftedSubsAmount}</span>`;
+            const spanHtml = `<span class="bar-text">${this.name} ${subAmount}</span>`;
             const html = ` ${iconHtml}${spanHtml}`;
 
             return html;
@@ -42,7 +42,7 @@ export class GiftedSubscriptionEvent extends StreamEvent {
         return null;
     }
 
-    private getGiftedSubCountString(): string {
+    private getSubAmountString(): string {
         if (!!this.amount && this.amount > 1) {
             return `X${this.amount.toString()}`;
         }

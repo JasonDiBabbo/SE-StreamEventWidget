@@ -1,12 +1,13 @@
 export { CheerEvent } from './cheerEvent';
-export { EventReceivedDetail } from './eventReceivedDetail';
-export { FieldData } from './fieldData';
 export { FollowEvent } from './followEvent';
-export { GiftedSubscriptionEvent } from './giftedSubscriptionEvent';
+export { GiftedSubEvent } from './giftedSubEvent';
 export { HostEvent } from './hostEvent';
 export { RaidEvent } from './raidEvent';
-export { StreamElementsApi } from './streamElementsApi';
 export { StreamEvent } from './streamEvent';
 export { StreamEventType } from './streamEventType';
-export { SubscriptionEvent } from './subscriptionEvent';
+export { SubEvent } from './subEvent';
+
+export { EventReceivedDetail } from './eventReceivedDetail';
+export { FieldData } from './fieldData';
+export { StreamElementsApi } from './streamElementsApi';
 export { WidgetLoadDetail } from './widgetLoadDetail';
