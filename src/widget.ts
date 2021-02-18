@@ -5,14 +5,13 @@ import {
     GiftedSubscriptionEvent,
     HostEvent,
     RaidEvent,
+    StreamElementsApi,
     StreamEvent,
     SubscriptionEvent,
 } from '@models';
 import { FieldKeys, FieldStore, Time } from '@utilities';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-declare const SE_API: any;
-/* eslint-enable @typescript-eslint/no-explicit-any */
+declare const SE_API: StreamElementsApi;
 
 // An array of events that can come to the widget even though the queue may be on hold
 const skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
