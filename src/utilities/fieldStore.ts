@@ -7,7 +7,7 @@ export class FieldStore {
     /**
      * Gets a field value
      *
-     * @param key The field key
+     * @param key
      */
     public static Get<T>(key: string): T {
         const exists = Object.prototype.hasOwnProperty.call(this.fieldData, key);
@@ -22,8 +22,8 @@ export class FieldStore {
     /**
      * Sets a field value
      *
-     * @param key The field key
-     * @param value The field value
+     * @param key
+     * @param value
      */
     public static Set(key: string, value: unknown): void {
         this.fieldData[key] = value;

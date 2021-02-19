@@ -1,7 +1,7 @@
 import { StreamEvent } from '@models';
 import { StreamEventFeedBar } from './streamEventFeedBar';
 
-import { FieldKeys, FieldStore } from '@utilities';
+import { FieldKeys, FieldStore, Transition } from '@utilities';
 
 export class StreamEventFeed {
     private bar: StreamEventFeedBar;
@@ -43,7 +43,7 @@ export class StreamEventFeed {
 
     constructor() {
         this.timeEventAlertDisplay = FieldStore.Get<number>(FieldKeys.EventAlertDisplayTime);
-        this.timeEventDisplay = FieldStore.Get<number>(FieldKeys.EventAlertDisplayTime);
+        this.timeEventDisplay = FieldStore.Get<number>(FieldKeys.EventCycleDisplayTime);
         this.timeEventAlertSlide = FieldStore.Get<number>(FieldKeys.EventAlertSlideTime);
         this.timeEventAlertFade = FieldStore.Get<number>(FieldKeys.EventAlertFadeTime);
 
@@ -83,7 +83,7 @@ export class StreamEventFeed {
             currentBarSlideContent.innerHTML = this.currentEvent.html;
         }
 
-        setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
+        window.setTimeout(() => this.hideElement(currentBarSlideContent), this.timeEventDisplay);
     }
 
     public handleEventAlert(event: StreamEvent, addToCyclingEvents = true): void {
@@ -175,5 +175,59 @@ export class StreamEventFeed {
         if (element) {
             element.style.opacity = '1';
         }
+    }
+
+    private beginEventCycle(): void {
+        const currentSlide = this.bar.currentSlide;
+        const currentSlideContent = currentSlide.children[0] as HTMLElement;
+        const currentSlideHasContent = !!currentSlideContent.innerHTML;
+
+        if (!currentSlideHasContent) {
+            currentSlideContent.innerHTML = this.currentEvent.html;
+        }
+
+        this.cycleEvent();
+    }
+
+    private cycleEvent(): void {
+        const slide = this.bar.currentSlide;
+        const content = slide.children[0] as HTMLElement;
+
+        this.displayEvent(content)
+            .then(() => {
+                if (slide === this.bar.currentSlide) {
+                    this.cycleEvent();
+                }
+            })
+            .catch(() => {
+                // Do nothing
+                console.log('Swallowing caught rejection');
+            });
+    }
+
+    private displayEvent(slideContent: HTMLElement): Promise<void> {
+        return new Promise((resolve, reject) => {
+            window.setTimeout(() => {
+                this.hideElementAux(slideContent)
+                    .then(() => {
+                        slideContent.innerHTML = this.nextEvent.html;
+                        return this.revealElementAux(slideContent);
+                    })
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch((reason) => {
+                        reject(reason);
+                    });
+            }, this.timeEventDisplay);
+        });
+    }
+
+    private revealElementAux(element: HTMLElement): Promise<void> {
+        return Transition.toPromise(element, 'opacity', '1');
+    }
+
+    private hideElementAux(element: HTMLElement): Promise<void> {
+        return Transition.toPromise(element, 'opacity', '0');
     }
 }

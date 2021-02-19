@@ -57,7 +57,7 @@
         }
     }
     n.SInit = ((n.prototype.name = null), (n.prototype.amount = 0), void (n.prototype.html = null));
-    class s extends e {
+    class i extends e {
         constructor(e) {
             super(t.Follow), (this.name = e || this.name), (this.html = this.getHTML());
         }
@@ -71,8 +71,8 @@
                 : null;
         }
     }
-    s.SInit = ((s.prototype.name = null), void (s.prototype.html = null));
-    class i extends e {
+    i.SInit = ((i.prototype.name = null), void (i.prototype.html = null));
+    class s extends e {
         constructor(e, n) {
             super(t.GiftedSubscription),
                 (this.name = e || this.name),
@@ -93,7 +93,7 @@
             return this.amount && this.amount > 1 ? `X${this.amount.toString()}` : '';
         }
     }
-    i.SInit = ((i.prototype.name = null), (i.prototype.amount = 0), void (i.prototype.html = null));
+    s.SInit = ((s.prototype.name = null), (s.prototype.amount = 0), void (s.prototype.html = null));
     class r extends e {
         constructor(e, n) {
             super(t.Host),
@@ -185,27 +185,27 @@
         createEventAlertSlide(e) {
             const n = document.createElement('div');
             n.classList.add('bar-content'), (n.innerHTML = e.html);
-            const s = document.createElement('div');
-            switch ((s.classList.add('slide'), s.appendChild(n), e.eventType)) {
+            const i = document.createElement('div');
+            switch ((i.classList.add('slide'), i.appendChild(n), e.eventType)) {
                 case t.Cheer:
-                    s.classList.add(this.getCheerEventAlertCSS(e));
+                    i.classList.add(this.getCheerEventAlertCSS(e));
                     break;
                 case t.Follow:
-                    s.classList.add('follow-event-alert');
+                    i.classList.add('follow-event-alert');
                     break;
                 case t.Subscription:
-                    s.classList.add('sub-event-alert');
+                    i.classList.add('sub-event-alert');
                     break;
                 case t.GiftedSubscription:
-                    s.classList.add('gifted-sub-event-alert');
+                    i.classList.add('gifted-sub-event-alert');
                     break;
                 case t.Host:
-                    s.classList.add('host-event-alert');
+                    i.classList.add('host-event-alert');
                     break;
                 case t.Raid:
-                    s.classList.add('raid-event-alert');
+                    i.classList.add('raid-event-alert');
             }
-            return s;
+            return i;
         }
         resetSlideStyles(t) {
             t.classList.value = 'slide';
@@ -241,7 +241,7 @@
         (u.EventAlertSlideTime = 'EventAlertSlideTime'),
         (u.EventAlertFadeTime = 'EventAlertFadeTime'),
         (u.EventAlertDisplayTime = 'EventAlertDisplayTime');
-    class m {
+    class c {
         static toMilliseconds(t) {
             return 1e3 * t;
         }
@@ -249,10 +249,25 @@
             return t / 1e3;
         }
     }
-    class c {
+    class m {
+        static toPromise(t, e, n) {
+            return t && e && n
+                ? t.style[e] === n
+                    ? Promise.resolve()
+                    : new Promise((i) => {
+                          const s = (n) => {
+                              n.propertyName === e &&
+                                  (t.removeEventListener('transitionend', s), i());
+                          };
+                          t.addEventListener('transitionend', s), (t.style[e] = n);
+                      })
+                : Promise.reject();
+        }
+    }
+    class d {
         constructor() {
             (this.timeEventAlertDisplay = h.Get(u.EventAlertDisplayTime)),
-                (this.timeEventDisplay = h.Get(u.EventAlertDisplayTime)),
+                (this.timeEventDisplay = h.Get(u.EventCycleDisplayTime)),
                 (this.timeEventAlertSlide = h.Get(u.EventAlertSlideTime)),
                 (this.timeEventAlertFade = h.Get(u.EventAlertFadeTime)),
                 (this.bar = new o());
@@ -278,7 +293,7 @@
                         : ((e.innerHTML = this.nextEvent.html), this.revealElement(e)));
             }),
                 e.innerHTML.trim() || (e.innerHTML = this.currentEvent.html),
-                setTimeout(() => this.hideElement(e), this.timeEventDisplay);
+                window.setTimeout(() => this.hideElement(e), this.timeEventDisplay);
         }
         handleEventAlert(t, e = !0) {
             if (!t.isValid) return;
@@ -337,22 +352,57 @@
         revealElement(t) {
             t && (t.style.opacity = '1');
         }
+        beginEventCycle() {
+            const t = this.bar.currentSlide.children[0];
+            !!t.innerHTML || (t.innerHTML = this.currentEvent.html), this.cycleEvent();
+        }
+        cycleEvent() {
+            const t = this.bar.currentSlide,
+                e = t.children[0];
+            this.displayEvent(e)
+                .then(() => {
+                    t === this.bar.currentSlide && this.cycleEvent();
+                })
+                .catch(() => {
+                    console.log('Swallowing caught rejection');
+                });
+        }
+        displayEvent(t) {
+            return new Promise((e, n) => {
+                window.setTimeout(() => {
+                    this.hideElementAux(t)
+                        .then(() => ((t.innerHTML = this.nextEvent.html), this.revealElementAux(t)))
+                        .then(() => {
+                            e();
+                        })
+                        .catch((t) => {
+                            n(t);
+                        });
+                }, this.timeEventDisplay);
+            });
+        }
+        revealElementAux(t) {
+            return m.toPromise(t, 'opacity', '1');
+        }
+        hideElementAux(t) {
+            return m.toPromise(t, 'opacity', '0');
+        }
     }
-    c.SInit =
-        ((c.prototype.timeEventAlertDisplay = 2e3),
-        (c.prototype.timeEventDisplay = 1e4),
-        (c.prototype.timeEventAlertSlide = 750),
-        (c.prototype.timeEventAlertFade = 2e3),
-        (c.prototype.currentEventIndex = -1),
-        void (c.prototype.events = []));
-    const d = ['bot:counter', 'event:test', 'event:skip', 'message'];
+    d.SInit =
+        ((d.prototype.timeEventAlertDisplay = 2e3),
+        (d.prototype.timeEventDisplay = 1e4),
+        (d.prototype.timeEventAlertSlide = 750),
+        (d.prototype.timeEventAlertFade = 2e3),
+        (d.prototype.currentEventIndex = -1),
+        void (d.prototype.events = []));
+    const v = ['bot:counter', 'event:test', 'event:skip', 'message'];
     let p;
     window.addEventListener('onEventReceived', function (t) {
         if (
             ((t) => {
                 try {
                     const e = t.detail.listener;
-                    return d.includes(e);
+                    return v.includes(e);
                 } catch {
                     return !1;
                 }
@@ -361,18 +411,18 @@
             return;
         const e = t.detail.listener,
             o = t.detail.event;
-        -1 === d.indexOf(e) &&
+        -1 === v.indexOf(e) &&
             ('follower-latest' === e
-                ? p.handleEventAlert(new s(o.name))
+                ? p.handleEventAlert(new i(o.name))
                 : 'cheer-latest' === e
                 ? p.handleEventAlert(new n(o.name, o.amount))
                 : 'subscriber-latest' === e
                 ? o.gifted && o.isCommunityGift
                     ? SE_API.resumeQueue()
                     : o.bulkGifted
-                    ? p.handleEventAlert(new i(o.sender, o.amount))
+                    ? p.handleEventAlert(new s(o.sender, o.amount))
                     : o.gifted
-                    ? p.handleEventAlert(new i(o.sender))
+                    ? p.handleEventAlert(new s(o.sender))
                     : p.handleEventAlert(new l(o.name, o.amount))
                 : 'host-latest' === e
                 ? p.handleEventAlert(new r(o.name, o.amount), !1)
@@ -383,28 +433,28 @@
         window.addEventListener('onWidgetLoad', function (t) {
             const e = t.detail.session.data,
                 r = t.detail.fieldData,
-                a = m.toMilliseconds(r.eventCycleDisplayTime),
-                o = m.toMilliseconds(r.eventAlertDisplayTime),
-                d = m.toMilliseconds(r.eventAlertSlideTime),
-                v = m.toMilliseconds(r.eventAlertFadeTime);
+                a = c.toMilliseconds(r.eventCycleDisplayTime),
+                o = c.toMilliseconds(r.eventAlertDisplayTime),
+                m = c.toMilliseconds(r.eventAlertSlideTime),
+                v = c.toMilliseconds(r.eventAlertFadeTime);
             h.Set(u.EventCycleDisplayTime, a),
                 h.Set(u.EventAlertDisplayTime, o),
-                h.Set(u.EventAlertSlideTime, d),
+                h.Set(u.EventAlertSlideTime, m),
                 h.Set(u.EventAlertFadeTime, v);
             const E = e['follower-latest'],
                 S = e['subscriber-latest'],
                 y = e['subscriber-gifted-latest'],
                 g = e['cheer-latest'],
-                b = new s(E.name),
-                f = new l(S.name, S.amount),
-                A = new i(y.sender, y.amount),
-                T = new n(g.name, g.amount),
+                b = new i(E.name),
+                A = new l(S.name, S.amount),
+                T = new s(y.sender, y.amount),
+                f = new n(g.name, g.amount),
                 w = [];
             b.isValid && w.push(b),
-                f.isValid && w.push(f),
                 A.isValid && w.push(A),
                 T.isValid && w.push(T),
-                (p = new c()),
+                f.isValid && w.push(f),
+                (p = new d()),
                 p.registerEvents(w),
                 p.displayEvents();
         });

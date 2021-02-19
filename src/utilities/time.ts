@@ -1,3 +1,6 @@
+/**
+ * Utility methods for working with time data
+ */
 export class Time {
     /**
      * Converts seconds to milliseconds

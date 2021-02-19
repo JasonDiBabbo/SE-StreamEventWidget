@@ -1,12 +1,12 @@
 /**
- * A utility class of methods to ensure values meet various requirements.
+ * Utility methods to ensure values meet various requirements
  */
 export class Ensure {
     /**
-     * Ensures that a value is not null or undefined.
+     * Ensures that a value is not null or undefined
      *
-     * @param value The value to ensure.
-     * @param name The value name.
+     * @param value
+     * @param name
      */
     public static IsNotNullOrUndefined(value: unknown, name: string = null): void {
         if (!value) {
@@ -17,8 +17,8 @@ export class Ensure {
     /**
      * Ensures that a numeric value is greater than zero.
      *
-     * @param value The value to ensure.
-     * @param name The value name.
+     * @param value
+     * @param name
      */
     public static IsGreaterThanZero(value: number, name: string = null): void {
         if (value <= 0) {
