@@ -70,10 +70,23 @@ window.addEventListener('onWidgetLoad', function (obj) {
     const eventAlertSlideTime = Time.toMilliseconds(fieldData.eventAlertSlideTime);
     const eventAlertFadeTime = Time.toMilliseconds(fieldData.eventAlertFadeTime);
 
+    // Event and alarm timings
     FieldStore.Set(FieldKeys.EventCycleDisplayTime, eventCycleDisplayTime);
     FieldStore.Set(FieldKeys.EventAlertDisplayTime, eventAlertDisplayTime);
     FieldStore.Set(FieldKeys.EventAlertSlideTime, eventAlertSlideTime);
     FieldStore.Set(FieldKeys.EventAlertFadeTime, eventAlertFadeTime);
+
+    // Alert colors
+    FieldStore.Set(FieldKeys.FollowAlertColor, fieldData.followAlertColor);
+    FieldStore.Set(FieldKeys.SubAlertColor, fieldData.subAlertColor);
+    FieldStore.Set(FieldKeys.GiftedSubAlertColor, fieldData.giftedSubAlertColor);
+    FieldStore.Set(FieldKeys.TierOneCheerAlertColor, fieldData.tierOneCheerAlertColor);
+    FieldStore.Set(FieldKeys.TierTwoCheerAlertColor, fieldData.tierTwoCheerAlertColor);
+    FieldStore.Set(FieldKeys.TierThreeCheerAlertColor, fieldData.tierThreeCheerAlertColor);
+    FieldStore.Set(FieldKeys.TierFourCheerAlertColor, fieldData.tierFourCheerAlertColor);
+    FieldStore.Set(FieldKeys.TierFiveCheerAlertColor, fieldData.tierFiveCheerAlertColor);
+    FieldStore.Set(FieldKeys.HostAlertColor, fieldData.hostAlertColor);
+    FieldStore.Set(FieldKeys.RaidAlertColor, fieldData.raidAlertColor);
 
     const followEventData = data['follower-latest'];
     const subscriptionEventData = data['subscriber-latest'];

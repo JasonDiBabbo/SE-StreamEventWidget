@@ -1,43 +1,43 @@
 (() => {
     'use strict';
-    var t;
-    !(function (t) {
-        (t[(t.Cheer = 0)] = 'Cheer'),
-            (t[(t.Follow = 1)] = 'Follow'),
-            (t[(t.GiftedSubscription = 2)] = 'GiftedSubscription'),
-            (t[(t.Host = 3)] = 'Host'),
-            (t[(t.Raid = 4)] = 'Raid'),
-            (t[(t.Subscription = 5)] = 'Subscription');
-    })(t || (t = {}));
-    class e {
-        constructor(t) {
-            this.eventType = t;
+    var e;
+    !(function (e) {
+        (e[(e.Cheer = 0)] = 'Cheer'),
+            (e[(e.Follow = 1)] = 'Follow'),
+            (e[(e.GiftedSubscription = 2)] = 'GiftedSubscription'),
+            (e[(e.Host = 3)] = 'Host'),
+            (e[(e.Raid = 4)] = 'Raid'),
+            (e[(e.Subscription = 5)] = 'Subscription');
+    })(e || (e = {}));
+    class t {
+        constructor(e) {
+            this.eventType = e;
         }
-        static lookupIconCSS(e) {
+        static lookupIconCSS(t) {
             let n = '';
-            switch (e) {
-                case t.Follow:
+            switch (t) {
+                case e.Follow:
                     n = 'fas fa-heart';
                     break;
-                case t.Subscription:
+                case e.Subscription:
                     n = 'fas fa-star';
                     break;
-                case t.GiftedSubscription:
+                case e.GiftedSubscription:
                     n = 'fas fa-gift';
                     break;
-                case t.Host:
+                case e.Host:
                     n = 'fas fa-desktop';
                     break;
-                case t.Raid:
+                case e.Raid:
                     n = 'fas fa-users';
             }
             return n;
         }
     }
-    class n extends e {
-        constructor(e, n) {
-            super(t.Cheer),
-                (this.name = e || this.name),
+    class n extends t {
+        constructor(t, n) {
+            super(e.Cheer),
+                (this.name = t || this.name),
                 (this.amount = n && n > 0 ? n : this.amount),
                 (this.html = this.getHTML());
         }
@@ -45,9 +45,9 @@
             return !!this.html && !!this.name && !!this.amount && this.amount > 0;
         }
         getHTML() {
-            const t = this.getCheerAmountString();
-            return t
-                ? `<svg class="bar-icon" viewBox="0 0 187.35 242.67">\n                <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>\n                <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>\n             </svg><span class="bar-text">${this.name} ${t}</span>`
+            const e = this.getCheerAmountString();
+            return e
+                ? `<svg class="bar-icon" viewBox="0 0 187.35 242.67">\n                <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>\n                <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>\n             </svg><span class="bar-text">${this.name} ${e}</span>`
                 : null;
         }
         getCheerAmountString() {
@@ -57,25 +57,25 @@
         }
     }
     n.SInit = ((n.prototype.name = null), (n.prototype.amount = 0), void (n.prototype.html = null));
-    class i extends e {
-        constructor(e) {
-            super(t.Follow), (this.name = e || this.name), (this.html = this.getHTML());
+    class i extends t {
+        constructor(t) {
+            super(e.Follow), (this.name = t || this.name), (this.html = this.getHTML());
         }
         get isValid() {
             return !!this.html && !!this.name;
         }
         getHTML() {
-            const t = e.lookupIconCSS(this.eventType);
-            return t && this.name
-                ? `<i class="bar-icon ${t}"></i><span class="bar-text">${this.name}</span>`
+            const e = t.lookupIconCSS(this.eventType);
+            return e && this.name
+                ? `<i class="bar-icon ${e}"></i><span class="bar-text">${this.name}</span>`
                 : null;
         }
     }
     i.SInit = ((i.prototype.name = null), void (i.prototype.html = null));
-    class s extends e {
-        constructor(e, n) {
-            super(t.GiftedSubscription),
-                (this.name = e || this.name),
+    class r extends t {
+        constructor(t, n) {
+            super(e.GiftedSubscription),
+                (this.name = t || this.name),
                 (this.amount = n && n > 0 ? n : this.amount),
                 (this.html = this.getHTML());
         }
@@ -83,21 +83,21 @@
             return !!this.html && !!this.name;
         }
         getHTML() {
-            const t = e.lookupIconCSS(this.eventType),
+            const e = t.lookupIconCSS(this.eventType),
                 n = this.getGiftedSubCountString();
-            return t && this.name
-                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+            return e && this.name
+                ? ` <i class="bar-icon ${e}"></i><span class="bar-text">${this.name} ${n}</span>`
                 : null;
         }
         getGiftedSubCountString() {
             return this.amount && this.amount > 1 ? `X${this.amount.toString()}` : '';
         }
     }
-    s.SInit = ((s.prototype.name = null), (s.prototype.amount = 0), void (s.prototype.html = null));
-    class r extends e {
-        constructor(e, n) {
-            super(t.Host),
-                (this.name = e || this.name),
+    r.SInit = ((r.prototype.name = null), (r.prototype.amount = 0), void (r.prototype.html = null));
+    class s extends t {
+        constructor(t, n) {
+            super(e.Host),
+                (this.name = t || this.name),
                 (this.amount = n && n > 0 ? n : this.amount),
                 (this.html = this.getHTML());
         }
@@ -105,21 +105,21 @@
             return !!this.html && !!this.name && !!this.amount && this.amount > 0;
         }
         getHTML() {
-            const t = e.lookupIconCSS(this.eventType),
+            const e = t.lookupIconCSS(this.eventType),
                 n = this.getHostAmountString();
-            return t && this.name
-                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+            return e && this.name
+                ? ` <i class="bar-icon ${e}"></i><span class="bar-text">${this.name} ${n}</span>`
                 : null;
         }
         getHostAmountString() {
             return this.amount && this.amount > 0 ? `X${this.amount.toString()}` : '';
         }
     }
-    r.SInit = ((r.prototype.name = null), (r.prototype.amount = 0), void (r.prototype.html = null));
-    class a extends e {
-        constructor(e, n) {
-            super(t.Raid),
-                (this.name = e || this.name),
+    s.SInit = ((s.prototype.name = null), (s.prototype.amount = 0), void (s.prototype.html = null));
+    class l extends t {
+        constructor(t, n) {
+            super(e.Raid),
+                (this.name = t || this.name),
                 (this.amount = n && n > 0 ? n : this.amount),
                 (this.html = this.getHTML());
         }
@@ -127,21 +127,21 @@
             return !!this.html && !!this.name && !!this.amount && this.amount > 0;
         }
         getHTML() {
-            const t = e.lookupIconCSS(this.eventType),
+            const e = t.lookupIconCSS(this.eventType),
                 n = this.getRaidAmountString();
-            return t && this.name
-                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+            return e && this.name
+                ? ` <i class="bar-icon ${e}"></i><span class="bar-text">${this.name} ${n}</span>`
                 : null;
         }
         getRaidAmountString() {
             return this.amount && this.amount > 0 ? `X${this.amount.toString()}` : '';
         }
     }
-    a.SInit = ((a.prototype.name = null), (a.prototype.amount = 0), void (a.prototype.html = null));
-    class l extends e {
-        constructor(e, n) {
-            super(t.Subscription),
-                (this.name = e || this.name),
+    l.SInit = ((l.prototype.name = null), (l.prototype.amount = 0), void (l.prototype.html = null));
+    class o extends t {
+        constructor(t, n) {
+            super(e.Subscription),
+                (this.name = t || this.name),
                 (this.amount = n && n > 0 ? n : this.amount),
                 (this.html = this.getHTML());
         }
@@ -149,18 +149,18 @@
             return !!this.html && !!this.name && !!this.amount && this.amount > 0;
         }
         getHTML() {
-            const t = e.lookupIconCSS(this.eventType),
+            const e = t.lookupIconCSS(this.eventType),
                 n = this.getSubAmountString();
-            return t && this.name
-                ? ` <i class="bar-icon ${t}"></i><span class="bar-text">${this.name} ${n}</span>`
+            return e && this.name
+                ? ` <i class="bar-icon ${e}"></i><span class="bar-text">${this.name} ${n}</span>`
                 : null;
         }
         getSubAmountString() {
             return this.amount && this.amount > 1 ? `X${this.amount.toString()}` : '';
         }
     }
-    l.SInit = ((l.prototype.name = null), (l.prototype.amount = 0), void (l.prototype.html = null));
-    class o {
+    o.SInit = ((o.prototype.name = null), (o.prototype.amount = 0), void (o.prototype.html = null));
+    class a {
         get bar() {
             return document.querySelector('.bar');
         }
@@ -170,69 +170,69 @@
         get slides() {
             return this.bar.children;
         }
-        addSlide(t) {
-            this.bar.appendChild(t);
+        addSlide(e) {
+            this.bar.appendChild(e);
         }
-        animateSlideDownOut(t, e = !1) {
-            e && this.requestBrowserAnimation(t), t.classList.add('offscreen-bottom');
+        animateSlideDownOut(e, t = !1) {
+            t && this.requestBrowserAnimation(e), e.classList.add('offscreen-bottom');
         }
-        animateSlideUpIn(t, e = !1) {
-            e && this.requestBrowserAnimation(t), t.classList.remove('offscreen-bottom');
+        animateSlideUpIn(e, t = !1) {
+            t && this.requestBrowserAnimation(e), e.classList.remove('offscreen-bottom');
         }
-        animateSlideUpOut(t, e = !1) {
-            e && this.requestBrowserAnimation(t), t.classList.add('offscreen-top');
+        animateSlideUpOut(e, t = !1) {
+            t && this.requestBrowserAnimation(e), e.classList.add('offscreen-top');
         }
-        createEventAlertSlide(e) {
+        createEventAlertSlide(t) {
             const n = document.createElement('div');
-            n.classList.add('bar-content'), (n.innerHTML = e.html);
+            n.classList.add('bar-content'), (n.innerHTML = t.html);
             const i = document.createElement('div');
-            switch ((i.classList.add('slide'), i.appendChild(n), e.eventType)) {
-                case t.Cheer:
-                    i.classList.add(this.getCheerEventAlertCSS(e));
+            switch ((i.classList.add('slide'), i.appendChild(n), t.eventType)) {
+                case e.Cheer:
+                    i.classList.add(this.getCheerEventAlertCSS(t));
                     break;
-                case t.Follow:
+                case e.Follow:
                     i.classList.add('follow-event-alert');
                     break;
-                case t.Subscription:
+                case e.Subscription:
                     i.classList.add('sub-event-alert');
                     break;
-                case t.GiftedSubscription:
+                case e.GiftedSubscription:
                     i.classList.add('gifted-sub-event-alert');
                     break;
-                case t.Host:
+                case e.Host:
                     i.classList.add('host-event-alert');
                     break;
-                case t.Raid:
+                case e.Raid:
                     i.classList.add('raid-event-alert');
             }
             return i;
         }
-        resetSlideStyles(t) {
-            t.classList.value = 'slide';
+        resetSlideStyles(e) {
+            e.classList.value = 'slide';
         }
-        getCheerEventAlertCSS(t) {
-            return t.amount < 1
+        getCheerEventAlertCSS(e) {
+            return e.amount < 1
                 ? null
-                : t.amount < 100
+                : e.amount < 100
                 ? 'cheer-event-alert-tier-1'
-                : t.amount < 1e3
+                : e.amount < 1e3
                 ? 'cheer-event-alert-tier-2'
-                : t.amount < 5e3
+                : e.amount < 5e3
                 ? 'cheer-event-alert-tier-3'
-                : t.amount < 1e4
+                : e.amount < 1e4
                 ? 'cheer-event-alert-tier-4'
                 : 'cheer-event-alert-tier-5';
         }
-        requestBrowserAnimation(t) {
-            t.offsetWidth;
+        requestBrowserAnimation(e) {
+            e.offsetWidth;
         }
     }
     class h {
-        static Get(t) {
-            if (Object.prototype.hasOwnProperty.call(this.fieldData, t)) return this.fieldData[t];
+        static Get(e) {
+            if (Object.prototype.hasOwnProperty.call(this.fieldData, e)) return this.fieldData[e];
         }
-        static Set(t, e) {
-            this.fieldData[t] = e;
+        static Set(e, t) {
+            this.fieldData[e] = t;
         }
     }
     h.fieldData = {};
@@ -240,26 +240,36 @@
     (u.EventCycleDisplayTime = 'EventCycleDisplayTime'),
         (u.EventAlertSlideTime = 'EventAlertSlideTime'),
         (u.EventAlertFadeTime = 'EventAlertFadeTime'),
-        (u.EventAlertDisplayTime = 'EventAlertDisplayTime');
+        (u.EventAlertDisplayTime = 'EventAlertDisplayTime'),
+        (u.FollowAlertColor = 'FollowAlertColor'),
+        (u.SubAlertColor = 'SubAlertColor'),
+        (u.GiftedSubAlertColor = 'GiftedSubAlertColor'),
+        (u.TierOneCheerAlertColor = 'TierOneCheerAlertColor'),
+        (u.TierTwoCheerAlertColor = 'TierTwoCheerAlertColor'),
+        (u.TierThreeCheerAlertColor = 'TierThreeCheerAlertColor'),
+        (u.TierFourCheerAlertColor = 'TierFourCheerAlertColor'),
+        (u.TierFiveCheerAlertColor = 'TierFiveCheerAlertColor'),
+        (u.HostAlertColor = 'HostAlertColor'),
+        (u.RaidAlertColor = 'RaidAlertColor');
     class c {
-        static toMilliseconds(t) {
-            return 1e3 * t;
+        static toMilliseconds(e) {
+            return 1e3 * e;
         }
-        static toSeconds(t) {
-            return t / 1e3;
+        static toSeconds(e) {
+            return e / 1e3;
         }
     }
     class m {
-        static toPromise(t, e, n) {
-            return t && e && n
-                ? t.style[e] === n
+        static toPromise(e, t, n) {
+            return e && t && n
+                ? e.style[t] === n
                     ? Promise.resolve()
                     : new Promise((i) => {
-                          const s = (n) => {
-                              n.propertyName === e &&
-                                  (t.removeEventListener('transitionend', s), i());
+                          const r = (n) => {
+                              n.propertyName === t &&
+                                  (e.removeEventListener('transitionend', r), i());
                           };
-                          t.addEventListener('transitionend', s), (t.style[e] = n);
+                          e.addEventListener('transitionend', r), (e.style[t] = n);
                       })
                 : Promise.reject();
         }
@@ -270,42 +280,42 @@
                 (this.timeEventDisplay = h.Get(u.EventCycleDisplayTime)),
                 (this.timeEventAlertSlide = h.Get(u.EventAlertSlideTime)),
                 (this.timeEventAlertFade = h.Get(u.EventAlertFadeTime)),
-                (this.bar = new o());
+                (this.bar = new a());
         }
         get currentEvent() {
-            const t = this.events[this.currentEventIndex];
-            if (!t) throw new Error('');
-            return t;
+            const e = this.events[this.currentEventIndex];
+            if (!e) throw new Error('');
+            return e;
         }
         get nextEvent() {
             this.currentEventIndex = this.calculateNextEventIndex();
-            const t = this.events[this.currentEventIndex];
-            if (!t) throw new Error('');
-            return t;
+            const e = this.events[this.currentEventIndex];
+            if (!e) throw new Error('');
+            return e;
         }
         displayEvents() {
-            const t = this.bar.currentSlide,
-                e = t.children[0];
-            t.addEventListener('transitionend', (t) => {
-                'opacity' === t.propertyName &&
-                    ('1' === e.style.opacity
-                        ? setTimeout(() => this.hideElement(e), this.timeEventDisplay)
-                        : ((e.innerHTML = this.nextEvent.html), this.revealElement(e)));
+            const e = this.bar.currentSlide,
+                t = e.children[0];
+            e.addEventListener('transitionend', (e) => {
+                'opacity' === e.propertyName &&
+                    ('1' === t.style.opacity
+                        ? setTimeout(() => this.hideElement(t), this.timeEventDisplay)
+                        : ((t.innerHTML = this.nextEvent.html), this.revealElement(t)));
             }),
-                e.innerHTML.trim() || (e.innerHTML = this.currentEvent.html),
-                window.setTimeout(() => this.hideElement(e), this.timeEventDisplay);
+                t.innerHTML.trim() || (t.innerHTML = this.currentEvent.html),
+                window.setTimeout(() => this.hideElement(t), this.timeEventDisplay);
         }
-        handleEventAlert(t, e = !0) {
-            if (!t.isValid) return;
-            clearTimeout(this.currentEventAlertTimeout), e && this.registerEvent(t);
-            const n = this.bar.createEventAlertSlide(t);
+        handleEventAlert(e, t = !0) {
+            if (!e.isValid) return;
+            clearTimeout(this.currentEventAlertTimeout), t && this.registerEvent(e);
+            const n = this.bar.createEventAlertSlide(e);
             this.bar.animateSlideDownOut(n),
                 this.bar.addSlide(n),
                 this.bar.animateSlideUpOut(this.bar.currentSlide),
                 this.bar.animateSlideUpIn(n, !0),
                 (this.currentEventAlertTimeout = window.setTimeout(() => {
-                    const t = this.bar.slides;
-                    for (let e = 0; e < t.length - 1; e++) t[e].remove();
+                    const e = this.bar.slides;
+                    for (let t = 0; t < e.length - 1; t++) e[t].remove();
                     this.currentEventAlertTimeout = window.setTimeout(() => {
                         this.bar.resetSlideStyles(n),
                             (this.currentEventAlertTimeout = window.setTimeout(() => {
@@ -314,78 +324,78 @@
                     }, this.timeEventAlertDisplay);
                 }, this.timeEventAlertSlide));
         }
-        registerEvent(t) {
-            if (!t) return;
-            const e = this.events.findIndex((e) => e.eventType === t.eventType);
-            if (-1 === e) this.currentEventIndex = this.events.push(t) - 1;
+        registerEvent(e) {
+            if (!e) return;
+            const t = this.events.findIndex((t) => t.eventType === e.eventType);
+            if (-1 === t) this.currentEventIndex = this.events.push(e) - 1;
             else {
                 let n;
-                e > this.currentEventIndex
-                    ? (this.events.splice(e, 1),
+                t > this.currentEventIndex
+                    ? (this.events.splice(t, 1),
                       (n =
                           this.currentEventIndex === this.events.length - 1
                               ? 0
                               : this.currentEventIndex + 1),
-                      this.events.splice(n, 0, t))
-                    : e < this.currentEventIndex
-                    ? (this.events.splice(e, 1),
+                      this.events.splice(n, 0, e))
+                    : t < this.currentEventIndex
+                    ? (this.events.splice(t, 1),
                       (n =
                           this.currentEventIndex - 1 == 0
                               ? this.events.length - 1
                               : this.currentEventIndex - 2),
-                      this.events.splice(n, 0, t))
-                    : (this.events.splice(e, 1, t), (n = e)),
+                      this.events.splice(n, 0, e))
+                    : (this.events.splice(t, 1, e), (n = t)),
                     (this.currentEventIndex = n);
             }
         }
-        registerEvents(t) {
-            t && t.forEach((t) => this.registerEvent(t));
+        registerEvents(e) {
+            e && e.forEach((e) => this.registerEvent(e));
         }
         calculateNextEventIndex() {
             return this.currentEventIndex === this.events.length - 1
                 ? 0
                 : this.currentEventIndex + 1;
         }
-        hideElement(t) {
-            t && (t.style.opacity = '0');
+        hideElement(e) {
+            e && (e.style.opacity = '0');
         }
-        revealElement(t) {
-            t && (t.style.opacity = '1');
+        revealElement(e) {
+            e && (e.style.opacity = '1');
         }
         beginEventCycle() {
-            const t = this.bar.currentSlide.children[0];
-            !!t.innerHTML || (t.innerHTML = this.currentEvent.html), this.cycleEvent();
+            const e = this.bar.currentSlide.children[0];
+            !!e.innerHTML || (e.innerHTML = this.currentEvent.html), this.cycleEvent();
         }
         cycleEvent() {
-            const t = this.bar.currentSlide,
-                e = t.children[0];
-            this.displayEvent(e)
+            const e = this.bar.currentSlide,
+                t = e.children[0];
+            this.displayEvent(t)
                 .then(() => {
-                    t === this.bar.currentSlide && this.cycleEvent();
+                    e === this.bar.currentSlide && this.cycleEvent();
                 })
                 .catch(() => {
                     console.log('Swallowing caught rejection');
                 });
         }
-        displayEvent(t) {
-            return new Promise((e, n) => {
+        displayEvent(e) {
+            return new Promise((t, n) => {
                 window.setTimeout(() => {
-                    this.hideElementAux(t)
-                        .then(() => ((t.innerHTML = this.nextEvent.html), this.revealElementAux(t)))
+                    this.hideElementAux(e)
+                        .then(() => ((e.innerHTML = this.nextEvent.html), this.revealElementAux(e)))
                         .then(() => {
-                            e();
+                            t();
                         })
-                        .catch((t) => {
-                            n(t);
+                        .catch((e) => {
+                            n(e);
                         });
                 }, this.timeEventDisplay);
             });
         }
-        revealElementAux(t) {
-            return m.toPromise(t, 'opacity', '1');
+        revealElementAux(e) {
+            return m.toPromise(e, 'opacity', '1');
         }
-        hideElementAux(t) {
-            return m.toPromise(t, 'opacity', '0');
+        hideElementAux(e) {
+            return m.toPromise(e, 'opacity', '0');
         }
     }
     d.SInit =
@@ -397,65 +407,75 @@
         void (d.prototype.events = []));
     const v = ['bot:counter', 'event:test', 'event:skip', 'message'];
     let p;
-    window.addEventListener('onEventReceived', function (t) {
+    window.addEventListener('onEventReceived', function (e) {
         if (
-            ((t) => {
+            ((e) => {
                 try {
-                    const e = t.detail.listener;
-                    return v.includes(e);
+                    const t = e.detail.listener;
+                    return v.includes(t);
                 } catch {
                     return !1;
                 }
-            })(t)
+            })(e)
         )
             return;
-        const e = t.detail.listener,
-            o = t.detail.event;
-        -1 === v.indexOf(e) &&
-            ('follower-latest' === e
-                ? p.handleEventAlert(new i(o.name))
-                : 'cheer-latest' === e
-                ? p.handleEventAlert(new n(o.name, o.amount))
-                : 'subscriber-latest' === e
-                ? o.gifted && o.isCommunityGift
+        const t = e.detail.listener,
+            a = e.detail.event;
+        -1 === v.indexOf(t) &&
+            ('follower-latest' === t
+                ? p.handleEventAlert(new i(a.name))
+                : 'cheer-latest' === t
+                ? p.handleEventAlert(new n(a.name, a.amount))
+                : 'subscriber-latest' === t
+                ? a.gifted && a.isCommunityGift
                     ? SE_API.resumeQueue()
-                    : o.bulkGifted
-                    ? p.handleEventAlert(new s(o.sender, o.amount))
-                    : o.gifted
-                    ? p.handleEventAlert(new s(o.sender))
-                    : p.handleEventAlert(new l(o.name, o.amount))
-                : 'host-latest' === e
-                ? p.handleEventAlert(new r(o.name, o.amount), !1)
-                : 'raid-latest' === e
-                ? p.handleEventAlert(new a(o.name, o.amount), !1)
+                    : a.bulkGifted
+                    ? p.handleEventAlert(new r(a.sender, a.amount))
+                    : a.gifted
+                    ? p.handleEventAlert(new r(a.sender))
+                    : p.handleEventAlert(new o(a.name, a.amount))
+                : 'host-latest' === t
+                ? p.handleEventAlert(new s(a.name, a.amount), !1)
+                : 'raid-latest' === t
+                ? p.handleEventAlert(new l(a.name, a.amount), !1)
                 : SE_API.resumeQueue());
     }),
-        window.addEventListener('onWidgetLoad', function (t) {
-            const e = t.detail.session.data,
-                r = t.detail.fieldData,
-                a = c.toMilliseconds(r.eventCycleDisplayTime),
-                o = c.toMilliseconds(r.eventAlertDisplayTime),
-                m = c.toMilliseconds(r.eventAlertSlideTime),
-                v = c.toMilliseconds(r.eventAlertFadeTime);
-            h.Set(u.EventCycleDisplayTime, a),
-                h.Set(u.EventAlertDisplayTime, o),
+        window.addEventListener('onWidgetLoad', function (e) {
+            const t = e.detail.session.data,
+                s = e.detail.fieldData,
+                l = c.toMilliseconds(s.eventCycleDisplayTime),
+                a = c.toMilliseconds(s.eventAlertDisplayTime),
+                m = c.toMilliseconds(s.eventAlertSlideTime),
+                v = c.toMilliseconds(s.eventAlertFadeTime);
+            h.Set(u.EventCycleDisplayTime, l),
+                h.Set(u.EventAlertDisplayTime, a),
                 h.Set(u.EventAlertSlideTime, m),
-                h.Set(u.EventAlertFadeTime, v);
-            const E = e['follower-latest'],
-                S = e['subscriber-latest'],
-                y = e['subscriber-gifted-latest'],
-                g = e['cheer-latest'],
-                b = new i(E.name),
-                A = new l(S.name, S.amount),
-                T = new s(y.sender, y.amount),
-                f = new n(g.name, g.amount),
-                w = [];
-            b.isValid && w.push(b),
-                A.isValid && w.push(A),
-                T.isValid && w.push(T),
-                f.isValid && w.push(f),
+                h.Set(u.EventAlertFadeTime, v),
+                h.Set(u.FollowAlertColor, s.followAlertColor),
+                h.Set(u.SubAlertColor, s.subAlertColor),
+                h.Set(u.GiftedSubAlertColor, s.giftedSubAlertColor),
+                h.Set(u.TierOneCheerAlertColor, s.tierOneCheerAlertColor),
+                h.Set(u.TierTwoCheerAlertColor, s.tierTwoCheerAlertColor),
+                h.Set(u.TierThreeCheerAlertColor, s.tierThreeCheerAlertColor),
+                h.Set(u.TierFourCheerAlertColor, s.tierFourCheerAlertColor),
+                h.Set(u.TierFiveCheerAlertColor, s.tierFiveCheerAlertColor),
+                h.Set(u.HostAlertColor, s.hostAlertColor),
+                h.Set(u.RaidAlertColor, s.raidAlertColor);
+            const S = t['follower-latest'],
+                E = t['subscriber-latest'],
+                A = t['subscriber-gifted-latest'],
+                C = t['cheer-latest'],
+                y = new i(S.name),
+                T = new o(E.name, E.amount),
+                b = new r(A.sender, A.amount),
+                g = new n(C.name, C.amount),
+                f = [];
+            y.isValid && f.push(y),
+                T.isValid && f.push(T),
+                b.isValid && f.push(b),
+                g.isValid && f.push(g),
                 (p = new d()),
-                p.registerEvents(w),
+                p.registerEvents(f),
                 p.displayEvents();
         });
 })();
