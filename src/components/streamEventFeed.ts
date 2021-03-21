@@ -87,10 +87,6 @@ export class StreamEventFeed {
     }
 
     public handleEventAlert(event: StreamEvent, addToCyclingEvents = true): void {
-        if (!event.isValid) {
-            return;
-        }
-
         clearTimeout(this.currentEventAlertTimeout);
 
         if (addToCyclingEvents) {

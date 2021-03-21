@@ -103,29 +103,13 @@ window.addEventListener('onWidgetLoad', function (obj) {
 
     const events: StreamEvent[] = [];
 
-    if (latestFollowEvent.isValid) {
-        events.push(latestFollowEvent);
-    }
-
-    if (latestSubscriptionEvent.isValid) {
-        events.push(latestSubscriptionEvent);
-    }
-
-    if (latestGiftedSubscriptionEvent.isValid) {
-        events.push(latestGiftedSubscriptionEvent);
-    }
-
-    if (latestCheerEvent.isValid) {
-        events.push(latestCheerEvent);
-    }
+    events.push(latestFollowEvent);
+    events.push(latestSubscriptionEvent);
+    events.push(latestGiftedSubscriptionEvent);
+    events.push(latestCheerEvent);
 
     const eventService = new EventService();
     const x = new StreamEventBar(eventService);
     x.addEvents(...events);
     x.beginCycle();
-
-    // streamEventFeed = new StreamEventFeed();
-
-    // streamEventFeed.registerEvents(events);
-    // streamEventFeed.displayEvents();
 });
