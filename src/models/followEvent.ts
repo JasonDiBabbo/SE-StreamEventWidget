@@ -26,8 +26,8 @@ export class FollowEvent extends StreamEvent {
         const iconCss = StreamEvent.lookupIconCSS(this.eventType);
 
         if (iconCss && this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCss}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name}</span>`;
+            const iconHtml = `<i class="slide-icon ${iconCss}"></i>`;
+            const spanHtml = `<span class="slide-text">${this.name}</span>`;
             const html = `${iconHtml}${spanHtml}`;
 
             return html;

@@ -1,65 +1,62 @@
-import { StreamEventFeed } from '@components';
 import {
     CheerEvent,
     FollowEvent,
     GiftedSubEvent,
-    HostEvent,
-    RaidEvent,
-    StreamElementsApi,
+    // StreamElementsApi,
     StreamEvent,
     SubEvent,
 } from '@models';
 import { FieldKeys, FieldStore, Time } from '@utilities';
 
-declare const SE_API: StreamElementsApi;
+import { StreamEventBar } from '@components';
+import { EventService } from '@services';
+
+// declare const SE_API: StreamElementsApi;
 
 // An array of events that can come to the widget even though the queue may be on hold
-const skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
-const canSkipEvent: (obj: unknown) => boolean = (obj) => {
-    try {
-        const listener: string = obj['detail']['listener'];
-        return skippableEvents.includes(listener);
-    } catch {
-        return false;
-    }
-};
+// const skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
+// const canSkipEvent: (obj: unknown) => boolean = (obj) => {
+//     try {
+//         const listener: string = obj['detail']['listener'];
+//         return skippableEvents.includes(listener);
+//     } catch {
+//         return false;
+//     }
+// };
 
-let streamEventFeed: StreamEventFeed;
+// let streamEventFeed: StreamEventFeed;
 
-window.addEventListener('onEventReceived', function (obj) {
-    if (canSkipEvent(obj)) {
-        return;
-    }
-
-    const listener: string = obj['detail']['listener'];
-    const event = obj['detail']['event'];
-
-    if (skippableEvents.indexOf(listener) !== -1) {
-        return;
-    }
-
-    if (listener === 'follower-latest') {
-        streamEventFeed.handleEventAlert(new FollowEvent(event.name));
-    } else if (listener === 'cheer-latest') {
-        streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
-    } else if (listener === 'subscriber-latest') {
-        if (event.gifted && event.isCommunityGift) {
-            SE_API.resumeQueue();
-        } else if (event.bulkGifted) {
-            streamEventFeed.handleEventAlert(new GiftedSubEvent(event.sender, event.amount));
-        } else if (event.gifted) {
-            streamEventFeed.handleEventAlert(new GiftedSubEvent(event.sender));
-        } else {
-            streamEventFeed.handleEventAlert(new SubEvent(event.name, event.amount));
-        }
-    } else if (listener === 'host-latest') {
-        streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
-    } else if (listener === 'raid-latest') {
-        streamEventFeed.handleEventAlert(new RaidEvent(event.name, event.amount), false);
-    } else {
-        SE_API.resumeQueue();
-    }
-});
+// window.addEventListener('onEventReceived', function (obj) {
+// if (canSkipEvent(obj)) {
+//     return;
+// }
+// const listener: string = obj['detail']['listener'];
+// const event = obj['detail']['event'];
+// if (skippableEvents.indexOf(listener) !== -1) {
+//     return;
+// }
+// if (listener === 'follower-latest') {
+//     streamEventFeed.handleEventAlert(new FollowEvent(event.name));
+// } else if (listener === 'cheer-latest') {
+//     streamEventFeed.handleEventAlert(new CheerEvent(event.name, event.amount));
+// } else if (listener === 'subscriber-latest') {
+//     if (event.gifted && event.isCommunityGift) {
+//         SE_API.resumeQueue();
+//     } else if (event.bulkGifted) {
+//         streamEventFeed.handleEventAlert(new GiftedSubEvent(event.sender, event.amount));
+//     } else if (event.gifted) {
+//         streamEventFeed.handleEventAlert(new GiftedSubEvent(event.sender));
+//     } else {
+//         streamEventFeed.handleEventAlert(new SubEvent(event.name, event.amount));
+//     }
+// } else if (listener === 'host-latest') {
+//     streamEventFeed.handleEventAlert(new HostEvent(event.name, event.amount), false);
+// } else if (listener === 'raid-latest') {
+//     streamEventFeed.handleEventAlert(new RaidEvent(event.name, event.amount), false);
+// } else {
+//     SE_API.resumeQueue();
+// }
+// });
 
 window.addEventListener('onWidgetLoad', function (obj) {
     const data = obj['detail']['session']['data'];
@@ -122,8 +119,13 @@ window.addEventListener('onWidgetLoad', function (obj) {
         events.push(latestCheerEvent);
     }
 
-    streamEventFeed = new StreamEventFeed();
+    const eventService = new EventService();
+    const x = new StreamEventBar(eventService);
+    x.addEvents(...events);
+    x.beginCycle();
 
-    streamEventFeed.registerEvents(events);
-    streamEventFeed.displayEvents();
+    // streamEventFeed = new StreamEventFeed();
+
+    // streamEventFeed.registerEvents(events);
+    // streamEventFeed.displayEvents();
 });

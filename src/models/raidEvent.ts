@@ -27,14 +27,13 @@ export class RaidEvent extends StreamEvent {
         RaidEvent.prototype.html = null;
     })();
 
-
     private getHTML(): string {
         const iconCSS = StreamEvent.lookupIconCSS(this.eventType);
         const hostAmount = this.getRaidAmountString();
 
         if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${hostAmount}</span>`;
+            const iconHtml = `<i class="slide-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="slide-text">${this.name} ${hostAmount}</span>`;
             const html = ` ${iconHtml}${spanHtml}`;
 
             return html;

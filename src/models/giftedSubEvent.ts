@@ -32,8 +32,8 @@ export class GiftedSubEvent extends StreamEvent {
         const giftedSubsAmount = this.getGiftedSubCountString();
 
         if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${giftedSubsAmount}</span>`;
+            const iconHtml = `<i class="slide-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="slide-text">${this.name} ${giftedSubsAmount}</span>`;
             const html = ` ${iconHtml}${spanHtml}`;
 
             return html;

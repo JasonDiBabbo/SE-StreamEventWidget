@@ -1,6 +1,4 @@
-/**
- * Global styles
- */
+/** Global styles **/
 
 :root {
     /* List UI parameter as CSS variables */
@@ -40,9 +38,7 @@ html {
     letter-spacing: var(--letterSpacing);
 }
 
-/**
- * Flex styles
- */
+/** Flex styles * */
 
 .flex {
     display: flex;
@@ -69,9 +65,7 @@ html {
     justify-content: center;
 }
 
-/**
- * Container styles
- */
+/** Container styles  **/
 
 .container {
     /* Center the container relative to the size of the custom widget */
@@ -82,9 +76,7 @@ html {
     transform: translate(-50%, -50%);
 }
 
-/**
- * Slide styles
- */
+/** Slide styles **/
 
 .slide-frame {
     position: relative;
@@ -103,10 +95,8 @@ html {
     transform: translateY(var(--badgeBarHeight));
 }
 
-/**
- * Badge styles
- */
- 
+/** Badge styles **/
+
 .badge,
 .badge .slide,
 .badge-content,
@@ -135,17 +125,15 @@ html {
     margin-left: 24px;
 }
 
-/**
- * Bar styles
- */
+/** Bar styles **/
 
 .bar,
 .bar .slide,
-.bar-content {
+.slide-content {
     height: var(--badgeBarHeight);
     width: var(--barWidth);
 }
- 
+
 .bar {
     background-color: var(--barBackgroundColor);
 }
@@ -154,35 +142,35 @@ html {
     transition: transform var(--eventAlertSlideTime) cubic-bezier(.69,.26,.6,1);
 }
 
-.bar .slide.follow-event-alert .bar-content,
-.bar .slide.sub-event-alert .bar-content,
-.bar .slide.gifted-sub-event-alert .bar-content,
-.bar .slide.host-event-alert .bar-content,
-.bar .slide.raid-event-alert .bar-content {
+.bar .slide.follow-event-alert .slide-content,
+.bar .slide.sub-event-alert .slide-content,
+.bar .slide.gifted-sub-event-alert .slide-content,
+.bar .slide.host-event-alert .slide-content,
+.bar .slide.raid-event-alert .slide-content {
     background-color: var(--accentColor);
 }
 
-.bar .slide.cheer-event-alert-tier-1 .bar-content {
+.bar .slide.cheer-event-alert-tier-1 .slide-content {
     background-color: #a8a8a8;
 }
 
-.bar .slide.cheer-event-alert-tier-2 .bar-content {
+.bar .slide.cheer-event-alert-tier-2 .slide-content {
     background-color: #724f93;
 }
 
-.bar .slide.cheer-event-alert-tier-3 .bar-content {
+.bar .slide.cheer-event-alert-tier-3 .slide-content {
     background-color: #4aa38f;
 }
 
-.bar .slide.cheer-event-alert-tier-4 .bar-content {
+.bar .slide.cheer-event-alert-tier-4 .slide-content {
     background-color: #4c98d9; 
 }
 
-.bar .slide.cheer-event-alert-tier-5 .bar-content {
+.bar .slide.cheer-event-alert-tier-5 .slide-content {
     background-color: #f03d81;
 }
 
-.bar-content {
+/* .slide-content {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -190,42 +178,42 @@ html {
     background-color: transparent;
     transition: opacity var(--eventCycleFadeTime) linear,
                 background-color var(--eventAlertFadeTime) linear;
-}
+} */
 
-.bar-icon {
+/* .slide-icon {
     margin: 0px 24px;
 }
 
-i.bar-icon {
+i.slide-icon {
     flex: none;
     color: var(--accentColor);
     transition: color var(--eventAlertFadeTime) linear;
-}
+} */
 
-.bar .slide.follow-event-alert .bar-content i.bar-icon,
-.bar .slide.sub-event-alert .bar-content i.bar-icon,
-.bar .slide.gifted-sub-event-alert .bar-content i.bar-icon,
-.bar .slide.slide.host-event-alert .bar-content i.bar-icon,
-.bar .slide.slide.raid-event-alert .bar-content i.bar-icon {
+.bar .slide.follow-event-alert .slide-content i.slide-icon,
+.bar .slide.sub-event-alert .slide-content i.slide-icon,
+.bar .slide.gifted-sub-event-alert .slide-content i.slide-icon,
+.bar .slide.slide.host-event-alert .slide-content i.slide-icon,
+.bar .slide.slide.raid-event-alert .slide-content i.slide-icon {
     color: #FFFFFF;
 }
 
-svg.bar-icon {
+/* svg.slide-icon {
     height: 1em;
     width: 1em;
 }
 
-svg.bar-icon path {
+svg.slide-icon path {
     transition: fill var(--eventAlertFadeTime) linear;
 
     fill: var(--accentColor);
-}
+} */
 
-.bar .slide.cheer-event-alert-tier-1 .bar-content svg.bar-icon path,
-.bar .slide.cheer-event-alert-tier-2 .bar-content svg.bar-icon path,
-.bar .slide.cheer-event-alert-tier-3 .bar-content svg.bar-icon path,
-.bar .slide.cheer-event-alert-tier-4 .bar-content svg.bar-icon path,
-.bar .slide.cheer-event-alert-tier-5 .bar-content svg.bar-icon path {
+.bar .slide.cheer-event-alert-tier-1 .slide-content svg.slide-icon path,
+.bar .slide.cheer-event-alert-tier-2 .slide-content svg.slide-icon path,
+.bar .slide.cheer-event-alert-tier-3 .slide-content svg.slide-icon path,
+.bar .slide.cheer-event-alert-tier-4 .slide-content svg.slide-icon path,
+.bar .slide.cheer-event-alert-tier-5 .slide-content svg.slide-icon path {
     fill: #FFFFFF;
 }
 
@@ -238,11 +226,55 @@ svg.bar-icon path {
     color: var(--fontColor);
 }
 
-/**
- * Shared styles
- */
+/** Shared styles **/
 
 .badge, .bar {
     filter: drop-shadow(var(--dropShadowOffsetX) var(--dropShadowOffsetY) var(--dropShadowBlurRadius) var(--dropShadowColor));
     border-radius: var(--borderRadius);
+}
+
+/** New Styles **/
+
+.bar > .slide > .slide-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    background-color: transparent;
+    transition: opacity var(--eventCycleFadeTime) linear,
+                background-color var(--eventAlertFadeTime) linear;
+    opacity: 1;
+}
+
+.bar > .slide > .slide-content.hidden {
+    opacity: 0;
+}
+
+.bar > .slide > .slide-content > .slide-icon {
+    margin: 0px 24px;
+}
+
+.bar > .slide > .slide-content > i.slide-icon {
+    flex: none;
+    color: var(--accentColor);
+    transition: color var(--eventAlertFadeTime) linear;
+}
+
+.bar > .slide > .slide-content > svg.slide-icon {
+    height: 1em;
+    width: 1em;
+}
+
+.bar > .slide > .slide-content > svg.slide-icon > path {
+    transition: fill var(--eventAlertFadeTime) linear;
+    fill: var(--accentColor);
+}
+
+.bar > .slide > .slide-content > .slide-text {
+    flex: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 24px;
+    color: var(--fontColor);
 }

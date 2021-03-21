@@ -13,6 +13,9 @@
             "@models": [
                 "models"
             ],
+            "@services": [
+                "services"
+            ],
             "@utilities": [
                 "utilities"
             ]

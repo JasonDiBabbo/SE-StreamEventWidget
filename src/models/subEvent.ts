@@ -32,8 +32,8 @@ export class SubEvent extends StreamEvent {
         const subAmount = this.getSubAmountString();
 
         if (!!iconCSS && !!this.name) {
-            const iconHtml = `<i class="bar-icon ${iconCSS}"></i>`;
-            const spanHtml = `<span class="bar-text">${this.name} ${subAmount}</span>`;
+            const iconHtml = `<i class="slide-icon ${iconCSS}"></i>`;
+            const spanHtml = `<span class="slide-text">${this.name} ${subAmount}</span>`;
             const html = ` ${iconHtml}${spanHtml}`;
 
             return html;
