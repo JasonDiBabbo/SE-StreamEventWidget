@@ -1,11 +1,6 @@
-import { StreamEvent } from '@models';
+import { Bar, Slide, SlideContent, Slides, StreamEvent } from '@models';
 import { EventService } from '@services';
 import { FieldKeys, FieldStore } from '@utilities';
-
-type Slide = HTMLElement;
-type SlideContent = HTMLElement;
-type Slides = HTMLCollection;
-type Bar = HTMLElement;
 
 export class StreamEventBar {
     private eventDisplayTime: number;

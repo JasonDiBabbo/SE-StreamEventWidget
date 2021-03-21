@@ -1,3 +1,5 @@
+export { Bar, Slide, SlideContent, Slides } from './dom';
+
 export {
     CheerEvent,
     FollowEvent,
