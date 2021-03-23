@@ -14,6 +14,7 @@ export {
 export {
     EventReceivedDetail,
     FieldData,
+    SessionData,
     StreamElementsApi,
     WidgetLoadDetail,
 } from './streamElements';

@@ -27,7 +27,7 @@ export class EventService {
             throw new Error(`Parameter 'event' cannot be null or undefined.`);
         }
 
-        const index = this.events.findIndex((x) => x.eventType === event.eventType);
+        const index = this.events.findIndex((x) => x.type === event.type);
         if (index !== -1) {
             this.events.splice(index, 1);
         }

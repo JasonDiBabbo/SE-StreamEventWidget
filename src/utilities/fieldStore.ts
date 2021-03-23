@@ -38,14 +38,4 @@ export class FieldKeys {
     public static EventAlertSlideTime = 'EventAlertSlideTime';
     public static EventAlertFadeTime = 'EventAlertFadeTime';
     public static EventAlertDisplayTime = 'EventAlertDisplayTime';
-    public static FollowAlertColor = 'FollowAlertColor';
-    public static SubAlertColor = 'SubAlertColor';
-    public static GiftedSubAlertColor = 'GiftedSubAlertColor';
-    public static TierOneCheerAlertColor = 'TierOneCheerAlertColor';
-    public static TierTwoCheerAlertColor = 'TierTwoCheerAlertColor';
-    public static TierThreeCheerAlertColor = 'TierThreeCheerAlertColor';
-    public static TierFourCheerAlertColor = 'TierFourCheerAlertColor';
-    public static TierFiveCheerAlertColor = 'TierFiveCheerAlertColor';
-    public static HostAlertColor = 'HostAlertColor';
-    public static RaidAlertColor = 'RaidAlertColor';
 }

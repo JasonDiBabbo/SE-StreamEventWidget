@@ -50,7 +50,7 @@ export class StreamEventFeedBar {
         slide.classList.add('slide');
         slide.appendChild(content);
 
-        switch (event.eventType) {
+        switch (event.type) {
             case StreamEventType.Cheer:
                 slide.classList.add(this.getCheerEventAlertCSS(event as CheerEvent));
                 break;

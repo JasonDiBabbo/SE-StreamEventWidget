@@ -1,64 +1,6 @@
 (() => {
     'use strict';
     class e {
-        constructor(e) {
-            this.eventType = e;
-        }
-    }
-    var t, r;
-    ((r = t || (t = {}))[(r.Cheer = 0)] = 'Cheer'),
-        (r[(r.Follow = 1)] = 'Follow'),
-        (r[(r.GiftedSubscription = 2)] = 'GiftedSubscription'),
-        (r[(r.Host = 3)] = 'Host'),
-        (r[(r.Raid = 4)] = 'Raid'),
-        (r[(r.Subscription = 5)] = 'Subscription');
-    class n extends e {
-        constructor(e, r) {
-            if ((super(t.Cheer), (this.name = e), (this.amount = r), !e))
-                throw new Error("Parameter 'name' cannot be null or empty.");
-            if (r < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
-            this.html = this.generateHtml();
-        }
-        generateHtml() {
-            const e = `X${this.amount.toString()}`;
-            return `<svg class="slide-icon" viewBox="0 0 187.35 242.67">\n                <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>\n                <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>\n            </svg><span class="slide-text">${this.name} ${e}</span>`;
-        }
-    }
-    class i extends e {
-        constructor(e) {
-            if ((super(t.Follow), (this.name = e), !e))
-                throw new Error("Parameter 'name' cannot be null or empty.");
-            this.html = this.generateHtml();
-        }
-        generateHtml() {
-            return `<i class="slide-icon fas fa-heart"></i><span class="slide-text">${this.name}</span>`;
-        }
-    }
-    class s extends e {
-        constructor(e, r) {
-            if ((super(t.GiftedSubscription), (this.name = e), (this.amount = r), !e))
-                throw new Error("Parameter 'name' cannot be null or empty.");
-            if (r < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
-            this.html = this.generateHtml();
-        }
-        generateHtml() {
-            const e = `X${this.amount.toString()}`;
-            return ` <i class="slide-icon fas fa-gift"></i><span class="slide-text">${this.name} ${e}</span>`;
-        }
-    }
-    class l extends e {
-        constructor(e, r) {
-            if ((super(t.Subscription), (this.name = e), (this.amount = r), !e))
-                throw new Error("Parameter 'name' cannot be null or empty.");
-            if (r < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
-            this.html = this.generateHtml();
-        }
-        generateHtml() {
-            const e = `X${this.amount.toString()}`;
-            return ` <i class="slide-icon fas fa-star"></i><span class="slide-text">${this.name} ${e}</span>`;
-        }
-    }
-    class o {
         static Get(e) {
             if (Object.prototype.hasOwnProperty.call(this.fieldData, e)) return this.fieldData[e];
         }
@@ -66,23 +8,13 @@
             this.fieldData[e] = t;
         }
     }
-    o.fieldData = {};
-    class a {}
-    (a.EventCycleDisplayTime = 'EventCycleDisplayTime'),
-        (a.EventAlertSlideTime = 'EventAlertSlideTime'),
-        (a.EventAlertFadeTime = 'EventAlertFadeTime'),
-        (a.EventAlertDisplayTime = 'EventAlertDisplayTime'),
-        (a.FollowAlertColor = 'FollowAlertColor'),
-        (a.SubAlertColor = 'SubAlertColor'),
-        (a.GiftedSubAlertColor = 'GiftedSubAlertColor'),
-        (a.TierOneCheerAlertColor = 'TierOneCheerAlertColor'),
-        (a.TierTwoCheerAlertColor = 'TierTwoCheerAlertColor'),
-        (a.TierThreeCheerAlertColor = 'TierThreeCheerAlertColor'),
-        (a.TierFourCheerAlertColor = 'TierFourCheerAlertColor'),
-        (a.TierFiveCheerAlertColor = 'TierFiveCheerAlertColor'),
-        (a.HostAlertColor = 'HostAlertColor'),
-        (a.RaidAlertColor = 'RaidAlertColor');
-    class h {
+    e.fieldData = {};
+    class t {}
+    (t.EventCycleDisplayTime = 'EventCycleDisplayTime'),
+        (t.EventAlertSlideTime = 'EventAlertSlideTime'),
+        (t.EventAlertFadeTime = 'EventAlertFadeTime'),
+        (t.EventAlertDisplayTime = 'EventAlertDisplayTime');
+    class n {
         static toMilliseconds(e) {
             return 1e3 * e;
         }
@@ -90,24 +22,27 @@
             return e / 1e3;
         }
     }
-    class c {
-        static toPromise(e, t, r) {
-            return e && t && r
-                ? e.style[t] === r
+    class r {
+        static toPromise(e, t, n) {
+            return e && t && n
+                ? e.style[t] === n
                     ? Promise.resolve()
-                    : new Promise((n) => {
-                          const i = (r) => {
-                              r.propertyName === t &&
-                                  (e.removeEventListener('transitionend', i), n());
+                    : new Promise((r) => {
+                          const s = (n) => {
+                              n.propertyName === t &&
+                                  (e.removeEventListener('transitionend', s), r());
                           };
-                          e.addEventListener('transitionend', i), (e.style[t] = r);
+                          e.addEventListener('transitionend', s), (e.style[t] = n);
                       })
                 : Promise.reject();
         }
     }
-    class d {
-        constructor(e) {
-            (this.eventService = e), (this.eventDisplayTime = o.Get(a.EventCycleDisplayTime));
+    class s {
+        constructor(n, r) {
+            (this.eventService = n),
+                (this.alertService = r),
+                (this.alertDisplayTime = e.Get(t.EventAlertDisplayTime)),
+                (this.eventDisplayTime = e.Get(t.EventCycleDisplayTime));
         }
         addEvents(...e) {
             if (!e) throw new Error("Parameter 'events' cannot be null or undefined.");
@@ -117,15 +52,49 @@
             this.initializeCurrentSlide().then((e) => this.cycleContent(e));
         }
         triggerAlert(e, t = !0) {
-            throw (t && this.addEvents(e), new Error('Method not implemented.'));
+            t && this.addEvents(e);
+            const n = this.getBar(),
+                r = this.getCurrentSlide(),
+                s = this.alertService.createAlertSlide(e);
+            this.placeSlideOffscreenBottom(s),
+                n.appendChild(s),
+                Promise.all([this.animateSlideUpOut(r), this.animateSlideUpIn(s)])
+                    .then(() => n.removeChild(r))
+                    .then(() => this.waitForAlertDisplay())
+                    .then(() => this.markAlertAsRead(s))
+                    .then(() => this.cycleContent(s));
+        }
+        animateSlideUpIn(e) {
+            return (
+                this.requestBrowserAnimation(e),
+                new Promise((t) => {
+                    const n = (r) => {
+                        'transform' === r.propertyName &&
+                            (e.removeEventListener('transitionend', n), t());
+                    };
+                    e.addEventListener('transitionend', n), e.classList.remove('offscreen-bottom');
+                })
+            );
+        }
+        animateSlideUpOut(e) {
+            return new Promise((t) => {
+                const n = (r) => {
+                    'transform' === r.propertyName &&
+                        (e.removeEventListener('transitionend', n), t());
+                };
+                e.addEventListener('transitionend', n), e.classList.add('offscreen-top');
+            });
         }
         cycleContent(e) {
             this.processSlideContent(e).then(() => {
                 e === this.getCurrentSlide() && this.cycleContent(e);
             });
         }
+        getBar() {
+            return document.querySelector('.bar');
+        }
         getCurrentSlide() {
-            const e = document.querySelector('.bar');
+            const e = this.getBar();
             if (!e) throw new Error("Element with '.bar' class not found.");
             const t = e.children;
             if (!t || t.length < 1) throw new Error('No children found in bar.');
@@ -137,11 +106,11 @@
         hideContent(e) {
             const t = this.getSlideContent(e);
             return new Promise((e) => {
-                const r = (n) => {
-                    'opacity' === n.propertyName &&
-                        (t.removeEventListener('transitionend', r), e());
+                const n = (r) => {
+                    'opacity' === r.propertyName &&
+                        (t.removeEventListener('transitionend', n), e());
                 };
-                t.addEventListener('transitionend', r), t.classList.add('hidden');
+                t.addEventListener('transitionend', n), t.classList.add('hidden');
             });
         }
         initializeCurrentSlide() {
@@ -149,35 +118,145 @@
                 t = this.eventService.getCurrentEvent();
             return this.populateSlide(e, t).then(() => e);
         }
+        markAlertAsRead(e) {
+            return new Promise((t) => {
+                const n = (r) => {
+                    'background-color' === r.propertyName &&
+                        (e.removeEventListener('transitionend', n), t());
+                };
+                e.addEventListener('transitionend', n), (e.classList.value = 'slide');
+            });
+        }
+        placeSlideOffscreenBottom(e) {
+            e.classList.add('offscreen-bottom');
+        }
         populateSlide(e, t) {
-            const r = this.getSlideContent(e);
+            const n = this.getSlideContent(e);
             return new Promise((e) => {
-                (r.innerHTML = t.html), e();
+                (n.innerHTML = t.html), e();
             });
         }
         processSlideContent(e) {
-            return this.waitForEventDisplayTime()
+            return this.waitForEventDisplay()
                 .then(() => this.hideContent(e))
                 .then(() => this.populateSlide(e, this.eventService.getNextEvent()))
                 .then(() => this.revealContent(e));
         }
+        requestBrowserAnimation(e) {
+            e.offsetWidth;
+        }
         revealContent(e) {
             const t = this.getSlideContent(e);
             return new Promise((e) => {
-                const r = (n) => {
-                    'opacity' === n.propertyName &&
-                        (t.removeEventListener('transitionend', r), e());
+                const n = (r) => {
+                    'opacity' === r.propertyName &&
+                        (t.removeEventListener('transitionend', n), e());
                 };
-                t.addEventListener('transitionend', r), t.classList.remove('hidden');
+                t.addEventListener('transitionend', n), t.classList.remove('hidden');
             });
         }
-        waitForEventDisplayTime() {
+        waitForAlertDisplay() {
+            return new Promise((e) => {
+                window.setTimeout(() => e(), this.alertDisplayTime);
+            });
+        }
+        waitForEventDisplay() {
             return new Promise((e) => {
                 window.setTimeout(() => e(), this.eventDisplayTime);
             });
         }
     }
-    class v {
+    class i {
+        constructor(e) {
+            this.type = e;
+        }
+    }
+    var a;
+    !(function (e) {
+        (e[(e.Cheer = 0)] = 'Cheer'),
+            (e[(e.Follow = 1)] = 'Follow'),
+            (e[(e.GiftedSubscription = 2)] = 'GiftedSubscription'),
+            (e[(e.Host = 3)] = 'Host'),
+            (e[(e.Raid = 4)] = 'Raid'),
+            (e[(e.Subscription = 5)] = 'Subscription');
+    })(a || (a = {}));
+    class l extends i {
+        constructor(e, t) {
+            if ((super(a.Cheer), (this.name = e), (this.amount = t), !e))
+                throw new Error("Parameter 'name' cannot be null or empty.");
+            if (t < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
+            this.html = this.generateHtml();
+        }
+        generateHtml() {
+            const e = `X${this.amount.toString()}`;
+            return `<svg class="slide-icon" viewBox="0 0 187.35 242.67">\n                <path d="M221.2,159.15l-82.46-29.27a6.63,6.63,0,0,0-4.48,0L51.8,159.15a6.7,6.7,0,0,1-7.83-10l86.95-131a6.7,6.7,0,0,1,11.16,0l86.95,131A6.7,6.7,0,0,1,221.2,159.15Z" transform="translate(-42.83 -15.17)"/>\n                <path d="M220.25,195.51l-80.09,61.24a6.7,6.7,0,0,1-7.32,0L52.75,195.51a6.69,6.69,0,0,1,1.42-11.92l80.09-28.44a6.75,6.75,0,0,1,4.48,0l80.09,28.44A6.69,6.69,0,0,1,220.25,195.51Z" transform="translate(-42.83 -15.17)"/>\n            </svg><span class="slide-text">${this.name} ${e}</span>`;
+        }
+    }
+    class o extends i {
+        constructor(e) {
+            if ((super(a.Follow), (this.name = e), !e))
+                throw new Error("Parameter 'name' cannot be null or empty.");
+            this.html = this.generateHtml();
+        }
+        generateHtml() {
+            return `<i class="slide-icon fas fa-heart"></i><span class="slide-text">${this.name}</span>`;
+        }
+    }
+    class c extends i {
+        constructor(e, t) {
+            if ((super(a.GiftedSubscription), (this.name = e), (this.amount = t), !e))
+                throw new Error("Parameter 'name' cannot be null or empty.");
+            if (t < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
+            this.html = this.generateHtml();
+        }
+        generateHtml() {
+            const e = `X${this.amount.toString()}`;
+            return ` <i class="slide-icon fas fa-gift"></i><span class="slide-text">${this.name} ${e}</span>`;
+        }
+    }
+    class h extends i {
+        constructor(e, t) {
+            if ((super(a.Host), (this.name = e), (this.amount = t), !e))
+                throw new Error("Parameter 'name' cannot be null or empty.");
+            if (t < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
+            this.html = this.generateHtml();
+        }
+        generateHtml() {
+            const e = `X${this.amount.toString()}`;
+            return ` <i class="slide-icon fas fa-desktop"></i><span class="slide-text">${this.name} ${e}</span>`;
+        }
+    }
+    class d extends i {
+        constructor(e, t) {
+            if ((super(a.Raid), (this.name = e), (this.amount = t), !e))
+                throw new Error("Parameter 'name' cannot be null or empty.");
+            if (t < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
+            this.html = this.generateHtml();
+        }
+        get isValid() {
+            return !!this.html && !!this.name && !!this.amount && this.amount > 0;
+        }
+        generateHtml() {
+            const e = `X${this.amount.toString()}`;
+            return ` <i class="slide-icon fas fa-users"></i><span class="slide-text">${this.name} ${e}</span>`;
+        }
+        getRaidAmountString() {
+            if (!(this.amount && this.amount > 0)) return '';
+        }
+    }
+    class m extends i {
+        constructor(e, t) {
+            if ((super(a.Subscription), (this.name = e), (this.amount = t), !e))
+                throw new Error("Parameter 'name' cannot be null or empty.");
+            if (t < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
+            this.html = this.generateHtml();
+        }
+        generateHtml() {
+            const e = `X${this.amount.toString()}`;
+            return ` <i class="slide-icon fas fa-star"></i><span class="slide-text">${this.name} ${e}</span>`;
+        }
+    }
+    class u {
         get bar() {
             return document.querySelector('.bar');
         }
@@ -200,26 +279,26 @@
             t && this.requestBrowserAnimation(e), e.classList.add('offscreen-top');
         }
         createEventAlertSlide(e) {
-            const r = document.createElement('div');
-            r.classList.add('bar-content'), (r.innerHTML = e.html);
+            const t = document.createElement('div');
+            t.classList.add('bar-content'), (t.innerHTML = e.html);
             const n = document.createElement('div');
-            switch ((n.classList.add('slide'), n.appendChild(r), e.eventType)) {
-                case t.Cheer:
+            switch ((n.classList.add('slide'), n.appendChild(t), e.type)) {
+                case a.Cheer:
                     n.classList.add(this.getCheerEventAlertCSS(e));
                     break;
-                case t.Follow:
+                case a.Follow:
                     n.classList.add('follow-event-alert');
                     break;
-                case t.Subscription:
+                case a.Subscription:
                     n.classList.add('sub-event-alert');
                     break;
-                case t.GiftedSubscription:
+                case a.GiftedSubscription:
                     n.classList.add('gifted-sub-event-alert');
                     break;
-                case t.Host:
+                case a.Host:
                     n.classList.add('host-event-alert');
                     break;
-                case t.Raid:
+                case a.Raid:
                     n.classList.add('raid-event-alert');
             }
             return n;
@@ -244,13 +323,13 @@
             e.offsetWidth;
         }
     }
-    class u {
+    class v {
         constructor() {
-            (this.timeEventAlertDisplay = o.Get(a.EventAlertDisplayTime)),
-                (this.timeEventDisplay = o.Get(a.EventCycleDisplayTime)),
-                (this.timeEventAlertSlide = o.Get(a.EventAlertSlideTime)),
-                (this.timeEventAlertFade = o.Get(a.EventAlertFadeTime)),
-                (this.bar = new v());
+            (this.timeEventAlertDisplay = e.Get(t.EventAlertDisplayTime)),
+                (this.timeEventDisplay = e.Get(t.EventCycleDisplayTime)),
+                (this.timeEventAlertSlide = e.Get(t.EventAlertSlideTime)),
+                (this.timeEventAlertFade = e.Get(t.EventAlertFadeTime)),
+                (this.bar = new u());
         }
         get currentEvent() {
             const e = this.events[this.currentEventIndex];
@@ -277,16 +356,16 @@
         }
         handleEventAlert(e, t = !0) {
             clearTimeout(this.currentEventAlertTimeout), t && this.registerEvent(e);
-            const r = this.bar.createEventAlertSlide(e);
-            this.bar.animateSlideDownOut(r),
-                this.bar.addSlide(r),
+            const n = this.bar.createEventAlertSlide(e);
+            this.bar.animateSlideDownOut(n),
+                this.bar.addSlide(n),
                 this.bar.animateSlideUpOut(this.bar.currentSlide),
-                this.bar.animateSlideUpIn(r, !0),
+                this.bar.animateSlideUpIn(n, !0),
                 (this.currentEventAlertTimeout = window.setTimeout(() => {
                     const e = this.bar.slides;
                     for (let t = 0; t < e.length - 1; t++) e[t].remove();
                     this.currentEventAlertTimeout = window.setTimeout(() => {
-                        this.bar.resetSlideStyles(r),
+                        this.bar.resetSlideStyles(n),
                             (this.currentEventAlertTimeout = window.setTimeout(() => {
                                 this.displayEvents();
                             }, this.timeEventAlertFade));
@@ -295,26 +374,26 @@
         }
         registerEvent(e) {
             if (!e) return;
-            const t = this.events.findIndex((t) => t.eventType === e.eventType);
+            const t = this.events.findIndex((t) => t.type === e.type);
             if (-1 === t) this.currentEventIndex = this.events.push(e) - 1;
             else {
-                let r;
+                let n;
                 t > this.currentEventIndex
                     ? (this.events.splice(t, 1),
-                      (r =
+                      (n =
                           this.currentEventIndex === this.events.length - 1
                               ? 0
                               : this.currentEventIndex + 1),
-                      this.events.splice(r, 0, e))
+                      this.events.splice(n, 0, e))
                     : t < this.currentEventIndex
                     ? (this.events.splice(t, 1),
-                      (r =
+                      (n =
                           this.currentEventIndex - 1 == 0
                               ? this.events.length - 1
                               : this.currentEventIndex - 2),
-                      this.events.splice(r, 0, e))
-                    : (this.events.splice(t, 1, e), (r = t)),
-                    (this.currentEventIndex = r);
+                      this.events.splice(n, 0, e))
+                    : (this.events.splice(t, 1, e), (n = t)),
+                    (this.currentEventIndex = n);
             }
         }
         registerEvents(e) {
@@ -342,12 +421,10 @@
                 .then(() => {
                     e === this.bar.currentSlide && this.cycleEvent();
                 })
-                .catch(() => {
-                    console.log('Swallowing caught rejection');
-                });
+                .catch(() => {});
         }
         displayEvent(e) {
-            return new Promise((t, r) => {
+            return new Promise((t, n) => {
                 window.setTimeout(() => {
                     this.hideElementAux(e)
                         .then(() => ((e.innerHTML = this.nextEvent.html), this.revealElementAux(e)))
@@ -355,26 +432,72 @@
                             t();
                         })
                         .catch((e) => {
-                            r(e);
+                            n(e);
                         });
                 }, this.timeEventDisplay);
             });
         }
         revealElementAux(e) {
-            return c.toPromise(e, 'opacity', '1');
+            return r.toPromise(e, 'opacity', '1');
         }
         hideElementAux(e) {
-            return c.toPromise(e, 'opacity', '0');
+            return r.toPromise(e, 'opacity', '0');
         }
     }
-    u.SInit =
-        ((u.prototype.timeEventAlertDisplay = 2e3),
-        (u.prototype.timeEventDisplay = 1e4),
-        (u.prototype.timeEventAlertSlide = 750),
-        (u.prototype.timeEventAlertFade = 2e3),
-        (u.prototype.currentEventIndex = -1),
-        void (u.prototype.events = []));
-    class m {
+    v.SInit =
+        ((v.prototype.timeEventAlertDisplay = 2e3),
+        (v.prototype.timeEventDisplay = 1e4),
+        (v.prototype.timeEventAlertSlide = 750),
+        (v.prototype.timeEventAlertFade = 2e3),
+        (v.prototype.currentEventIndex = -1),
+        void (v.prototype.events = []));
+    class p {
+        createAlertSlide(e) {
+            const t = document.createElement('div');
+            t.classList.add('slide-content'), (t.innerHTML = e.html);
+            const n = document.createElement('div');
+            n.classList.add('slide'), n.appendChild(t);
+            const r = this.lookupAlertCssClass(e);
+            return n.classList.add(r), n;
+        }
+        lookupAlertCssClass(e) {
+            if (!e) throw new Error("Parameter 'event' cannot be null or undefined.");
+            let t;
+            switch (e.type) {
+                case a.Cheer:
+                    t = this.lookupCheerAlertCssClass(e.amount);
+                    break;
+                case a.Follow:
+                    t = 'follow-alert';
+                    break;
+                case a.GiftedSubscription:
+                    t = 'gifted-sub-alert';
+                    break;
+                case a.Host:
+                    t = 'host-alert';
+                    break;
+                case a.Raid:
+                    t = 'raid-alert';
+                    break;
+                case a.Subscription:
+                    t = 'sub-alert';
+            }
+            return t;
+        }
+        lookupCheerAlertCssClass(e) {
+            if (e <= 0) throw new Error("Parameter 'amount' cannot be less than or equal to 0.");
+            return e < 100
+                ? 'cheer-alert-tier-1'
+                : e < 1e3
+                ? 'cheer-alert-tier-2'
+                : e < 5e3
+                ? 'cheer-alert-tier-3'
+                : e < 1e4
+                ? 'cheer-alert-tier-4'
+                : 'cheer-alert-tier-5';
+        }
+    }
+    class E {
         constructor() {
             (this.events = []), (this.eventIndex = -1);
         }
@@ -389,7 +512,7 @@
         }
         registerEvent(e) {
             if (!e) throw new Error("Parameter 'event' cannot be null or undefined.");
-            const t = this.events.findIndex((t) => t.eventType === e.eventType);
+            const t = this.events.findIndex((t) => t.type === e.type);
             -1 !== t && this.events.splice(t, 1),
                 this.events.push(e),
                 1 === this.events.length && (this.eventIndex = 0);
@@ -400,39 +523,74 @@
                 : (this.eventIndex += 1);
         }
     }
-    window.addEventListener('onWidgetLoad', function (e) {
-        const t = e.detail.session.data,
-            r = e.detail.fieldData,
-            c = h.toMilliseconds(r.eventCycleDisplayTime),
-            v = h.toMilliseconds(r.eventAlertDisplayTime),
-            u = h.toMilliseconds(r.eventAlertSlideTime),
-            E = h.toMilliseconds(r.eventAlertFadeTime);
-        o.Set(a.EventCycleDisplayTime, c),
-            o.Set(a.EventAlertDisplayTime, v),
-            o.Set(a.EventAlertSlideTime, u),
-            o.Set(a.EventAlertFadeTime, E),
-            o.Set(a.FollowAlertColor, r.followAlertColor),
-            o.Set(a.SubAlertColor, r.subAlertColor),
-            o.Set(a.GiftedSubAlertColor, r.giftedSubAlertColor),
-            o.Set(a.TierOneCheerAlertColor, r.tierOneCheerAlertColor),
-            o.Set(a.TierTwoCheerAlertColor, r.tierTwoCheerAlertColor),
-            o.Set(a.TierThreeCheerAlertColor, r.tierThreeCheerAlertColor),
-            o.Set(a.TierFourCheerAlertColor, r.tierFourCheerAlertColor),
-            o.Set(a.TierFiveCheerAlertColor, r.tierFiveCheerAlertColor),
-            o.Set(a.HostAlertColor, r.hostAlertColor),
-            o.Set(a.RaidAlertColor, r.raidAlertColor);
-        const p = t['follower-latest'],
-            C = t['subscriber-latest'],
-            S = t['subscriber-gifted-latest'],
-            w = t['cheer-latest'],
-            A = new i(p.name),
-            y = new l(C.name, C.amount),
-            T = new s(S.sender, S.amount),
-            b = new n(w.name, w.amount),
-            f = [];
-        f.push(A), f.push(y), f.push(T), f.push(b);
-        const g = new m(),
-            x = new d(g);
-        x.addEvents(...f), x.beginCycle();
-    });
+    const w = ['bot:counter', 'event:test', 'event:skip', 'message'];
+    let f = new E(),
+        y = new p(),
+        S = new s(f, y);
+    window.addEventListener('onEventReceived', function (e) {
+        if (
+            ((e) => {
+                try {
+                    const t = e.detail.listener;
+                    return w.includes(t);
+                } catch {
+                    return !1;
+                }
+            })(e)
+        )
+            return;
+        const t = e.detail.listener,
+            n = e.detail.event;
+        -1 === w.indexOf(t) &&
+            ('follower-latest' === t
+                ? S.triggerAlert(new o(n.name))
+                : 'cheer-latest' === t
+                ? S.triggerAlert(new l(n.name, n.amount))
+                : 'subscriber-latest' === t
+                ? n.gifted && n.isCommunityGift
+                    ? SE_API.resumeQueue()
+                    : n.bulkGifted
+                    ? S.triggerAlert(new c(n.sender, n.amount))
+                    : n.gifted
+                    ? S.triggerAlert(new c(n.sender))
+                    : S.triggerAlert(new m(n.name, n.amount))
+                : 'host-latest' === t
+                ? S.triggerAlert(new h(n.name, n.amount), !1)
+                : 'raid-latest' === t
+                ? S.triggerAlert(new d(n.name, n.amount), !1)
+                : SE_API.resumeQueue());
+    }),
+        window.addEventListener('onWidgetLoad', function (e) {
+            const t = e.detail.session.data,
+                n = e.detail.fieldData;
+            g(n);
+            const r = [b(t), A(t), C(t), x(t)];
+            (f = new E()), (y = new p()), (S = new s(f, y)), S.addEvents(...r), S.beginCycle();
+        });
+    const g = function (r) {
+            const s = n.toMilliseconds(r.eventCycleDisplayTime),
+                i = n.toMilliseconds(r.eventAlertDisplayTime),
+                a = n.toMilliseconds(r.eventAlertSlideTime),
+                l = n.toMilliseconds(r.eventAlertFadeTime);
+            e.Set(t.EventCycleDisplayTime, s),
+                e.Set(t.EventAlertDisplayTime, i),
+                e.Set(t.EventAlertSlideTime, a),
+                e.Set(t.EventAlertFadeTime, l);
+        },
+        b = function (e) {
+            const t = e['follower-latest'];
+            return new o(t.name);
+        },
+        A = function (e) {
+            const t = e['subscriber-latest'];
+            return new m(t.name, t.amount);
+        },
+        C = function (e) {
+            const t = e['subscriber-gifted-latest'];
+            return new c(t.name, t.amount);
+        },
+        x = function (e) {
+            const t = e['cheer-latest'];
+            return new l(t.name, t.amount);
+        };
 })();

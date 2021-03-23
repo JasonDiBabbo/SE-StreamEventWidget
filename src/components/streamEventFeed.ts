@@ -121,7 +121,7 @@ export class StreamEventFeed {
             return;
         }
 
-        const originalEventIndex = this.events.findIndex((x) => x.eventType === event.eventType);
+        const originalEventIndex = this.events.findIndex((x) => x.type === event.type);
 
         if (originalEventIndex === -1) {
             this.currentEventIndex = this.events.push(event) - 1;
@@ -197,7 +197,6 @@ export class StreamEventFeed {
             })
             .catch(() => {
                 // Do nothing
-                console.log('Swallowing caught rejection');
             });
     }
 
