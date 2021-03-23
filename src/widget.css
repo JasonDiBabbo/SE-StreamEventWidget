@@ -26,9 +26,9 @@
     --dropShadowBlurRadius: {{dropShadowBlurRadius}}px;
     --dropShadowColor: {{dropShadowColor}};
 
-    --eventCycleFadeTime: {{eventCycleFadeTime}}s;
-    --eventAlertSlideTime: {{eventAlertSlideTime}}s;
-    --eventAlertFadeTime: {{eventAlertFadeTime}}s;
+    --eventFadeTime: {{eventFadeTime}}s;
+    --alertSlideTime: {{alertSlideTime}}s;
+    --alertFadeTime: {{alertFadeTime}}s;
 
     --followAlertColor: {{followAlertColor}};
     --subAlertColor: {{subAlertColor}};
@@ -150,7 +150,7 @@ html {
 }
 
 .bar .slide {
-    transition: transform var(--eventAlertSlideTime) cubic-bezier(.69,.26,.6,1);
+    transition: transform var(--alertSlideTime) cubic-bezier(.69,.26,.6,1);
 }
 
 /* .bar .slide.follow-event-alert .slide-content,
@@ -252,8 +252,8 @@ svg.slide-icon path {
     justify-content: flex-start;
 
     background-color: transparent;
-    transition: opacity var(--eventCycleFadeTime) linear,
-                background-color var(--eventAlertFadeTime) linear;
+    transition: opacity var(--eventFadeTime) linear,
+                background-color var(--alertFadeTime) linear;
     opacity: 1;
 }
 
@@ -268,7 +268,7 @@ svg.slide-icon path {
 .bar > .slide > .slide-content > i.slide-icon {
     flex: none;
     color: var(--accentColor);
-    transition: color var(--eventAlertFadeTime) linear;
+    transition: color var(--alertFadeTime) linear;
 }
 
 .bar > .slide > .slide-content > svg.slide-icon {
@@ -277,7 +277,7 @@ svg.slide-icon path {
 }
 
 .bar > .slide > .slide-content > svg.slide-icon > path {
-    transition: fill var(--eventAlertFadeTime) linear;
+    transition: fill var(--alertFadeTime) linear;
     fill: var(--accentColor);
 }
 

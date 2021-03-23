@@ -10,10 +10,10 @@
     }
     e.fieldData = {};
     class t {}
-    (t.EventCycleDisplayTime = 'EventCycleDisplayTime'),
-        (t.EventAlertSlideTime = 'EventAlertSlideTime'),
-        (t.EventAlertFadeTime = 'EventAlertFadeTime'),
-        (t.EventAlertDisplayTime = 'EventAlertDisplayTime');
+    (t.EventDisplayTime = 'EventDisplayTime'),
+        (t.AlertSlideTime = 'AlertSlideTime'),
+        (t.AlertFadeTime = 'AlertFadeTime'),
+        (t.AlertDisplayTime = 'AlertDisplayTime');
     class n {
         static toMilliseconds(e) {
             return 1e3 * e;
@@ -41,8 +41,8 @@
         constructor(n, r) {
             (this.eventService = n),
                 (this.alertService = r),
-                (this.alertDisplayTime = e.Get(t.EventAlertDisplayTime)),
-                (this.eventDisplayTime = e.Get(t.EventCycleDisplayTime));
+                (this.alertDisplayTime = e.Get(t.AlertDisplayTime)),
+                (this.eventDisplayTime = e.Get(t.EventDisplayTime));
         }
         addEvents(...e) {
             if (!e) throw new Error("Parameter 'events' cannot be null or undefined.");
@@ -206,15 +206,14 @@
         constructor(e, t) {
             if ((super(a.GiftedSubscription), (this.name = e), (this.amount = t), !e))
                 throw new Error("Parameter 'name' cannot be null or empty.");
-            if (t < 1) throw new Error("Parameter 'amount' cannot be less than 1.");
-            this.html = this.generateHtml();
+            (this.amount = t ?? 1), (this.html = this.generateHtml());
         }
         generateHtml() {
             const e = `X${this.amount.toString()}`;
             return ` <i class="slide-icon fas fa-gift"></i><span class="slide-text">${this.name} ${e}</span>`;
         }
     }
-    class h extends i {
+    class d extends i {
         constructor(e, t) {
             if ((super(a.Host), (this.name = e), (this.amount = t), !e))
                 throw new Error("Parameter 'name' cannot be null or empty.");
@@ -226,7 +225,7 @@
             return ` <i class="slide-icon fas fa-desktop"></i><span class="slide-text">${this.name} ${e}</span>`;
         }
     }
-    class d extends i {
+    class h extends i {
         constructor(e, t) {
             if ((super(a.Raid), (this.name = e), (this.amount = t), !e))
                 throw new Error("Parameter 'name' cannot be null or empty.");
@@ -325,10 +324,10 @@
     }
     class v {
         constructor() {
-            (this.timeEventAlertDisplay = e.Get(t.EventAlertDisplayTime)),
-                (this.timeEventDisplay = e.Get(t.EventCycleDisplayTime)),
-                (this.timeEventAlertSlide = e.Get(t.EventAlertSlideTime)),
-                (this.timeEventAlertFade = e.Get(t.EventAlertFadeTime)),
+            (this.timeEventAlertDisplay = e.Get(t.AlertDisplayTime)),
+                (this.timeEventDisplay = e.Get(t.EventDisplayTime)),
+                (this.timeEventAlertSlide = e.Get(t.AlertSlideTime)),
+                (this.timeEventAlertFade = e.Get(t.AlertFadeTime)),
                 (this.bar = new u());
         }
         get currentEvent() {
@@ -524,9 +523,7 @@
         }
     }
     const w = ['bot:counter', 'event:test', 'event:skip', 'message'];
-    let f = new E(),
-        y = new p(),
-        S = new s(f, y);
+    let f, y, g;
     window.addEventListener('onEventReceived', function (e) {
         if (
             ((e) => {
@@ -543,39 +540,39 @@
             n = e.detail.event;
         -1 === w.indexOf(t) &&
             ('follower-latest' === t
-                ? S.triggerAlert(new o(n.name))
+                ? g.triggerAlert(new o(n.name))
                 : 'cheer-latest' === t
-                ? S.triggerAlert(new l(n.name, n.amount))
+                ? g.triggerAlert(new l(n.name, n.amount))
                 : 'subscriber-latest' === t
                 ? n.gifted && n.isCommunityGift
                     ? SE_API.resumeQueue()
                     : n.bulkGifted
-                    ? S.triggerAlert(new c(n.sender, n.amount))
+                    ? g.triggerAlert(new c(n.sender, n.amount))
                     : n.gifted
-                    ? S.triggerAlert(new c(n.sender))
-                    : S.triggerAlert(new m(n.name, n.amount))
+                    ? g.triggerAlert(new c(n.sender))
+                    : g.triggerAlert(new m(n.name, n.amount))
                 : 'host-latest' === t
-                ? S.triggerAlert(new h(n.name, n.amount), !1)
+                ? g.triggerAlert(new d(n.name, n.amount), !1)
                 : 'raid-latest' === t
-                ? S.triggerAlert(new d(n.name, n.amount), !1)
+                ? g.triggerAlert(new h(n.name, n.amount), !1)
                 : SE_API.resumeQueue());
     }),
         window.addEventListener('onWidgetLoad', function (e) {
             const t = e.detail.session.data,
                 n = e.detail.fieldData;
-            g(n);
-            const r = [b(t), A(t), C(t), x(t)];
-            (f = new E()), (y = new p()), (S = new s(f, y)), S.addEvents(...r), S.beginCycle();
+            S(n);
+            const r = [b(t), A(t), x(t)];
+            (f = new E()), (y = new p()), (g = new s(f, y)), g.addEvents(...r), g.beginCycle();
         });
-    const g = function (r) {
-            const s = n.toMilliseconds(r.eventCycleDisplayTime),
-                i = n.toMilliseconds(r.eventAlertDisplayTime),
-                a = n.toMilliseconds(r.eventAlertSlideTime),
-                l = n.toMilliseconds(r.eventAlertFadeTime);
-            e.Set(t.EventCycleDisplayTime, s),
-                e.Set(t.EventAlertDisplayTime, i),
-                e.Set(t.EventAlertSlideTime, a),
-                e.Set(t.EventAlertFadeTime, l);
+    const S = function (r) {
+            const s = n.toMilliseconds(r.eventDisplayTime),
+                i = n.toMilliseconds(r.alertDisplayTime),
+                a = n.toMilliseconds(r.alertSlideTime),
+                l = n.toMilliseconds(r.alertFadeTime);
+            e.Set(t.EventDisplayTime, s),
+                e.Set(t.AlertDisplayTime, i),
+                e.Set(t.AlertSlideTime, a),
+                e.Set(t.AlertFadeTime, l);
         },
         b = function (e) {
             const t = e['follower-latest'];
@@ -583,11 +580,14 @@
         },
         A = function (e) {
             const t = e['subscriber-latest'];
-            return new m(t.name, t.amount);
-        },
-        C = function (e) {
-            const t = e['subscriber-gifted-latest'];
-            return new c(t.name, t.amount);
+            let n;
+            return (
+                (n =
+                    t.gifted && 'string' == typeof t.amount
+                        ? new m(t.name, t.count)
+                        : new m(t.name, t.amount)),
+                n
+            );
         },
         x = function (e) {
             const t = e['cheer-latest'];

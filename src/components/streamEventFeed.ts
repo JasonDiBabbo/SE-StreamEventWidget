@@ -42,10 +42,10 @@ export class StreamEventFeed {
     }
 
     constructor() {
-        this.timeEventAlertDisplay = FieldStore.Get<number>(FieldKeys.EventAlertDisplayTime);
-        this.timeEventDisplay = FieldStore.Get<number>(FieldKeys.EventCycleDisplayTime);
-        this.timeEventAlertSlide = FieldStore.Get<number>(FieldKeys.EventAlertSlideTime);
-        this.timeEventAlertFade = FieldStore.Get<number>(FieldKeys.EventAlertFadeTime);
+        this.timeEventAlertDisplay = FieldStore.Get<number>(FieldKeys.AlertDisplayTime);
+        this.timeEventDisplay = FieldStore.Get<number>(FieldKeys.EventDisplayTime);
+        this.timeEventAlertSlide = FieldStore.Get<number>(FieldKeys.AlertSlideTime);
+        this.timeEventAlertFade = FieldStore.Get<number>(FieldKeys.AlertFadeTime);
 
         this.bar = new StreamEventFeedBar();
     }

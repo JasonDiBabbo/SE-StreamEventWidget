@@ -139,35 +139,35 @@
         "type": "colorpicker",
         "value": "#303030"
     },
-    "eventCycleFadeTime": {
+    "eventFadeTime": {
         "group": "ANIMATION",
         "label": "Cycle - Fade in/out time (s)",
         "type": "number",
         "value": 2,
         "min": 1
     },
-    "eventCycleDisplayTime": {
+    "eventDisplayTime": {
         "group": "ANIMATION",
         "label": "Cycle - Display time (s)",
         "type": "number",
         "value": 10,
         "min": 4
     },
-    "eventAlertSlideTime": {
+    "alertSlideTime": {
         "group": "ANIMATION",
         "label": "Alert - Slide in/out time (s)",
         "type": "number",
         "value": 0.75,
         "min": 0.25
     },
-    "eventAlertDisplayTime": {
+    "alertDisplayTime": {
         "group": "ANIMATION",
         "label": "Alert - Display time (s)",
         "type": "number",
         "value": 2,
         "min": 0.5
     },
-    "eventAlertFadeTime": {
+    "alertFadeTime": {
         "group": "ANIMATION",
         "label": "Alert - Fade time (s)",
         "type": "number",

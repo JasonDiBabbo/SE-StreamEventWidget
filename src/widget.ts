@@ -66,11 +66,9 @@ window.addEventListener('onWidgetLoad', function (obj) {
     const fieldData: FieldData = obj['detail']['fieldData'];
 
     initializeFieldStore(fieldData);
-
     const events: StreamEvent[] = [
         getLatestFollowEvent(data),
         getLatestSubEvent(data),
-        getLatestGiftedSubEvent(data),
         getLatestCheerEvent(data),
     ];
 
@@ -83,15 +81,15 @@ window.addEventListener('onWidgetLoad', function (obj) {
 });
 
 const initializeFieldStore: (fieldData: FieldData) => void = function (fieldData: FieldData) {
-    const eventCycleDisplayTime = Time.toMilliseconds(fieldData.eventCycleDisplayTime as number);
-    const eventAlertDisplayTime = Time.toMilliseconds(fieldData.eventAlertDisplayTime as number);
-    const eventAlertSlideTime = Time.toMilliseconds(fieldData.eventAlertSlideTime as number);
-    const eventAlertFadeTime = Time.toMilliseconds(fieldData.eventAlertFadeTime as number);
+    const eventDisplayTime = Time.toMilliseconds(fieldData.eventDisplayTime as number);
+    const alertDisplayTime = Time.toMilliseconds(fieldData.alertDisplayTime as number);
+    const alertSlideTime = Time.toMilliseconds(fieldData.alertSlideTime as number);
+    const alertFadeTime = Time.toMilliseconds(fieldData.alertFadeTime as number);
 
-    FieldStore.Set(FieldKeys.EventCycleDisplayTime, eventCycleDisplayTime);
-    FieldStore.Set(FieldKeys.EventAlertDisplayTime, eventAlertDisplayTime);
-    FieldStore.Set(FieldKeys.EventAlertSlideTime, eventAlertSlideTime);
-    FieldStore.Set(FieldKeys.EventAlertFadeTime, eventAlertFadeTime);
+    FieldStore.Set(FieldKeys.EventDisplayTime, eventDisplayTime);
+    FieldStore.Set(FieldKeys.AlertDisplayTime, alertDisplayTime);
+    FieldStore.Set(FieldKeys.AlertSlideTime, alertSlideTime);
+    FieldStore.Set(FieldKeys.AlertFadeTime, alertFadeTime);
 };
 
 const getLatestFollowEvent: (sessionData: SessionData) => FollowEvent = function (
@@ -106,19 +104,15 @@ const getLatestSubEvent: (sessionData: SessionData) => SubEvent = function (
     sessionData: SessionData
 ) {
     const subEventData = sessionData['subscriber-latest'];
-    const latestSubEvent: SubEvent = new SubEvent(subEventData.name, subEventData.amount);
-    return latestSubEvent;
-};
+    let latestSubEvent: SubEvent;
 
-const getLatestGiftedSubEvent: (sessionData: SessionData) => GiftedSubEvent = function (
-    sessionData: SessionData
-) {
-    const giftedSubData = sessionData['subscriber-gifted-latest'];
-    const latestGiftedSubEvent: GiftedSubEvent = new GiftedSubEvent(
-        giftedSubData.name,
-        giftedSubData.amount
-    );
-    return latestGiftedSubEvent;
+    if (subEventData.gifted && typeof subEventData.amount === 'string') {
+        latestSubEvent = new SubEvent(subEventData.name, subEventData.count);
+    } else {
+        latestSubEvent = new SubEvent(subEventData.name, subEventData.amount as number);
+    }
+
+    return latestSubEvent;
 };
 
 const getLatestCheerEvent: (sessionData: SessionData) => CheerEvent = function (

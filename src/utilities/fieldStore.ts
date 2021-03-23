@@ -34,8 +34,8 @@ export class FieldStore {
  * Predefined keys for storing widget fields in the field store
  */
 export class FieldKeys {
-    public static EventCycleDisplayTime = 'EventCycleDisplayTime';
-    public static EventAlertSlideTime = 'EventAlertSlideTime';
-    public static EventAlertFadeTime = 'EventAlertFadeTime';
-    public static EventAlertDisplayTime = 'EventAlertDisplayTime';
+    public static EventDisplayTime = 'EventDisplayTime';
+    public static AlertSlideTime = 'AlertSlideTime';
+    public static AlertFadeTime = 'AlertFadeTime';
+    public static AlertDisplayTime = 'AlertDisplayTime';
 }

@@ -11,10 +11,7 @@ export class GiftedSubEvent extends StreamEvent {
             throw new Error(`Parameter 'name' cannot be null or empty.`);
         }
 
-        if (amount < 1) {
-            throw new Error(`Parameter 'amount' cannot be less than 1.`);
-        }
-
+        this.amount = amount ?? 1;
         this.html = this.generateHtml();
     }
 

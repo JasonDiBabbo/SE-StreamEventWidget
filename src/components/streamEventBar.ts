@@ -7,8 +7,8 @@ export class StreamEventBar {
     private eventDisplayTime: number;
 
     constructor(private eventService: EventService, private alertService: AlertService) {
-        this.alertDisplayTime = FieldStore.Get<number>(FieldKeys.EventAlertDisplayTime);
-        this.eventDisplayTime = FieldStore.Get<number>(FieldKeys.EventCycleDisplayTime);
+        this.alertDisplayTime = FieldStore.Get<number>(FieldKeys.AlertDisplayTime);
+        this.eventDisplayTime = FieldStore.Get<number>(FieldKeys.EventDisplayTime);
     }
 
     public addEvents(...events: StreamEvent[]): void {
