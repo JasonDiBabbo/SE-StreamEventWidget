@@ -1,6 +1,15 @@
 import { CheerEvent, Slide, SlideContent, StreamEvent, StreamEventType } from '@models';
 
+/**
+ * A service for providing functionality surrounding alerts.
+ */
 export class AlertService {
+    /**
+     * Creates an alert slide.
+     *
+     * @param event The alert event.
+     * @returns A slide HTML element.
+     */
     public createAlertSlide(event: StreamEvent): Slide {
         const content: SlideContent = document.createElement('div');
         content.classList.add('slide-content');
@@ -16,6 +25,12 @@ export class AlertService {
         return slide;
     }
 
+    /**
+     * Looks up a corresponding CSS class for an event.
+     *
+     * @param event The alert event.
+     * @returns A CSS class of the alert.
+     */
     private lookupAlertCssClass(event: StreamEvent): string {
         if (!event) {
             throw new Error(`Parameter 'event' cannot be null or undefined.`);
@@ -48,6 +63,12 @@ export class AlertService {
         return cssClass;
     }
 
+    /**
+     * Looks up a corresponding CSS class for a cheer event.
+     *
+     * @param amount The amount of bits of the cheer.
+     * @returns A CSS class of the alert.
+     */
     private lookupCheerAlertCssClass(amount: number): string {
         if (amount <= 0) {
             throw new Error(`Parameter 'amount' cannot be less than or equal to 0.`);

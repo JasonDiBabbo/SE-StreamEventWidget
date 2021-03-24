@@ -1,9 +1,9 @@
 /**
- * Utility methods for working with time data
+ * Utility methods for working with time data.
  */
 export class Time {
     /**
-     * Converts seconds to milliseconds
+     * Converts seconds to milliseconds.
      *
      * @param seconds
      */
@@ -12,7 +12,7 @@ export class Time {
     }
 
     /**
-     * Converts milliseconds to seconds
+     * Converts milliseconds to seconds.
      *
      * @param milliseconds
      */
