@@ -6,17 +6,25 @@ const prettier = require('gulp-prettier');
 const gulpWebpack = require('webpack-stream');
 const webpackCompiler = require('webpack');
 const webpackConfig = require('./webpack.config')
+const sass = require('gulp-sass');
 
-function build() {
-    log(`Transpiling TypeScript to 'dist/widget.js'`);
+function bundle() {
+    log('Running bundler');
 
     return src('src/widget.ts')
         .pipe(gulpWebpack(webpackConfig, webpackCompiler, function(err, stats) { }))
         .pipe(dest('dist/'));
 }
 
+function compileStyles() {
+    log('Compiling styles');
+    return src('src/widget.scss')
+        .pipe(sass())
+        .pipe(dest('dist/'));
+}
+
 function clean() {
-    log(`Cleaning up 'dist' directory.`);
+    log(`Cleaning up 'dist' directory`);
 
     return del('./dist/**', { force: true });
 }
@@ -24,7 +32,7 @@ function clean() {
 function format() {
     log('Formatting widget.html|js|json');
 
-    return src('dist/widget.{js,html,json}')
+    return src('dist/widget.{html,json}')
         .pipe(
             prettier({
                 arrowParens: 'always',
@@ -52,18 +60,20 @@ function lint() {
 }
 
 function move() {
-    log(`Moving widget.html|css|json to 'dist' directory`);
+    log(`Moving widget.html|json to 'dist' directory`);
 
-    return src('src/widget.{html,css,json}').pipe(dest('dist/'));
+    return src('src/widget.{html,json}').pipe(dest('dist/'));
 }
 
 function watchFiles() {
-    watch('src/widget.{html,css,json}', move);
+    watch('src/widget.{html,json}', move);
     watch('src/**/*.ts', exports.default);
+    watch('src/widget.scss', exports.compileStyles);
 }
 
-exports.build = build;
+exports.bundle = bundle;
 exports.clean = clean;
 exports.lint = lint;
 exports.watch = watchFiles;
-exports.default = series(lint, clean, build, move, format);
+exports.compileStyles = compileStyles;
+exports.default = series(lint, clean, compileStyles, bundle, move, format);
