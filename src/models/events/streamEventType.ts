@@ -4,5 +4,5 @@ export enum StreamEventType {
     GiftedSubscription,
     Host,
     Raid,
-    Subscription
+    Subscription,
 }

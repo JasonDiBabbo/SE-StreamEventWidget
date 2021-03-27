@@ -4,15 +4,15 @@ export type SessionData = {
     };
 
     'subscriber-latest': {
-        name: string;
-        gifted?: boolean;
-        amount: string | number;
+        amount: 'gift' | number;
         count?: number;
-        tier: string;
+        gifted?: boolean;
+        name: string;
+        tier: '1000' | '2000' | '3000' | 'prime';
     };
 
     'cheer-latest': {
-        name: string;
         amount: number;
+        name: string;
     };
 };

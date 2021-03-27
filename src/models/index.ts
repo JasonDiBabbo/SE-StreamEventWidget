@@ -12,6 +12,7 @@ export {
 } from './events';
 
 export {
+    EventData,
     EventReceivedDetail,
     FieldData,
     SessionData,

@@ -1,3 +1,4 @@
+export { EventData } from './eventData';
 export { EventReceivedDetail } from './eventReceivedDetail';
 export { FieldData } from './fieldData';
 export { SessionData } from './sessionData';
