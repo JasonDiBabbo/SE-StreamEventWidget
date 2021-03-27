@@ -66,6 +66,8 @@ function move() {
 }
 
 function watchFiles() {
+    log('Watching widget.html|json|scss and *.ts');
+    
     watch('src/widget.{html,json}', move);
     watch('src/**/*.ts', exports.default);
     watch('src/widget.scss', exports.compileStyles);
@@ -74,6 +76,6 @@ function watchFiles() {
 exports.bundle = bundle;
 exports.clean = clean;
 exports.lint = lint;
-exports.watch = watchFiles;
+exports.watch = series(lint, clean, compileStyles, bundle, move, format, watchFiles);
 exports.compileStyles = compileStyles;
 exports.default = series(lint, clean, compileStyles, bundle, move, format);

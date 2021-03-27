@@ -13,7 +13,7 @@ import {
     SubEvent,
     WidgetLoadDetail,
 } from '@models';
-import { AlertService, EventService } from '@services';
+import { EventService } from '@services';
 import { FieldKeys, FieldStore, Time } from '@utilities';
 
 declare const SE_API: StreamElementsApi;
@@ -21,16 +21,9 @@ declare const SE_API: StreamElementsApi;
 class StreamEventWidget {
     private readonly skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
 
-    private alertService: AlertService;
-
     private eventService: EventService;
 
     private bar: StreamEventBar;
-
-    constructor() {
-        // TODO: Change services into static utility classes
-        // TODO: That way we don't need to save it
-    }
 
     public onEventReceived(detail: EventReceivedDetail): void {
         if (this.canSkipEvent(detail)) {
@@ -47,7 +40,7 @@ class StreamEventWidget {
         } else if (detail.listener === 'subscriber-latest') {
             const isResultOfGiftedSub = detail.event.gifted && detail.event.isCommunityGift;
             if (isResultOfGiftedSub) {
-                // Do nothing SE_API.resumeQueue();
+                // Do nothing
             } else if (detail.event.bulkGifted) {
                 streamEvent = new GiftedSubEvent(
                     detail.event.sender,
@@ -80,8 +73,7 @@ class StreamEventWidget {
         this.loadFieldData(fieldData);
 
         this.eventService = new EventService();
-        this.alertService = new AlertService();
-        this.bar = new StreamEventBar(this.eventService, this.alertService);
+        this.bar = new StreamEventBar(this.eventService);
         this.loadInitialEvents(sessionData);
 
         this.bar.beginCycle();

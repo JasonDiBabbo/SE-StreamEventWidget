@@ -1,12 +1,12 @@
 import { Bar, Slide, SlideContent, Slides, StreamEvent } from '@models';
-import { AlertService, EventService } from '@services';
-import { FieldKeys, FieldStore } from '@utilities';
+import { EventService } from '@services';
+import { AlertHelper, FieldKeys, FieldStore } from '@utilities';
 
 export class StreamEventBar {
     private alertDisplayTime: number;
     private eventDisplayTime: number;
 
-    constructor(private eventService: EventService, private alertService: AlertService) {
+    constructor(private eventService: EventService) {
         this.alertDisplayTime = FieldStore.Get<number>(FieldKeys.AlertDisplayTime);
         this.eventDisplayTime = FieldStore.Get<number>(FieldKeys.EventDisplayTime);
     }
@@ -34,7 +34,7 @@ export class StreamEventBar {
 
         const bar = this.getBar();
         const currentSlide = this.getCurrentSlide();
-        const newSlide = this.alertService.createAlertSlide(event);
+        const newSlide = AlertHelper.createAlertSlide(event);
 
         this.placeSlideOffscreenBottom(newSlide);
         bar.appendChild(newSlide);

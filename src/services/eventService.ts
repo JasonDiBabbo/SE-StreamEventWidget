@@ -47,15 +47,13 @@ export class EventService {
 
         const index = this.events.findIndex((x) => x.type === event.type);
         if (index !== -1) {
-            this.events.splice(index, 1);
+            this.events.splice(index, 1, event);
+        } else {
+            this.events.push(event);
         }
-
-        this.events.push(event);
 
         if (this.events.length === 1) {
             this.eventIndex = 0;
-        } else {
-            // TODO: ???
         }
     }
 
