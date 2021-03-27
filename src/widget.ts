@@ -13,13 +13,15 @@ import {
     SubEvent,
     WidgetLoadDetail,
 } from '@models';
-import { EventService } from '@services';
+import { AudioService, EventService } from '@services';
 import { FieldKeys, FieldStore, Time } from '@utilities';
 
 declare const SE_API: StreamElementsApi;
 
 class StreamEventWidget {
     private readonly skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
+
+    private audioService: AudioService;
 
     private eventService: EventService;
 
@@ -37,6 +39,10 @@ class StreamEventWidget {
             streamEvent = new FollowEvent(detail.event.name);
         } else if (detail.listener === 'cheer-latest') {
             streamEvent = new CheerEvent(detail.event.name, detail.event.amount as number);
+
+            // TODO: Move this call to be after the alert is triggered
+            // TODO: This means that we'll need to store the correct audio source in the event
+            this.audioService.playAudio(FieldStore.Get(FieldKeys.CheerAlertSound));
         } else if (detail.listener === 'subscriber-latest') {
             const isResultOfGiftedSub = detail.event.gifted && detail.event.isCommunityGift;
             if (isResultOfGiftedSub) {
@@ -72,6 +78,7 @@ class StreamEventWidget {
 
         this.loadFieldData(fieldData);
 
+        this.audioService = new AudioService();
         this.eventService = new EventService();
         this.bar = new StreamEventBar(this.eventService);
         this.loadInitialEvents(sessionData);
@@ -84,11 +91,13 @@ class StreamEventWidget {
     }
 
     private loadFieldData(fieldData: FieldData): void {
+        const cheerAlertSound = fieldData.cheerAlertSound as string;
         const eventDisplayTime = Time.toMilliseconds(fieldData.eventDisplayTime as number);
         const alertDisplayTime = Time.toMilliseconds(fieldData.alertDisplayTime as number);
         const alertSlideTime = Time.toMilliseconds(fieldData.alertSlideTime as number);
         const alertFadeTime = Time.toMilliseconds(fieldData.alertFadeTime as number);
 
+        FieldStore.Set(FieldKeys.CheerAlertSound, cheerAlertSound);
         FieldStore.Set(FieldKeys.EventDisplayTime, eventDisplayTime);
         FieldStore.Set(FieldKeys.AlertDisplayTime, alertDisplayTime);
         FieldStore.Set(FieldKeys.AlertSlideTime, alertSlideTime);

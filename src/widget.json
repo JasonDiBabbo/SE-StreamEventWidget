@@ -192,6 +192,11 @@
         "type": "colorpicker",
         "value":"#2975EF"
     },
+    "cheerAlertSound": {
+        "group": "CHEER ALERTS",
+        "type": "sound-input",
+        "label": "Cheer Alert Sound"
+    },
     "tierOneCheerAlertColor": {
         "group": "CHEER ALERTS",
         "label": "Tier 1 cheer alert color",

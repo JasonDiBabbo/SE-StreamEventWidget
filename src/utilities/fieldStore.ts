@@ -34,6 +34,7 @@ export class FieldStore {
  * Predefined keys for storing widget fields in the field store.
  */
 export class FieldKeys {
+    public static CheerAlertSound = 'CheerAlertSound';
     public static EventDisplayTime = 'EventDisplayTime';
     public static AlertSlideTime = 'AlertSlideTime';
     public static AlertFadeTime = 'AlertFadeTime';
