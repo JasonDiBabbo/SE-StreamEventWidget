@@ -1,7 +1,11 @@
+import { FieldKeys, FieldStore } from '@utilities';
+
 import { StreamEvent } from './streamEvent';
 import { StreamEventType } from './streamEventType';
 
 export class GiftedSubEvent extends StreamEvent {
+    public alertSound: string;
+
     public html: string;
 
     constructor(public name: string, public amount?: number) {
@@ -13,6 +17,7 @@ export class GiftedSubEvent extends StreamEvent {
 
         this.amount = amount ?? 1;
         this.html = this.generateHtml();
+        this.alertSound = FieldStore.Get<string>(FieldKeys.GiftedSubAlertSound);
     }
 
     private generateHtml(): string {

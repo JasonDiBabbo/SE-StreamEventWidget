@@ -34,9 +34,15 @@ export class FieldStore {
  * Predefined keys for storing widget fields in the field store.
  */
 export class FieldKeys {
-    public static CheerAlertSound = 'CheerAlertSound';
-    public static EventDisplayTime = 'EventDisplayTime';
-    public static AlertSlideTime = 'AlertSlideTime';
     public static AlertFadeTime = 'AlertFadeTime';
     public static AlertDisplayTime = 'AlertDisplayTime';
+    public static AlertSlideTime = 'AlertSlideTime';
+    public static CheerAlertSound = 'CheerAlertSound';
+    public static EventDisplayTime = 'EventDisplayTime';
+    public static FollowAlertSound = 'FollowAlertSound';
+    public static HostAlertSound = 'HostAlertSound';
+    public static GiftedSubAlertSound = 'GiftedSubAlertSound';
+    public static RaidAlertSound = 'RaidAlertSound';
+    public static SubAlertSound = 'SubAlertSound';
+    public static TipAlertSound = 'TipAlertSound';
 }

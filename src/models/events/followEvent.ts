@@ -1,7 +1,11 @@
+import { FieldStore, FieldKeys } from '@utilities';
+
 import { StreamEvent } from './streamEvent';
 import { StreamEventType } from './streamEventType';
 
 export class FollowEvent extends StreamEvent {
+    public alertSound: string;
+
     public html: string;
 
     constructor(public name: string) {
@@ -12,6 +16,7 @@ export class FollowEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
+        this.alertSound = FieldStore.Get<string>(FieldKeys.FollowAlertSound);
     }
 
     private generateHtml(): string {

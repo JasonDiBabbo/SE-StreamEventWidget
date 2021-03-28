@@ -180,6 +180,11 @@
         "type": "colorpicker",
         "value":"#2975ef"
     },
+    "followAlertSound": {
+        "group": "FOLLOW ALERTS",
+        "type": "sound-input",
+        "label": "Follow alert sound"
+    },
     "subAlertColor": {
         "group": "SUB ALERTS",
         "label": "Sub alert color",
@@ -192,16 +197,21 @@
         "type": "colorpicker",
         "value":"#00A9E3"
     },
+    "subAlertSound": {
+        "group": "SUB ALERTS",
+        "type": "sound-input",
+        "label": "Sub alert sound"
+    },
     "giftedSubAlertColor": {
         "group": "GIFTED SUB ALERTS",
         "label": "Gifted sub alert color",
         "type": "colorpicker",
         "value":"#2975EF"
     },
-    "cheerAlertSound": {
-        "group": "CHEER ALERTS",
-        "type": "sound-input",
-        "label": "Cheer Alert Sound"
+    "giftedSubAlertSound": {
+        "group": "GIFTED SUB ALERTS",
+        "label": "Gifted sub alert sound",
+        "type": "sound-input"
     },
     "tierOneCheerAlertColor": {
         "group": "CHEER ALERTS",
@@ -233,17 +243,32 @@
         "type": "colorpicker",
         "value":"#DD1919"
     },
+    "cheerAlertSound": {
+        "group": "CHEER ALERTS",
+        "type": "sound-input",
+        "label": "Cheer alert sound"
+    },
     "hostAlertColor": {
         "group": "HOST ALERTS",
         "label": "Host alert color",
         "type": "colorpicker",
         "value":"#2975EF"
     },
+    "hostAlertSound": {
+        "group": "HOST ALERTS",
+        "type": "sound-input",
+        "label": "Host alert sound"
+    },
     "raidAlertColor": {
         "group": "RAID ALERTS",
         "label": "Raid alert color",
         "type": "colorpicker",
         "value":"#2975EF"
+    },
+    "raidAlertSound": {
+        "group": "RAID ALERTS",
+        "type": "sound-input",
+        "label": "Raid alert sound"
     },
     "widgetDuration": {
         "group": "MISC.",

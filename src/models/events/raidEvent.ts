@@ -1,10 +1,10 @@
+import { FieldKeys, FieldStore } from '@utilities';
+
 import { StreamEvent } from './streamEvent';
 import { StreamEventType } from './streamEventType';
 
 export class RaidEvent extends StreamEvent {
-    public get isValid(): boolean {
-        return !!this.html && !!this.name && !!this.amount && this.amount > 0;
-    }
+    public alertSound: string;
 
     public html: string;
 
@@ -20,6 +20,7 @@ export class RaidEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
+        this.alertSound = FieldStore.Get<string>(FieldKeys.RaidAlertSound);
     }
 
     private generateHtml(): string {

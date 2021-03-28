@@ -39,10 +39,6 @@ class StreamEventWidget {
             streamEvent = new FollowEvent(detail.event.name);
         } else if (detail.listener === 'cheer-latest') {
             streamEvent = new CheerEvent(detail.event.name, detail.event.amount as number);
-
-            // TODO: Move this call to be after the alert is triggered
-            // TODO: This means that we'll need to store the correct audio source in the event
-            this.audioService.playAudio(FieldStore.Get(FieldKeys.CheerAlertSound));
         } else if (detail.listener === 'subscriber-latest') {
             const isResultOfGiftedSub = detail.event.gifted && detail.event.isCommunityGift;
             if (isResultOfGiftedSub) {
@@ -71,6 +67,7 @@ class StreamEventWidget {
 
         if (streamEvent) {
             this.bar.triggerAlert(streamEvent, persistEvent);
+            this.audioService.playAudio(streamEvent.alertSound);
         } else {
             SE_API.resumeQueue();
         }
@@ -96,12 +93,22 @@ class StreamEventWidget {
 
     private loadFieldData(fieldData: FieldData): void {
         const cheerAlertSound = fieldData.cheerAlertSound as string;
+        const followAlertSound = fieldData.followAlertSound as string;
+        const subAlertSound = fieldData.subAlertSound as string;
+        const giftedSubAlertSound = fieldData.giftedSubAlertSound as string;
+        const raidAlertSound = fieldData.raidAlertSound as string;
+        const hostAlertSound = fieldData.hostAlertSound as string;
         const eventDisplayTime = Time.toMilliseconds(fieldData.eventDisplayTime as number);
         const alertDisplayTime = Time.toMilliseconds(fieldData.alertDisplayTime as number);
         const alertSlideTime = Time.toMilliseconds(fieldData.alertSlideTime as number);
         const alertFadeTime = Time.toMilliseconds(fieldData.alertFadeTime as number);
 
         FieldStore.Set(FieldKeys.CheerAlertSound, cheerAlertSound);
+        FieldStore.Set(FieldKeys.FollowAlertSound, followAlertSound);
+        FieldStore.Set(FieldKeys.SubAlertSound, subAlertSound);
+        FieldStore.Set(FieldKeys.GiftedSubAlertSound, giftedSubAlertSound);
+        FieldStore.Set(FieldKeys.RaidAlertSound, raidAlertSound);
+        FieldStore.Set(FieldKeys.HostAlertSound, hostAlertSound);
         FieldStore.Set(FieldKeys.EventDisplayTime, eventDisplayTime);
         FieldStore.Set(FieldKeys.AlertDisplayTime, alertDisplayTime);
         FieldStore.Set(FieldKeys.AlertSlideTime, alertSlideTime);
