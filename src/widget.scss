@@ -28,6 +28,7 @@
 
     --followAlertColor: {{followAlertColor}};
     --subAlertColor: {{subAlertColor}};
+    --primeSubAlertColor: {{primeSubAlertColor}};
     --giftedSubAlertColor: {{giftedSubAlertColor}};
     --hostAlertColor: {{hostAlertColor}};
     --raidAlertColor: {{raidAlertColor}};
@@ -170,6 +171,18 @@ html {
 
             > i.slide-icon {
                 color: #FFFFFF;
+            }
+        }
+    }
+
+    > .slide.prime-sub-alert {
+        > .slide-content {
+            background-color: var(--primeSubAlertColor);
+
+            > svg.slide-icon {
+                > path {
+                    fill: #FFFFFF;
+                }
             }
         }
     }

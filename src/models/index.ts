@@ -9,6 +9,7 @@ export {
     StreamEvent,
     StreamEventType,
     SubEvent,
+    SubTier,
 } from './events';
 
 export {

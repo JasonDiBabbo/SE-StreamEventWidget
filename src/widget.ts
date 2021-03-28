@@ -55,7 +55,11 @@ class StreamEventWidget {
             } else if (detail.event.gifted) {
                 streamEvent = new GiftedSubEvent(detail.event.sender);
             } else {
-                streamEvent = new SubEvent(detail.event.name, detail.event.amount as number);
+                streamEvent = new SubEvent(
+                    detail.event.name,
+                    detail.event.amount as number,
+                    detail.event.tier
+                );
             }
         } else if (detail.listener === 'host-latest') {
             streamEvent = new HostEvent(detail.event.name, detail.event.amount as number);
@@ -132,9 +136,13 @@ class StreamEventWidget {
         let latestSubEvent: SubEvent;
 
         if (subEventData.gifted && subEventData.amount === 'gift') {
-            latestSubEvent = new SubEvent(subEventData.name, subEventData.count);
+            latestSubEvent = new SubEvent(subEventData.name, subEventData.count, subEventData.tier);
         } else {
-            latestSubEvent = new SubEvent(subEventData.name, subEventData.amount as number);
+            latestSubEvent = new SubEvent(
+                subEventData.name,
+                subEventData.amount as number,
+                subEventData.tier
+            );
         }
 
         return latestSubEvent;

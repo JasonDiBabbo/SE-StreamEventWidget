@@ -6,3 +6,4 @@ export { RaidEvent } from './raidEvent';
 export { StreamEvent } from './streamEvent';
 export { StreamEventType } from './streamEventType';
 export { SubEvent } from './subEvent';
+export { SubTier } from './subTier';

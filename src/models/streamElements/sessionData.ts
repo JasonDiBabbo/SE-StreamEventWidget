@@ -1,3 +1,5 @@
+import { SubTier } from '../events/subTier';
+
 export type SessionData = {
     'follower-latest': {
         name: string;
@@ -8,7 +10,7 @@ export type SessionData = {
         count?: number;
         gifted?: boolean;
         name: string;
-        tier: '1000' | '2000' | '3000' | 'prime';
+        tier: SubTier;
     };
 
     'cheer-latest': {

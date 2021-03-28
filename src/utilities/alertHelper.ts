@@ -1,4 +1,12 @@
-import { CheerEvent, Slide, SlideContent, StreamEvent, StreamEventType } from '@models';
+import {
+    CheerEvent,
+    Slide,
+    SlideContent,
+    StreamEvent,
+    StreamEventType,
+    SubEvent,
+    SubTier,
+} from '@models';
 
 /**
  * A helper class for working with alerts.
@@ -54,7 +62,7 @@ export class AlertHelper {
                 cssClass = 'raid-alert';
                 break;
             case StreamEventType.Subscription:
-                cssClass = 'sub-alert';
+                cssClass = this.lookupSubAlertCssClass((event as SubEvent).tier);
                 break;
             default:
                 break;
@@ -67,7 +75,7 @@ export class AlertHelper {
      * Looks up a corresponding CSS class for a cheer event.
      *
      * @param amount The amount of bits of the cheer.
-     * @returns A CSS class of the alert.
+     * @returns The CSS class of the alert.
      */
     private static lookupCheerAlertCssClass(amount: number): string {
         if (amount <= 0) {
@@ -85,5 +93,35 @@ export class AlertHelper {
         } else {
             return 'cheer-alert-tier-5';
         }
+    }
+
+    /**
+     *
+     * Looks up a corresponding CSS class for a sub event.
+     *
+     * @param tier The tier of the sub.
+     * @returns The CSS class of the alert.
+     */
+    private static lookupSubAlertCssClass(tier: SubTier): string {
+        let css: string;
+        switch (tier) {
+            case '1000':
+                css = 'sub-alert';
+                break;
+            case '2000':
+                css = 'sub-alert';
+                break;
+            case '3000':
+                css = 'sub-alert';
+                break;
+            case 'prime':
+                css = 'prime-sub-alert';
+                break;
+            default:
+                css = 'sub-alert';
+                break;
+        }
+
+        return css;
     }
 }

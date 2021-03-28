@@ -186,8 +186,14 @@
         "type": "colorpicker",
         "value":"#2975EF"
     },
-    "giftedSubAlertColor": {
+    "primeSubAlertColor": {
         "group": "SUB ALERTS",
+        "label": "Prime sub alert color",
+        "type": "colorpicker",
+        "value":"#00A9E3"
+    },
+    "giftedSubAlertColor": {
+        "group": "GIFTED SUB ALERTS",
         "label": "Gifted sub alert color",
         "type": "colorpicker",
         "value":"#2975EF"

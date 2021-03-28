@@ -20,6 +20,7 @@
   --alertFadeTime: {{alertFadeTime}}s;
   --followAlertColor: {{followAlertColor}};
   --subAlertColor: {{subAlertColor}};
+  --primeSubAlertColor: {{primeSubAlertColor}};
   --giftedSubAlertColor: {{giftedSubAlertColor}};
   --hostAlertColor: {{hostAlertColor}};
   --raidAlertColor: {{raidAlertColor}};
@@ -117,6 +118,10 @@ html {
     background-color: var(--subAlertColor); }
     .bar > .slide.sub-alert > .slide-content > i.slide-icon {
       color: #FFFFFF; }
+  .bar > .slide.prime-sub-alert > .slide-content {
+    background-color: var(--primeSubAlertColor); }
+    .bar > .slide.prime-sub-alert > .slide-content > svg.slide-icon > path {
+      fill: #FFFFFF; }
   .bar > .slide.gifted-sub-alert > .slide-content {
     background-color: var(--giftedSubAlertColor); }
     .bar > .slide.gifted-sub-alert > .slide-content > i.slide-icon {
