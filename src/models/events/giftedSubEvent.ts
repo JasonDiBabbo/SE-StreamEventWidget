@@ -15,7 +15,10 @@ export class GiftedSubEvent extends StreamEvent {
             throw new Error(`Parameter 'name' cannot be null or empty.`);
         }
 
-        this.amount = amount ?? 1;
+        if (!amount) {
+            this.amount = 1;
+        }
+
         this.html = this.generateHtml();
         this.alertSound = FieldStore.Get<string>(FieldKeys.GiftedSubAlertSound);
     }
