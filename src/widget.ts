@@ -58,8 +58,9 @@ class StreamEventWidget {
                 );
             }
         } else if (detail.listener === 'host-latest') {
-            streamEvent = new HostEvent(detail.event.name, detail.event.amount as number);
-            persistEvent = false;
+            // TODO: Investigate why raids are always joined with hosts
+            // streamEvent = new HostEvent(detail.event.name, detail.event.amount as number);
+            // persistEvent = false;
         } else if (detail.listener === 'raid-latest') {
             streamEvent = new RaidEvent(detail.event.name, detail.event.amount as number);
             persistEvent = false;

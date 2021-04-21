@@ -28,10 +28,6 @@ export class StreamEventBar {
             this.addEvents(event);
         }
 
-        // TODO: There's a bug where if you trigger an alert of a given type,
-        // TODO: the next event may also be that same event
-        // TODO: i.e. follow alert, then it fades and shows the same follow
-
         const bar = this.getBar();
         const currentSlide = this.getCurrentSlide();
         const newSlide = AlertHelper.createAlertSlide(event);
