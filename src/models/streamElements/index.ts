@@ -1,6 +1,6 @@
-export { EventData } from './eventData';
-export { EventReceivedDetail } from './eventReceivedDetail';
-export { FieldData } from './fieldData';
-export { SessionData } from './sessionData';
-export { StreamElementsApi } from './streamElementsApi';
-export { WidgetLoadDetail } from './widgetLoadDetail';
+export { EventData } from './event-data';
+export { EventReceivedDetail } from './event-received-detail';
+export { FieldData } from './field-data';
+export { SessionData } from './session-data';
+export { StreamElementsApi } from './stream-elements-api';
+export { WidgetLoadDetail } from './widget-load-detail';

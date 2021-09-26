@@ -1,7 +1,7 @@
 import { FieldKeys, FieldStore } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
 
 export class GiftedSubEvent extends StreamEvent {
     public alertSound: string;

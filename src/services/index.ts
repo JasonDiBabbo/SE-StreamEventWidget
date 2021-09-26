@@ -1,2 +1,2 @@
-export { AudioService } from './audioService';
-export { EventService } from './eventService';
+export { AudioService } from './audio-service';
+export { EventService } from './event-service';

@@ -1,4 +1,4 @@
-import { StreamEventType } from './streamEventType';
+import { StreamEventType } from './stream-event-type';
 
 export abstract class StreamEvent {
     public abstract alertSound: string;

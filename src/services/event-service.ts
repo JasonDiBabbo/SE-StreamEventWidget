@@ -1,7 +1,7 @@
 import { StreamEvent } from '@models';
 
 /**
- * A service for providing functionality surrounding events.
+ * A service for providing managing stream events
  */
 export class EventService {
     private events: StreamEvent[] = [];
@@ -9,9 +9,9 @@ export class EventService {
     private eventIndex = -1;
 
     /**
-     * Gets the current event.
+     * Gets the current event
      *
-     * @returns The current stream event.
+     * @returns The current stream event
      */
     public getCurrentEvent(): StreamEvent {
         if (this.events.length > 0 && this.eventIndex >= 0) {
@@ -22,9 +22,9 @@ export class EventService {
     }
 
     /**
-     * Gets the next event.
+     * Gets the next event
      *
-     * @returns The next stream event.
+     * @returns The next stream event
      */
     public getNextEvent(): StreamEvent {
         if (this.events.length > 0 && this.eventIndex >= 0) {
@@ -36,9 +36,9 @@ export class EventService {
     }
 
     /**
-     * Registers a stream event with the service.
+     * Registers a stream event with the service
      *
-     * @param event The stream event.
+     * @param event The stream event
      */
     public registerEvent(event: StreamEvent): void {
         if (!event) {
@@ -58,7 +58,7 @@ export class EventService {
     }
 
     /**
-     * Advances the index of the current event.
+     * Advances the index of the current event
      */
     private advanceEventIndex(): void {
         if (this.eventIndex < 0) {

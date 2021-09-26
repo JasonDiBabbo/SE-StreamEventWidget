@@ -4,7 +4,6 @@ export {
     CheerEvent,
     FollowEvent,
     GiftedSubEvent,
-    HostEvent,
     RaidEvent,
     StreamEvent,
     StreamEventType,

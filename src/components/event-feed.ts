@@ -2,7 +2,7 @@ import { Bar, Slide, SlideContent, Slides, StreamEvent } from '@models';
 import { EventService } from '@services';
 import { AlertHelper, FieldKeys, FieldStore } from '@utilities';
 
-export class StreamEventBar {
+export class EventFeed {
     private alertDisplayTime: number;
     private eventDisplayTime: number;
 

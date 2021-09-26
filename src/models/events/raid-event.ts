@@ -1,7 +1,7 @@
 import { FieldKeys, FieldStore } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
 
 export class RaidEvent extends StreamEvent {
     public alertSound: string;
@@ -30,13 +30,5 @@ export class RaidEvent extends StreamEvent {
         const html = ` ${iconHtml}${textHtml}`;
 
         return html;
-    }
-
-    private getRaidAmountString(): string {
-        if (!!this.amount && this.amount > 0) {
-            return;
-        }
-
-        return '';
     }
 }

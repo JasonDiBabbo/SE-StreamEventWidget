@@ -1,8 +1,11 @@
 import { FieldStore, FieldKeys } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
 
+/**
+ * The class definition of a Twitch cheer event
+ */
 export class CheerEvent extends StreamEvent {
     public alertSound: string;
 

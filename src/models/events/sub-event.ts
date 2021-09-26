@@ -1,8 +1,8 @@
 import { FieldKeys, FieldStore } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
-import { SubTier } from './subTier';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
+import { SubTier } from './sub-tier';
 
 export class SubEvent extends StreamEvent {
     public alertSound: string;

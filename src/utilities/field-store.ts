@@ -1,11 +1,11 @@
 /**
- * A static data store for widget fields.
+ * A static data store for widget fields
  */
 export class FieldStore {
     private static fieldData: { [key: string]: unknown } = {};
 
     /**
-     * Gets a field value.
+     * Gets a field value
      *
      * @param key
      */
@@ -20,7 +20,7 @@ export class FieldStore {
     }
 
     /**
-     * Sets a field value.
+     * Sets a field value
      *
      * @param key
      * @param value
@@ -31,7 +31,7 @@ export class FieldStore {
 }
 
 /**
- * Predefined keys for storing widget fields in the field store.
+ * Predefined keys for getting and setting widget fields in the store
  */
 export class FieldKeys {
     public static AlertFadeTime = 'AlertFadeTime';

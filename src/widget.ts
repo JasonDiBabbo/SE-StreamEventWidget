@@ -1,11 +1,10 @@
-import { StreamEventBar } from '@components';
+import { EventFeed } from '@components';
 import {
     CheerEvent,
     EventReceivedDetail,
     FieldData,
     FollowEvent,
     GiftedSubEvent,
-    HostEvent,
     RaidEvent,
     SessionData,
     StreamElementsApi,
@@ -25,7 +24,7 @@ class StreamEventWidget {
 
     private eventService: EventService;
 
-    private bar: StreamEventBar;
+    private bar: EventFeed;
 
     public onEventReceived(detail: EventReceivedDetail): void {
         if (this.canSkipEvent(detail)) {
@@ -77,12 +76,13 @@ class StreamEventWidget {
     public onWidgetLoad(detail: WidgetLoadDetail): void {
         const sessionData = detail.session.data;
         const fieldData = detail.fieldData;
+        const audioElement = document.getElementById('alert-audio') as HTMLAudioElement;
 
         this.loadFieldData(fieldData);
 
-        this.audioService = new AudioService();
+        this.audioService = new AudioService(audioElement);
         this.eventService = new EventService();
-        this.bar = new StreamEventBar(this.eventService);
+        this.bar = new EventFeed(this.eventService);
         this.loadInitialEvents(sessionData);
 
         this.bar.beginCycle();

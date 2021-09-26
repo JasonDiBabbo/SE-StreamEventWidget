@@ -9,14 +9,14 @@ import {
 } from '@models';
 
 /**
- * A helper class for working with alerts.
+ * A helper class for managing alerts
  */
 export class AlertHelper {
     /**
-     * Creates an alert slide.
+     * Creates an alert slide
      *
-     * @param event The alert event.
-     * @returns A slide HTML element.
+     * @param event The alert event
+     * @returns A slide HTML element
      */
     public static createAlertSlide(event: StreamEvent): Slide {
         const content: SlideContent = document.createElement('div');
@@ -34,10 +34,10 @@ export class AlertHelper {
     }
 
     /**
-     * Looks up a corresponding CSS class for an event.
+     * Looks up a corresponding CSS class for an event
      *
-     * @param event The alert event.
-     * @returns A CSS class of the alert.
+     * @param event The alert event
+     * @returns A CSS class of the alert
      */
     private static lookupAlertCssClass(event: StreamEvent): string {
         if (!event) {
@@ -72,10 +72,10 @@ export class AlertHelper {
     }
 
     /**
-     * Looks up a corresponding CSS class for a cheer event.
+     * Looks up a corresponding CSS class for a cheer event
      *
-     * @param amount The amount of bits of the cheer.
-     * @returns The CSS class of the alert.
+     * @param amount The amount of bits of the cheer
+     * @returns The CSS class of the alert
      */
     private static lookupCheerAlertCssClass(amount: number): string {
         if (amount <= 0) {
@@ -97,10 +97,10 @@ export class AlertHelper {
 
     /**
      *
-     * Looks up a corresponding CSS class for a sub event.
+     * Looks up a corresponding CSS class for a sub event
      *
-     * @param tier The tier of the sub.
-     * @returns The CSS class of the alert.
+     * @param tier The tier of the sub
+     * @returns The CSS class of the alert
      */
     private static lookupSubAlertCssClass(tier: SubTier): string {
         let css: string;
