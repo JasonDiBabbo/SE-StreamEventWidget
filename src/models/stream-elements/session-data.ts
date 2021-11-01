@@ -1,4 +1,4 @@
-import { SubTier } from '../events/sub-tier';
+import { SubTier } from './sub-tier';
 
 export type SessionData = {
     'follower-latest': {

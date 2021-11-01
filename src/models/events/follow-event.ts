@@ -4,6 +4,8 @@ import { StreamEvent } from './stream-event';
 import { StreamEventType } from './stream-event-type';
 
 export class FollowEvent extends StreamEvent {
+    public alertCssClass: string;
+
     public alertSound: string;
 
     public html: string;
@@ -16,6 +18,7 @@ export class FollowEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
+        this.alertCssClass = 'follow-alert';
         this.alertSound = FieldStore.Get<string>(FieldKeys.FollowAlertSound);
     }
 

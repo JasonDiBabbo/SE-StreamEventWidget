@@ -5,4 +5,3 @@ export { RaidEvent } from './raid-event';
 export { StreamEvent } from './stream-event';
 export { StreamEventType } from './stream-event-type';
 export { SubEvent } from './sub-event';
-export { SubTier } from './sub-tier';

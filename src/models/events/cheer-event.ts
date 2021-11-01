@@ -7,6 +7,8 @@ import { StreamEventType } from './stream-event-type';
  * The class definition of a Twitch cheer event
  */
 export class CheerEvent extends StreamEvent {
+    public alertCssClass: string;
+
     public alertSound: string;
 
     public html: string;
@@ -23,7 +25,22 @@ export class CheerEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
+        this.alertCssClass = this.getAlertCssClass();
         this.alertSound = FieldStore.Get<string>(FieldKeys.CheerAlertSound);
+    }
+
+    private getAlertCssClass(): string {
+        if (this.amount < 100) {
+            return 'tier-one-cheer-alert';
+        } else if (this.amount < 1000) {
+            return 'tier-two-cheer-alert';
+        } else if (this.amount < 5000) {
+            return 'tier-three-cheer-alert';
+        } else if (this.amount < 10000) {
+            return 'tier-four-cheer-alert';
+        } else {
+            return 'tier-five-cheer-alert';
+        }
     }
 
     private generateHtml(): string {

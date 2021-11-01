@@ -40,14 +40,18 @@ class StreamEventWidget {
             streamEvent = new CheerEvent(detail.event.name, detail.event.amount as number);
         } else if (detail.listener === 'subscriber-latest') {
             const isResultOfGiftedSub = detail.event.gifted && detail.event.isCommunityGift;
+
             if (isResultOfGiftedSub) {
-                // Do nothing
+                // Subs that were the resulting of a gifting
+                // In our case, do nothing
             } else if (detail.event.bulkGifted) {
+                // A user gifted multiple subs at once
                 streamEvent = new GiftedSubEvent(
                     detail.event.sender,
                     detail.event.amount as number
                 );
             } else if (detail.event.gifted) {
+                // A user gifted a single sub
                 streamEvent = new GiftedSubEvent(detail.event.sender);
             } else {
                 streamEvent = new SubEvent(
@@ -56,10 +60,6 @@ class StreamEventWidget {
                     detail.event.tier
                 );
             }
-        } else if (detail.listener === 'host-latest') {
-            // TODO: Investigate why raids are always joined with hosts
-            // streamEvent = new HostEvent(detail.event.name, detail.event.amount as number);
-            // persistEvent = false;
         } else if (detail.listener === 'raid-latest') {
             streamEvent = new RaidEvent(detail.event.name, detail.event.amount as number);
             persistEvent = false;

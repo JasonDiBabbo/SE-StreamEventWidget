@@ -1,10 +1,12 @@
 import { FieldKeys, FieldStore } from '@utilities';
 
+import { SubTier } from '../stream-elements';
 import { StreamEvent } from './stream-event';
 import { StreamEventType } from './stream-event-type';
-import { SubTier } from './sub-tier';
 
 export class SubEvent extends StreamEvent {
+    public alertCssClass: string;
+
     public alertSound: string;
 
     public html: string;
@@ -25,7 +27,32 @@ export class SubEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
+        this.alertCssClass = this.getAlertCssClass();
         this.alertSound = FieldStore.Get<string>(FieldKeys.SubAlertSound);
+    }
+
+    private getAlertCssClass(): string {
+        let css: string;
+
+        switch (this.tier) {
+            case '1000':
+                css = 'sub-alert';
+                break;
+            case '2000':
+                css = 'sub-alert';
+                break;
+            case '3000':
+                css = 'sub-alert';
+                break;
+            case 'prime':
+                css = 'prime-sub-alert';
+                break;
+            default:
+                css = 'sub-alert';
+                break;
+        }
+
+        return css;
     }
 
     private generateHtml(): string {

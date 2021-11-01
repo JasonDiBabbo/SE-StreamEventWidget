@@ -8,7 +8,6 @@ export {
     StreamEvent,
     StreamEventType,
     SubEvent,
-    SubTier,
 } from './events';
 
 export {
@@ -17,5 +16,6 @@ export {
     FieldData,
     SessionData,
     StreamElementsApi,
+    SubTier,
     WidgetLoadDetail,
-} from './streamElements';
+} from './stream-elements';

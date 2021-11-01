@@ -1,26 +1,26 @@
 {
-    "fontFamily": {
-        "group": "TEXT OPTIONS",
+    "globalAccentColor": {
+        "group": "Global - Colors",
+        "label": "Accent color",
+        "type": "colorpicker",
+        "value": "#2975EF"
+    },
+    "globalFontFamily": {
+        "group": "Global - Text",
         "type": "googleFont",
         "label": "Font family",
-        "value": "Montserrat"
+        "value": "Poppins"
     },
-    "fontSize": {
-        "group": "TEXT OPTIONS",
+    "globalFontSize": {
+        "group": "Global - Text",
         "label": "Font size (px)",
         "type": "number",
-        "value": 30,
+        "value": 32,
         "min": 1,
         "step": 1
     },
-    "fontColor": {
-        "group": "TEXT OPTIONS",
-        "label": "Font color",
-        "type": "colorpicker",
-        "value": "#FFFFFF"
-    },
-    "fontWeight": {
-        "group": "TEXT OPTIONS",
+    "globalFontWeight": {
+        "group": "Global - Text",
         "label": "Font weight",
         "type": "dropdown",
         "options": {
@@ -34,248 +34,223 @@
         },
         "value": "400"
     },
-    "letterSpacing": {
-        "group": "TEXT OPTIONS",
+    "globalFontColor": {
+        "group": "Global - Text",
+        "label": "Font color",
+        "type": "colorpicker",
+        "value": "#FFFFFF"
+    },
+    "globalFontLetterSpacing": {
+        "group": "Global - Text",
         "label": "Letter spacing (px)",
         "type": "number",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "badgeBarHeight": {
-        "group": "DIMENSIONS",
-        "label": " Badge/Bar height (px)",
-        "type": "number",
-        "value": 80,
-        "min": 0,
-        "step": 1
-    },
-    "badgeWidth": {
-        "group": "DIMENSIONS",
-        "label": "Badge width (px)",
-        "type": "number",
-        "value": 80,
-        "min": 0,
-        "step": 1
-    },
-    "barWidth": {
-        "group": "DIMENSIONS",
-        "label": "Bar width (px)",
-        "type": "number",
-        "value": 600,
-        "min": 0,
-        "step": 1
-    },
-    "borderRadius": {
-        "group": "DIMENSIONS",
-        "label": "Roundness (px)",
-        "type": "number",
-        "value": 18,
-        "min": 0,
-        "step": 1
-    },
-    "badgeVideo": {
-        "group": "BADGE",
-        "label": "Badge video",
-        "type": "video-input"
-    },
-    "badgeBackgroundColor": {
-        "group": "BADGE",
-        "label": "Background color",
-        "type": "colorpicker",
-        "value": "#231F20"
-    },
-    "feedOrientation": {
-        "group": "BADGE",
-        "label": "Location:",
-        "type": "dropdown",
-        "options": {
-            "row": "Left",
-            "row-reverse": "Right",
-            "column": "Top",
-            "column-reverse": "Bottom"
-        },
-        "value": "row"
-    },
-    "barBackgroundColor": {
-        "group": "BAR",
-        "label": "Background color",
-        "type": "colorpicker",
-        "value": "#231F20"
-    },
-    "accentColor": {
-        "group": "BAR",
-        "label": "Accent color",
-        "type": "colorpicker",
-        "value": "#3985FE"
-    },
-    "dropShadowOffsetX": {
-        "group": "SHADOWS",
+    "globalShadowXOffset": {
+        "group": "Global - Shadows",
         "label": "Drop shadow x-offset (px)",
         "type": "number",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "dropShadowOffsetY": {
-        "group": "SHADOWS",
+    "globalShadowYOffset": {
+        "group": "Global - Shadows",
         "label": "Drop shadow y-offset (px)",
         "type": "number",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "dropShadowBlurRadius": {
-        "group": "SHADOWS",
+    "globalShadowBlurRadius": {
+        "group": "Global - Shadows",
         "label": "Drop shadow blur radius (px)",
         "type": "number",
         "value": 0,
         "min": 0,
         "step": 1
     },
-    "dropShadowColor": {
-        "group": "SHADOWS",
-        "label": "Shadow color",
+    "globalShadowColor": {
+        "group": "Global - Shadows",
+        "label": "Drop shadow color",
         "type": "colorpicker",
         "value": "#303030"
     },
-    "eventFadeTime": {
-        "group": "ANIMATION",
-        "label": "Cycle - Fade in/out time (s)",
-        "type": "number",
-        "value": 2,
-        "min": 1
-    },
-    "eventDisplayTime": {
-        "group": "ANIMATION",
-        "label": "Cycle - Display time (s)",
-        "type": "number",
-        "value": 10,
-        "min": 4
-    },
-    "alertSlideTime": {
-        "group": "ANIMATION",
-        "label": "Alert - Slide in/out time (s)",
+    "feedAlertEnterTime": {
+        "group": "Event Feed - Animations",
+        "label": "Alert slide in time (s)",
         "type": "number",
         "value": 0.75,
         "min": 0.25
     },
-    "alertDisplayTime": {
-        "group": "ANIMATION",
-        "label": "Alert - Display time (s)",
+    "feedAlertDisplayTime": {
+        "group": "Event Feed - Animations",
+        "label": "Alert display time (s)",
         "type": "number",
         "value": 2,
         "min": 0.5
     },
-    "alertFadeTime": {
-        "group": "ANIMATION",
-        "label": "Alert - Fade time (s)",
+    "feedAlertFadeTime": {
+        "group": "Event Feed - Animations",
+        "label": "Alert fade time (s)",
         "type": "number",
         "value": 2,
         "min": 1
     },
-    "followAlertColor": {
-        "group": "FOLLOW ALERTS",
-        "label": "Follow alert color",
+    "feedEventDisplayTime": {
+        "group": "Event Feed - Animations",
+        "label": "Event display time (s)",
+        "type": "number",
+        "value": 10,
+        "min": 4
+    },
+    "feedEventFadeTime": {
+        "group": "Event Feed - Animations",
+        "label": "Event fade time (s)",
+        "type": "number",
+        "value": 2,
+        "min": 1
+    },
+    "feedBackgroundColor": {
+        "group": "Event Feed - Colors",
+        "label": "Background color",
         "type": "colorpicker",
-        "value":"#2975ef"
+        "value": "#1E1E1E"
+    },
+    "feedHeight": {
+        "group": "Event Feed - Dimensions",
+        "label": "Height (px)",
+        "type": "number",
+        "value": 80,
+        "min": 0,
+        "step": 1
+    },
+    "feedWidth": {
+        "group": "Event Feed - Dimensions",
+        "label": "Width (px)",
+        "type": "number",
+        "value": 600,
+        "min": 0,
+        "step": 1
+    },
+    "feedBorderRadius": {
+        "group": "Event Feed - Dimensions",
+        "label": "Border radius (px)",
+        "type": "number",
+        "value": 18,
+        "min": 0,
+        "step": 1
+    },
+    "followAlertColor": {
+        "group": "Twitch Alerts",
+        "label": "New follow alert color",
+        "type": "colorpicker",
+        "value": "#2975EF"
     },
     "followAlertSound": {
-        "group": "FOLLOW ALERTS",
+        "group": "Twitch Alerts",
         "type": "sound-input",
-        "label": "Follow alert sound"
+        "label": "New follow alert sound"
     },
     "subAlertColor": {
-        "group": "SUB ALERTS",
-        "label": "Sub alert color",
+        "group": "Twitch Alerts",
+        "label": "New sub alert color",
         "type": "colorpicker",
-        "value":"#2975EF"
-    },
-    "primeSubAlertColor": {
-        "group": "SUB ALERTS",
-        "label": "Prime sub alert color",
-        "type": "colorpicker",
-        "value":"#00A9E3"
+        "value": "#2975EF"
     },
     "subAlertSound": {
-        "group": "SUB ALERTS",
+        "group": "Twitch Alerts",
         "type": "sound-input",
-        "label": "Sub alert sound"
+        "label": "New sub alert sound"
+    },
+    "primeSubAlertColor": {
+        "group": "Twitch Alerts",
+        "label": "New prime sub color",
+        "type": "colorpicker",
+        "value": "#00A9E3"
+    },
+    "primeSubAlertSound": {
+        "group": "Twitch Alerts",
+        "type": "sound-input",
+        "label": "New prime sub alert sound"
     },
     "giftedSubAlertColor": {
-        "group": "GIFTED SUB ALERTS",
-        "label": "Gifted sub alert color",
+        "group": "Twitch Alerts",
+        "label": "New gifted sub color",
         "type": "colorpicker",
-        "value":"#2975EF"
+        "value": "#00A9E3"
     },
     "giftedSubAlertSound": {
-        "group": "GIFTED SUB ALERTS",
-        "label": "Gifted sub alert sound",
-        "type": "sound-input"
-    },
-    "tierOneCheerAlertColor": {
-        "group": "CHEER ALERTS",
-        "label": "Tier 1 cheer alert color",
-        "type": "colorpicker",
-        "value":"#7C7C7C"
-    },
-    "tierTwoCheerAlertColor": {
-        "group": "CHEER ALERTS",
-        "label": "Tier 2 cheer alert color",
-        "type": "colorpicker",
-        "value":"#9E6FFF"
-    },
-    "tierThreeCheerAlertColor": {
-        "group": "CHEER ALERTS",
-        "label": "Tier 3 cheer alert color",
-        "type": "colorpicker",
-        "value":"#07A881"
-    },
-    "tierFourCheerAlertColor": {
-        "group": "CHEER ALERTS",
-        "label": "Tier 4 cheer alert color",
-        "type": "colorpicker",
-        "value":"#2142B5"
-    },
-    "tierFiveCheerAlertColor": {
-        "group": "CHEER ALERTS",
-        "label": "Tier 5 cheer alert color",
-        "type": "colorpicker",
-        "value":"#DD1919"
-    },
-    "cheerAlertSound": {
-        "group": "CHEER ALERTS",
+        "group": "Twitch Alerts",
         "type": "sound-input",
-        "label": "Cheer alert sound"
-    },
-    "hostAlertColor": {
-        "group": "HOST ALERTS",
-        "label": "Host alert color",
-        "type": "colorpicker",
-        "value":"#2975EF"
-    },
-    "hostAlertSound": {
-        "group": "HOST ALERTS",
-        "type": "sound-input",
-        "label": "Host alert sound"
+        "label": "New gifted sub alert sound"
     },
     "raidAlertColor": {
-        "group": "RAID ALERTS",
-        "label": "Raid alert color",
+        "group": "Twitch Alerts",
+        "label": "Raid color",
         "type": "colorpicker",
         "value":"#2975EF"
     },
     "raidAlertSound": {
-        "group": "RAID ALERTS",
+        "group": "Twitch Alerts",
         "type": "sound-input",
-        "label": "Raid alert sound"
+        "label": "New raid alert sound"
     },
-    "widgetDuration": {
-        "group": "MISC.",
-        "label": "Event queue wait time (s)",
-        "type": "number",
-        "value": 5,
-        "min": 5,
-        "step": 1
+    "tierOneCheerAlertColor": {
+        "group": "Twitch Alerts",
+        "label": "Tier 1 cheer alert color",
+        "type": "colorpicker",
+        "value":"#7C7C7C"
+    },
+    "tierOneCheerAlertSound": {
+        "group": "Twitch Alerts",
+        "type": "sound-input",
+        "label": "Tier 1 cheer alert sound"
+    },
+    "tierTwoCheerAlertColor": {
+        "group": "Twitch Alerts",
+        "label": "Tier 2 cheer alert color",
+        "type": "colorpicker",
+        "value":"#9E6FFF"
+    },
+    "tierTwoCheerAlertSound": {
+        "group": "Twitch Alerts",
+        "type": "sound-input",
+        "label": "Tier 2 cheer alert sound"
+    },
+    "tierThreeCheerAlertColor": {
+        "group": "Twitch Alerts",
+        "label": "Tier 3 cheer alert color",
+        "type": "colorpicker",
+        "value":"#07A881"
+    },
+    "tierThreeCheerAlertSound": {
+        "group": "Twitch Alerts",
+        "type": "sound-input",
+        "label": "Tier 3 cheer alert sound"
+    },
+    "tierFourCheerAlertColor": {
+        "group": "Twitch Alerts",
+        "label": "Tier 4 cheer alert color",
+        "type": "colorpicker",
+        "value":"#2142B5"
+    },
+    "tierFourCheerAlertSound": {
+        "group": "Twitch Alerts",
+        "type": "sound-input",
+        "label": "Tier 4 cheer alert sound"
+    },
+    "tierFiveCheerAlertColor": {
+        "group": "Twitch Alerts",
+        "label": "Tier 5 cheer alert color",
+        "type": "colorpicker",
+        "value":"#DD1919"
+    },
+    "tierFiveCheerAlertSound": {
+        "group": "Twitch Alerts",
+        "type": "sound-input",
+        "label": "Tier 5 cheer alert sound"
     }
 }
