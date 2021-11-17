@@ -1,48 +1,88 @@
-import { Bar, Slide, SlideContent, Slides, StreamEvent } from '@models';
+import { StreamEvent } from '@models';
 import { EventService } from '@services';
-import { AlertHelper, FieldKeys, FieldStore } from '@utilities';
+import { FieldKeys, FieldStore } from '@utilities';
 
 export class EventFeed {
-    private alertDisplayTime: number;
-    private eventDisplayTime: number;
+    /**
+     * Gets the current slide from the DOM
+     */
+    public get currentSlide(): HTMLElement {
+        const slides = this.slideDeck.children;
 
+        if (!slides || slides.length < 1) {
+            throw new Error(`Cannot get current slide. No slides in slide deck.`);
+        }
+
+        const currentSlide = slides[0] as HTMLElement;
+        return currentSlide;
+    }
+
+    private readonly document: Document;
+
+    private readonly slideDeck: HTMLElement;
+
+    /**
+     * The amount of time an alert is allowed to remain active before being evicted for the next event
+     */
+    private readonly alertDisplayTime: number;
+
+    /**
+     * The amount of time an event is allowed to display before being evicted for the next one
+     */
+    private readonly eventDisplayTime: number;
+
+    /**
+     * Initializes a new instance of the {@link EventFeed} class
+     *
+     * @param eventService The event service
+     */
     constructor(private eventService: EventService) {
-        this.alertDisplayTime = FieldStore.Get<number>(FieldKeys.AlertDisplayTime);
-        this.eventDisplayTime = FieldStore.Get<number>(FieldKeys.EventDisplayTime);
-    }
-
-    public addEvents(...events: StreamEvent[]): void {
-        if (!events) {
-            throw new Error(`Parameter 'events' cannot be null or undefined.`);
+        if (!this.eventService) {
+            throw new Error(`Parameter 'eventService' is null or undefined.`);
         }
 
-        events.forEach((event) => this.eventService.registerEvent(event));
-    }
-
-    public beginCycle(): void {
-        this.initializeCurrentSlide().then((slide) => this.cycleContent(slide));
-    }
-
-    public triggerAlert(event: StreamEvent, persistEvent = true): void {
-        if (persistEvent) {
-            this.addEvents(event);
+        if (!document) {
+            throw new Error(`Global 'document' object is null or undefined.`);
         }
 
-        const bar = this.getBar();
-        const currentSlide = this.getCurrentSlide();
-        const newSlide = AlertHelper.createAlertSlide(event);
+        this.document = document;
+        this.slideDeck = this.document.querySelector('.slide-deck');
+        this.alertDisplayTime = FieldStore.Get<number>(FieldKeys.FeedAlertDisplayTime);
+        this.eventDisplayTime = FieldStore.Get<number>(FieldKeys.FeedEventDisplayTime);
+    }
 
-        this.placeSlideOffscreenBottom(newSlide);
-        bar.appendChild(newSlide);
+    /**
+     * Starts the feed to begin processing events
+     */
+    public start(): void {
+        this.initializeCurrentSlide().then((slide) => this.processEvents(slide));
+    }
+
+    /**
+     * Triggers an alert on the feed
+     *
+     * @param event The new event
+     */
+    public triggerAlert(event: StreamEvent): void {
+        const currentSlide = this.currentSlide;
+        const newSlide = this.createAlertSlide(event);
+
+        this.slideDeck.appendChild(newSlide);
 
         Promise.all([this.animateSlideUpOut(currentSlide), this.animateSlideUpIn(newSlide)])
-            .then(() => bar.removeChild(currentSlide))
-            .then(() => this.waitForAlertDisplay())
-            .then(() => this.markAlertAsRead(newSlide))
-            .then(() => this.cycleContent(newSlide));
+            .then(() => this.slideDeck.removeChild(currentSlide))
+            .then(() => this.wait(this.alertDisplayTime))
+            .then(() => this.clearAlert(newSlide))
+            .then(() => this.processEvents(newSlide));
     }
 
-    private animateSlideUpIn(slide: Slide): Promise<void> {
+    /**
+     * Animates a slide up and into the feed
+     *
+     * @param slide The slide to animate
+     * @returns A void promise
+     */
+    private animateSlideUpIn(slide: HTMLElement): Promise<void> {
         this.requestBrowserAnimation(slide);
 
         return new Promise<void>((resolve) => {
@@ -58,7 +98,13 @@ export class EventFeed {
         });
     }
 
-    private animateSlideUpOut(slide: Slide): Promise<void> {
+    /**
+     * Animates a slide up and out of the feed
+     *
+     * @param slide The slide to animate
+     * @returns A void promise
+     */
+    private animateSlideUpOut(slide: HTMLElement): Promise<void> {
         return new Promise<void>((resolve) => {
             const handler = (event: TransitionEvent) => {
                 if (event.propertyName === 'transform') {
@@ -72,62 +118,13 @@ export class EventFeed {
         });
     }
 
-    private cycleContent(slide: Slide): void {
-        this.processSlideContent(slide).then(() => {
-            if (slide === this.getCurrentSlide()) {
-                this.cycleContent(slide);
-            }
-        });
-    }
-
-    private getBar(): Bar {
-        return document.querySelector('.bar');
-    }
-
-    private getCurrentSlide(): Slide {
-        const bar = this.getBar();
-
-        if (!bar) {
-            throw new Error(`Element with '.bar' class not found.`);
-        }
-
-        const slides: Slides = bar.children;
-        if (!slides || slides.length < 1) {
-            throw new Error(`No children found in bar.`);
-        }
-
-        const currentSlide: Slide = slides[0] as HTMLElement;
-        return currentSlide;
-    }
-
-    private getSlideContent(slide: Slide): SlideContent {
-        return slide.children[0] as SlideContent;
-    }
-
-    private hideContent(slide: Slide): Promise<void> {
-        const content = this.getSlideContent(slide);
-
-        return new Promise((resolve) => {
-            const handler = (event: TransitionEvent) => {
-                if (event.propertyName === 'opacity') {
-                    content.removeEventListener('transitionend', handler);
-                    resolve();
-                }
-            };
-
-            content.addEventListener('transitionend', handler);
-            content.classList.add('hidden');
-        });
-    }
-
-    private initializeCurrentSlide(): Promise<Slide> {
-        const slide = this.getCurrentSlide();
-        const event = this.eventService.getCurrentEvent();
-
-        return this.populateSlide(slide, event).then(() => slide);
-    }
-
-    private markAlertAsRead(slide: Slide): Promise<void> {
+    /**
+     * Transitions a slide out of the alert state
+     *
+     * @param slide The slide to transition
+     * @returns A void promise
+     */
+    private clearAlert(slide: HTMLElement): Promise<void> {
         return new Promise<void>((resolve) => {
             const handler = (event: TransitionEvent) => {
                 if (event.propertyName === 'background-color') {
@@ -141,55 +138,154 @@ export class EventFeed {
         });
     }
 
-    private placeSlideOffscreenBottom(slide: Slide): void {
-        slide.classList.add('offscreen-bottom');
+    /**
+     * Creates a slide for a new alert
+     *
+     * @param event The event to create an alert slide for
+     * @returns The slide element
+     */
+    private createAlertSlide(event: StreamEvent): HTMLElement {
+        const slide = document.createElement('div');
+        slide.classList.add('slide');
+        slide.innerHTML = event.html;
+        slide.classList.add(event.alertCssClass, 'offscreen-bottom');
+
+        return slide;
     }
 
-    private populateSlide(slide: Slide, event: StreamEvent): Promise<void> {
-        const content = this.getSlideContent(slide);
-
-        return new Promise<void>((resolve) => {
-            content.innerHTML = event.html;
-            resolve();
-        });
-    }
-
-    private processSlideContent(slide: Slide): Promise<void> {
-        return this.waitForEventDisplay()
-            .then(() => this.hideContent(slide))
-            .then(() => this.populateSlide(slide, this.eventService.getNextEvent()))
-            .then(() => this.revealContent(slide));
-    }
-
-    private requestBrowserAnimation(element: HTMLElement): void {
-        void element.offsetWidth;
-    }
-
-    private revealContent(slide: Slide): Promise<void> {
-        const content = this.getSlideContent(slide);
-
+    /**
+     * Fades in the content of a slide
+     *
+     * @param slide The slide to fade in
+     * @returns A void promise
+     */
+    private fadeInSlideEvent(slide: HTMLElement): Promise<void> {
         return new Promise((resolve) => {
             const handler = (event: TransitionEvent) => {
                 if (event.propertyName === 'opacity') {
-                    content.removeEventListener('transitionend', handler);
+                    slide.removeEventListener('transitionend', handler);
                     resolve();
                 }
             };
 
-            content.addEventListener('transitionend', handler);
-            content.classList.remove('hidden');
+            slide.addEventListener('transitionend', handler);
+            slide.classList.remove('hidden');
         });
     }
 
-    private waitForAlertDisplay(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            window.setTimeout(() => resolve(), this.alertDisplayTime);
+    /**
+     * Fades out the content of a slide
+     *
+     * @param slide The slide to fade out
+     * @returns A void promise
+     */
+    private fadeOutSlideEvent(slide: HTMLElement): Promise<void> {
+        return new Promise((resolve) => {
+            const handler = (event: TransitionEvent) => {
+                if (event.propertyName === 'opacity') {
+                    slide.removeEventListener('transitionend', handler);
+                    resolve();
+                }
+            };
+
+            slide.addEventListener('transitionend', handler);
+            slide.classList.add('hidden');
         });
     }
 
-    private waitForEventDisplay(): Promise<void> {
+    /**
+     * Initializes the current slide with event data
+     *
+     * @returns A promise of the slide
+     */
+    private initializeCurrentSlide(): Promise<HTMLElement> {
+        const slide = this.currentSlide;
+        const event = this.eventService.getCurrentEvent();
+
+        return this.setSlide(slide, event.html).then(() => slide);
+    }
+
+    /**
+     * Cycles through events on a slide
+     *
+     * @param slide The slide to cycle events on
+     */
+    private processEvents(slide: HTMLElement): void {
+        const nextEvent = this.eventService.getNextEvent();
+
+        this.processSlideEvent(slide, nextEvent).then(() => {
+            /**
+             * Compare the slide we've been working with to the one that's
+             * the first child of the slide deck in the DOM.
+             * We know that the slide we're using is no longer
+             * valid if it's not the first child.
+             */
+
+            if (slide === this.currentSlide) {
+                this.processEvents(slide);
+            }
+        });
+    }
+
+    /**
+     * Displays an event on a slide
+     *
+     * @param slide The slide to include the event on
+     * @param event The event to display
+     * @returns A void promise
+     */
+    private processSlideEvent(slide: HTMLElement, event: StreamEvent): Promise<void> {
+        // Old implementation
+        // return this.wait(this.eventDisplayTime)
+        //     .then(() => this.fadeOutSlideEvent(slide))
+        //     .then(() => this.setSlide(slide, this.eventService.getNextEvent()))
+        //     .then(() => this.fadeInSlideEvent(slide));
+
+        return this.wait(this.eventDisplayTime)
+            .then(() => this.fadeOutSlideEvent(slide))
+            .then(() => this.setSlide(slide, event.html))
+            .then(() => this.fadeInSlideEvent(slide));
+    }
+
+    /**
+     * Forces the browser to process new animations
+     *
+     * When new DOM elements are introduced, associated
+     * animations may have trouble firing.
+     *
+     * NOTE: This is a workaround/hack, not a supported
+     * API call of any kind.
+     *
+     * @param element The element being animated
+     */
+    private requestBrowserAnimation(element: HTMLElement): void {
+        void element.offsetWidth;
+    }
+
+    /**
+     * Sets the content of a slide
+     *
+     * @param slide The slide being set
+     * @param html The HTML string to set as the slide content
+     *
+     * @returns A void promise
+     */
+    private setSlide(slide: HTMLElement, html: string): Promise<void> {
         return new Promise<void>((resolve) => {
-            window.setTimeout(() => resolve(), this.eventDisplayTime);
+            slide.innerHTML = html;
+            resolve();
+        });
+    }
+
+    /**
+     * Waits for a specified duration
+     *
+     * @param duration The duration to wait in ms
+     * @returns A void promise
+     */
+    private wait(duration: number): Promise<void> {
+        return new Promise<void>((resolve) => {
+            window.setTimeout(() => resolve(), duration);
         });
     }
 }

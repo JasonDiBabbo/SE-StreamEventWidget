@@ -26,7 +26,7 @@ export class CheerEvent extends StreamEvent {
 
         this.html = this.generateHtml();
         this.alertCssClass = this.getAlertCssClass();
-        this.alertSound = FieldStore.Get<string>(FieldKeys.CheerAlertSound);
+        this.alertSound = this.getAlertSound();
     }
 
     private getAlertCssClass(): string {
@@ -41,6 +41,24 @@ export class CheerEvent extends StreamEvent {
         } else {
             return 'tier-five-cheer-alert';
         }
+    }
+
+    private getAlertSound(): string {
+        let key: string;
+
+        if (this.amount < 100) {
+            key = FieldKeys.TierOneCheerAlertSound;
+        } else if (this.amount < 1000) {
+            key = FieldKeys.TierTwoCheerAlertSound;
+        } else if (this.amount < 5000) {
+            key = FieldKeys.TierThreeCheerAlertSound;
+        } else if (this.amount < 10000) {
+            key = FieldKeys.TierFourCheerAlertSound;
+        } else {
+            key = FieldKeys.TierFiveCheerAlertSound;
+        }
+
+        return FieldStore.Get<string>(key);
     }
 
     private generateHtml(): string {

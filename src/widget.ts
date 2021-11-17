@@ -1,8 +1,8 @@
 import { EventFeed } from '@components';
 import {
     CheerEvent,
+    EventData,
     EventReceivedDetail,
-    FieldData,
     FollowEvent,
     GiftedSubEvent,
     RaidEvent,
@@ -17,16 +17,133 @@ import { FieldKeys, FieldStore, Time } from '@utilities';
 
 declare const SE_API: StreamElementsApi;
 
-class StreamEventWidget {
+export class StreamEventWidget {
     private readonly skippableEvents = ['bot:counter', 'event:test', 'event:skip', 'message'];
+
+    private readonly window: Window;
+
+    private readonly document: Document;
 
     private audioService: AudioService;
 
     private eventService: EventService;
 
-    private bar: EventFeed;
+    private eventFeed: EventFeed;
 
-    public onEventReceived(detail: EventReceivedDetail): void {
+    constructor() {
+        if (!globalThis.window) {
+            throw new Error(`Global 'window' object was null or undefined.`);
+        }
+
+        if (!document) {
+            throw new Error(`Global 'document' object was null or undefined.`);
+        }
+
+        this.window = globalThis.window;
+        this.document = document;
+        this.setupEventListeners();
+    }
+
+    private canSkipEvent(detail: EventReceivedDetail): boolean {
+        return this.skippableEvents.includes(detail.listener);
+    }
+
+    private getLatestCheerEvent(sessionData: SessionData): CheerEvent {
+        try {
+            const eventData = sessionData['cheer-latest'];
+            const event: CheerEvent = new CheerEvent(eventData.name, eventData.amount);
+            return event;
+        } catch {
+            return null;
+        }
+    }
+
+    private getLatestFollowEvent(sessionData: SessionData): FollowEvent {
+        try {
+            const eventData = sessionData['follower-latest'];
+            const event: FollowEvent = new FollowEvent(eventData.name);
+            return event;
+        } catch {
+            return null;
+        }
+    }
+
+    private getLatestSubEvent(sessionData: SessionData): SubEvent {
+        try {
+            const eventData = sessionData['subscriber-latest'];
+            const event =
+                eventData.gifted && eventData.amount === 'gift'
+                    ? new SubEvent(eventData.name, eventData.count, eventData.tier)
+                    : new SubEvent(eventData.name, eventData.amount as number, eventData.tier);
+            return event;
+        } catch {
+            return null;
+        }
+    }
+
+    private handleNewCheerEvent(eventData: EventData): StreamEvent {
+        return new CheerEvent(eventData.name, eventData.amount as number);
+    }
+
+    private handleNewFollowerEvent(eventData: EventData): StreamEvent {
+        return new FollowEvent(eventData.name);
+    }
+
+    private handleRaidEvent(eventData: EventData): StreamEvent {
+        return new RaidEvent(eventData.name, eventData.amount as number);
+    }
+
+    private handleNewSubscriberEvent(eventData: EventData): StreamEvent {
+        const isResultOfGiftedSub = eventData.gifted && eventData.isCommunityGift;
+
+        if (isResultOfGiftedSub) {
+            // Subs that were the result of a gifting
+
+            return null;
+        } else if (eventData.bulkGifted) {
+            // A user gifted multiple subs at once
+
+            return new GiftedSubEvent(eventData.sender, eventData.amount as number);
+        } else if (eventData.gifted) {
+            // A user gifted a single sub
+
+            return new GiftedSubEvent(eventData.sender);
+        } else {
+            // A user subscribed
+            // i.e. Tier 1, 2, 3 or Prime
+
+            return new SubEvent(eventData.name, eventData.amount as number, eventData.tier);
+        }
+    }
+
+    private initializeAudio(): void {
+        const audioElement = this.document.getElementById('alert-audio') as HTMLAudioElement;
+        this.audioService = new AudioService(audioElement);
+    }
+
+    private initializeEvents(sessionData: SessionData): void {
+        this.eventService = new EventService();
+
+        const latestFollowEvent = this.getLatestFollowEvent(sessionData);
+        const latestSubEvent = this.getLatestSubEvent(sessionData);
+        const latestCheerEvent = this.getLatestCheerEvent(sessionData);
+
+        if (latestFollowEvent) {
+            this.eventService.registerEvent(latestFollowEvent);
+        }
+
+        if (latestSubEvent) {
+            this.eventService.registerEvent(latestSubEvent);
+        }
+
+        if (latestCheerEvent) {
+            this.eventService.registerEvent(latestCheerEvent);
+        }
+    }
+
+    private onEventReceived(obj: CustomEvent): void {
+        const detail = obj.detail as EventReceivedDetail;
+
         if (this.canSkipEvent(detail)) {
             return;
         }
@@ -34,135 +151,58 @@ class StreamEventWidget {
         let streamEvent: StreamEvent;
         let persistEvent = true;
 
-        if (detail.listener === 'follower-latest') {
-            streamEvent = new FollowEvent(detail.event.name);
-        } else if (detail.listener === 'cheer-latest') {
-            streamEvent = new CheerEvent(detail.event.name, detail.event.amount as number);
-        } else if (detail.listener === 'subscriber-latest') {
-            const isResultOfGiftedSub = detail.event.gifted && detail.event.isCommunityGift;
-
-            if (isResultOfGiftedSub) {
-                // Subs that were the resulting of a gifting
-                // In our case, do nothing
-            } else if (detail.event.bulkGifted) {
-                // A user gifted multiple subs at once
-                streamEvent = new GiftedSubEvent(
-                    detail.event.sender,
-                    detail.event.amount as number
-                );
-            } else if (detail.event.gifted) {
-                // A user gifted a single sub
-                streamEvent = new GiftedSubEvent(detail.event.sender);
-            } else {
-                streamEvent = new SubEvent(
-                    detail.event.name,
-                    detail.event.amount as number,
-                    detail.event.tier
-                );
-            }
-        } else if (detail.listener === 'raid-latest') {
-            streamEvent = new RaidEvent(detail.event.name, detail.event.amount as number);
-            persistEvent = false;
+        switch (detail.listener) {
+            case 'follower-latest':
+                streamEvent = this.handleNewFollowerEvent(detail.event);
+                break;
+            case 'cheer-latest':
+                streamEvent = this.handleNewCheerEvent(detail.event);
+                break;
+            case 'subscriber-latest':
+                streamEvent = this.handleNewSubscriberEvent(detail.event);
+                break;
+            case 'raid-latest':
+                streamEvent = this.handleRaidEvent(detail.event);
+                persistEvent = false;
+                break;
+            default:
+                break;
         }
 
         if (streamEvent) {
-            this.bar.triggerAlert(streamEvent, persistEvent);
+            if (persistEvent) {
+                this.eventService.registerEvent(streamEvent);
+            }
+
+            this.eventFeed.triggerAlert(streamEvent);
             this.audioService.playAudio(streamEvent.alertSound);
         } else {
             SE_API.resumeQueue();
         }
     }
 
-    public onWidgetLoad(detail: WidgetLoadDetail): void {
+    private onWidgetLoad(obj: CustomEvent): void {
+        const detail = obj.detail as WidgetLoadDetail;
         const sessionData = detail.session.data;
         const fieldData = detail.fieldData;
-        const audioElement = document.getElementById('alert-audio') as HTMLAudioElement;
 
-        this.loadFieldData(fieldData);
+        FieldStore.Initialize(fieldData);
 
-        this.audioService = new AudioService(audioElement);
-        this.eventService = new EventService();
-        this.bar = new EventFeed(this.eventService);
-        this.loadInitialEvents(sessionData);
+        this.initializeAudio();
+        this.initializeEvents(sessionData);
 
-        this.bar.beginCycle();
+        this.eventFeed = new EventFeed(this.eventService);
+        this.eventFeed.start();
     }
 
-    private canSkipEvent(detail: EventReceivedDetail): boolean {
-        return this.skippableEvents.includes(detail.listener);
-    }
-
-    private loadFieldData(fieldData: FieldData): void {
-        const cheerAlertSound = fieldData.cheerAlertSound as string;
-        const followAlertSound = fieldData.followAlertSound as string;
-        const subAlertSound = fieldData.subAlertSound as string;
-        const giftedSubAlertSound = fieldData.giftedSubAlertSound as string;
-        const raidAlertSound = fieldData.raidAlertSound as string;
-        const hostAlertSound = fieldData.hostAlertSound as string;
-        const eventDisplayTime = Time.toMilliseconds(fieldData.eventDisplayTime as number);
-        const alertDisplayTime = Time.toMilliseconds(fieldData.alertDisplayTime as number);
-        const alertSlideTime = Time.toMilliseconds(fieldData.alertSlideTime as number);
-        const alertFadeTime = Time.toMilliseconds(fieldData.alertFadeTime as number);
-
-        FieldStore.Set(FieldKeys.CheerAlertSound, cheerAlertSound);
-        FieldStore.Set(FieldKeys.FollowAlertSound, followAlertSound);
-        FieldStore.Set(FieldKeys.SubAlertSound, subAlertSound);
-        FieldStore.Set(FieldKeys.GiftedSubAlertSound, giftedSubAlertSound);
-        FieldStore.Set(FieldKeys.RaidAlertSound, raidAlertSound);
-        FieldStore.Set(FieldKeys.HostAlertSound, hostAlertSound);
-        FieldStore.Set(FieldKeys.EventDisplayTime, eventDisplayTime);
-        FieldStore.Set(FieldKeys.AlertDisplayTime, alertDisplayTime);
-        FieldStore.Set(FieldKeys.AlertSlideTime, alertSlideTime);
-        FieldStore.Set(FieldKeys.AlertFadeTime, alertFadeTime);
-    }
-
-    private loadInitialEvents(sessionData: SessionData): void {
-        const latestFollowEvent = this.getLatestFollowEvent(sessionData);
-        const latestSubEvent = this.getLatestSubEvent(sessionData);
-        const latestCheerEvent = this.getLatestCheerEvent(sessionData);
-
-        this.bar.addEvents(latestFollowEvent, latestSubEvent, latestCheerEvent);
-    }
-
-    private getLatestCheerEvent(sessionData: SessionData): CheerEvent {
-        const cheerEventData = sessionData['cheer-latest'];
-        const latestCheerEvent: CheerEvent = new CheerEvent(
-            cheerEventData.name,
-            cheerEventData.amount
+    private setupEventListeners(): void {
+        this.window.addEventListener('onEventReceived', (obj) =>
+            this.onEventReceived(obj as CustomEvent)
         );
-        return latestCheerEvent;
-    }
-
-    private getLatestFollowEvent(sessionData: SessionData): FollowEvent {
-        const followEventData = sessionData['follower-latest'];
-        const latestFollowEvent: FollowEvent = new FollowEvent(followEventData.name);
-        return latestFollowEvent;
-    }
-
-    private getLatestSubEvent(sessionData: SessionData): SubEvent {
-        const subEventData = sessionData['subscriber-latest'];
-        let latestSubEvent: SubEvent;
-
-        if (subEventData.gifted && subEventData.amount === 'gift') {
-            latestSubEvent = new SubEvent(subEventData.name, subEventData.count, subEventData.tier);
-        } else {
-            latestSubEvent = new SubEvent(
-                subEventData.name,
-                subEventData.amount as number,
-                subEventData.tier
-            );
-        }
-
-        return latestSubEvent;
+        this.window.addEventListener('onWidgetLoad', (obj) =>
+            this.onWidgetLoad(obj as CustomEvent)
+        );
     }
 }
 
 const streamEventWidget = new StreamEventWidget();
-
-window.addEventListener('onEventReceived', function (obj) {
-    streamEventWidget.onEventReceived((obj as CustomEvent).detail);
-});
-
-window.addEventListener('onWidgetLoad', function (obj) {
-    streamEventWidget.onWidgetLoad((obj as CustomEvent).detail);
-});
