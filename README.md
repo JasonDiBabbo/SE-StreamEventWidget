@@ -6,6 +6,12 @@ If you're new to the StreamElements platform and/or have any questions about cus
 
 **Note**: This implementation is meant for use on **Twitch** live streams. StreamElements does offer API support for streaming on other platforms like YouTube or Facebook Gaming and it is my intention to create a fork repository of this one that is for the same purpose on YouTube Gaming.
 
+## Acknowledgements
+
+I want to acknowledge that the design of this widget is primarily based on that of one in use by [Sam Woodhall](https://twitter.com/SamCWoodhall).
+
+I was not provided any source code or implementation details from Sam Woodhall or anyone else involved with the development of the widget he uses. The implementation seen here is entirely based upon my observations of Sam's widget in action and/or any personal touches that may result in differences between our widgets.
+
 ## Using the widget
 
 To include the widget on your StreamElements overlay, first go to your StreamElements dashboard and create a new overlay. Copy the content of the `widget.html|css|js|json` files in the `dist/` directory to a custom widget. The compiled widget files are included in the repository for ease-of-use.
