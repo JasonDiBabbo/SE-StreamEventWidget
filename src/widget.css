@@ -22,7 +22,7 @@
   --sub-alert-color: {{subAlertColor}};
   --prime-sub-alert-color: {{primeSubAlertColor}};
   --gifted-sub-alert-color: {{giftedSubAlertColor}};
-  --raid--alertcolor: {{raidAlertColor}};
+  --raid-alert-color: {{raidAlertColor}};
   --tier-one-cheer-alert-color: {{tierOneCheerAlertColor}};
   --tier-two-cheer-alert-color: {{tierTwoCheerAlertColor}};
   --tier-three-cheer-alert-color: {{tierThreeCheerAlertColor}};
@@ -109,7 +109,6 @@ html {
   height: 1em;
   width: 1em;
   margin: 0px 24px;
-  /* flex: none; */ /* TODO: Did we need this? */
 }
 
 i.slide-icon {
@@ -120,7 +119,10 @@ svg.slide-icon > path {
   fill: var(--global-accent-color);
 }
 
-i.slide-icon,
+i.slide-icon {
+  transition: color var(--feed-alert-fade-time) linear;
+}
+
 svg.slide-icon > path {
   transition: fill var(--feed-alert-fade-time) linear;
 }
@@ -175,7 +177,6 @@ svg.slide-icon > path {
 
 .slide.follow-alert > i.slide-icon,
 .slide.sub-alert > i.slide-icon,
-.slide.prime-sub-alert > i.slide-icon,
 .slide.gifted-sub-alert > i.slide-icon,
 .slide.raid-alert > i.slide-icon {
   color: var(--global-font-color);
@@ -185,6 +186,7 @@ svg.slide-icon > path {
 .slide.tier-two-cheer-alert > svg.slide-icon > path,
 .slide.tier-three-cheer-alert > svg.slide-icon > path,
 .slide.tier-four-cheer-alert > svg.slide-icon > path,
-.slide.tier-five-cheer-alert > svg.slide-icon > path {
+.slide.tier-five-cheer-alert > svg.slide-icon > path,
+.slide.prime-sub-alert > svg.slide-icon > path {
   fill: var(--global-font-color);
 }
