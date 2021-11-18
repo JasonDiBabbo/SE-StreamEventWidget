@@ -1,9 +1,11 @@
 import { FieldKeys, FieldStore } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
 
 export class GiftedSubEvent extends StreamEvent {
+    public alertCssClass: string;
+
     public alertSound: string;
 
     public html: string;
@@ -20,6 +22,7 @@ export class GiftedSubEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
+        this.alertCssClass = 'gifted-sub-alert';
         this.alertSound = FieldStore.Get<string>(FieldKeys.GiftedSubAlertSound);
     }
 

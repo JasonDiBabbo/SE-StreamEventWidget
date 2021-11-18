@@ -1,4 +1,4 @@
-import { SubTier } from '../events/subTier';
+import { SubTier } from './sub-tier';
 
 export type EventData = {
     amount: 'gift' | number;

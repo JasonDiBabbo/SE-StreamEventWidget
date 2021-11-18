@@ -1,1 +1,1 @@
-export { StreamEventBar } from './streamEventBar';
+export { EventFeed } from './event-feed';

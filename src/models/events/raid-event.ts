@@ -1,9 +1,11 @@
 import { FieldKeys, FieldStore } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
 
 export class RaidEvent extends StreamEvent {
+    public alertCssClass: string;
+
     public alertSound: string;
 
     public html: string;
@@ -20,6 +22,7 @@ export class RaidEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
+        this.alertCssClass = 'raid-alert';
         this.alertSound = FieldStore.Get<string>(FieldKeys.RaidAlertSound);
     }
 
@@ -30,13 +33,5 @@ export class RaidEvent extends StreamEvent {
         const html = ` ${iconHtml}${textHtml}`;
 
         return html;
-    }
-
-    private getRaidAmountString(): string {
-        if (!!this.amount && this.amount > 0) {
-            return;
-        }
-
-        return '';
     }
 }

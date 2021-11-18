@@ -6,20 +6,12 @@ const prettier = require('gulp-prettier');
 const gulpWebpack = require('webpack-stream');
 const webpackCompiler = require('webpack');
 const webpackConfig = require('./webpack.config')
-const sass = require('gulp-sass');
 
 function bundle() {
     log('Running bundler');
 
     return src('src/widget.ts')
         .pipe(gulpWebpack(webpackConfig, webpackCompiler, function(err, stats) { }))
-        .pipe(dest('dist/'));
-}
-
-function compileStyles() {
-    log('Compiling styles');
-    return src('src/widget.scss')
-        .pipe(sass())
         .pipe(dest('dist/'));
 }
 
@@ -62,20 +54,18 @@ function lint() {
 function move() {
     log(`Moving widget.html|json to 'dist' directory`);
 
-    return src('src/widget.{html,json}').pipe(dest('dist/'));
+    return src('src/widget.{html,json,css}').pipe(dest('dist/'));
 }
 
 function watchFiles() {
     log('Watching widget.html|json|scss and *.ts');
     
-    watch('src/widget.{html,json}', move);
+    watch('src/widget.{html,json,css}', move);
     watch('src/**/*.ts', exports.default);
-    watch('src/widget.scss', exports.compileStyles);
 }
 
 exports.bundle = bundle;
 exports.clean = clean;
 exports.lint = lint;
-exports.watch = series(lint, clean, compileStyles, bundle, move, format, watchFiles);
-exports.compileStyles = compileStyles;
-exports.default = series(lint, clean, compileStyles, bundle, move, format);
+exports.watch = series(lint, clean, bundle, move, format, watchFiles);
+exports.default = series(lint, clean, bundle, move, format);

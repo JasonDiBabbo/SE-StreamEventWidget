@@ -1,5 +1,5 @@
-import { FieldData } from './fieldData';
-import { SessionData } from './sessionData';
+import { FieldData } from './field-data';
+import { SessionData } from './session-data';
 
 /**
  * A typed contract of the detail of a 'onWidgetLoad' event.

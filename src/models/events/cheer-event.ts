@@ -1,9 +1,14 @@
 import { FieldStore, FieldKeys } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
 
+/**
+ * The class definition of a Twitch cheer event
+ */
 export class CheerEvent extends StreamEvent {
+    public alertCssClass: string;
+
     public alertSound: string;
 
     public html: string;
@@ -20,7 +25,40 @@ export class CheerEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
-        this.alertSound = FieldStore.Get<string>(FieldKeys.CheerAlertSound);
+        this.alertCssClass = this.getAlertCssClass();
+        this.alertSound = this.getAlertSound();
+    }
+
+    private getAlertCssClass(): string {
+        if (this.amount < 100) {
+            return 'tier-one-cheer-alert';
+        } else if (this.amount < 1000) {
+            return 'tier-two-cheer-alert';
+        } else if (this.amount < 5000) {
+            return 'tier-three-cheer-alert';
+        } else if (this.amount < 10000) {
+            return 'tier-four-cheer-alert';
+        } else {
+            return 'tier-five-cheer-alert';
+        }
+    }
+
+    private getAlertSound(): string {
+        let key: string;
+
+        if (this.amount < 100) {
+            key = FieldKeys.TierOneCheerAlertSound;
+        } else if (this.amount < 1000) {
+            key = FieldKeys.TierTwoCheerAlertSound;
+        } else if (this.amount < 5000) {
+            key = FieldKeys.TierThreeCheerAlertSound;
+        } else if (this.amount < 10000) {
+            key = FieldKeys.TierFourCheerAlertSound;
+        } else {
+            key = FieldKeys.TierFiveCheerAlertSound;
+        }
+
+        return FieldStore.Get<string>(key);
     }
 
     private generateHtml(): string {

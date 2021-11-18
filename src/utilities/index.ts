@@ -1,3 +1,2 @@
-export { AlertHelper } from './alertHelper';
-export { FieldKeys, FieldStore } from './fieldStore';
+export { FieldKeys, FieldStore } from './field-store';
 export { Time } from './time';

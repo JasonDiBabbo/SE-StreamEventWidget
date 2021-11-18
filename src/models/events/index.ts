@@ -1,9 +1,7 @@
-export { CheerEvent } from './cheerEvent';
-export { FollowEvent } from './followEvent';
-export { GiftedSubEvent } from './giftedSubEvent';
-export { HostEvent } from './hostEvent';
-export { RaidEvent } from './raidEvent';
-export { StreamEvent } from './streamEvent';
-export { StreamEventType } from './streamEventType';
-export { SubEvent } from './subEvent';
-export { SubTier } from './subTier';
+export { CheerEvent } from './cheer-event';
+export { FollowEvent } from './follow-event';
+export { GiftedSubEvent } from './gifted-sub-event';
+export { RaidEvent } from './raid-event';
+export { StreamEvent } from './stream-event';
+export { StreamEventType } from './stream-event-type';
+export { SubEvent } from './sub-event';

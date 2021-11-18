@@ -1,10 +1,12 @@
 import { FieldKeys, FieldStore } from '@utilities';
 
-import { StreamEvent } from './streamEvent';
-import { StreamEventType } from './streamEventType';
-import { SubTier } from './subTier';
+import { SubTier } from '../stream-elements';
+import { StreamEvent } from './stream-event';
+import { StreamEventType } from './stream-event-type';
 
 export class SubEvent extends StreamEvent {
+    public alertCssClass: string;
+
     public alertSound: string;
 
     public html: string;
@@ -25,7 +27,50 @@ export class SubEvent extends StreamEvent {
         }
 
         this.html = this.generateHtml();
-        this.alertSound = FieldStore.Get<string>(FieldKeys.SubAlertSound);
+        this.alertCssClass = this.getAlertCssClass();
+        this.alertSound = this.getAlertSound();
+    }
+
+    private getAlertCssClass(): string {
+        let css: string;
+
+        switch (this.tier) {
+            case '1000':
+                css = 'sub-alert';
+                break;
+            case '2000':
+                css = 'sub-alert';
+                break;
+            case '3000':
+                css = 'sub-alert';
+                break;
+            case 'prime':
+                css = 'prime-sub-alert';
+                break;
+            default:
+                css = 'sub-alert';
+                break;
+        }
+
+        return css;
+    }
+
+    private getAlertSound(): string {
+        let key: string;
+
+        switch (this.tier) {
+            case 'prime':
+                key = FieldKeys.PrimeSubAlertSound;
+                break;
+            case '1000':
+            case '2000':
+            case '3000':
+            default:
+                key = FieldKeys.SubAlertSound;
+                break;
+        }
+
+        return FieldStore.Get<string>(key);
     }
 
     private generateHtml(): string {

@@ -1,15 +1,11 @@
-export { Bar, Slide, SlideContent, Slides } from './dom';
-
 export {
     CheerEvent,
     FollowEvent,
     GiftedSubEvent,
-    HostEvent,
     RaidEvent,
     StreamEvent,
     StreamEventType,
     SubEvent,
-    SubTier,
 } from './events';
 
 export {
@@ -18,5 +14,6 @@ export {
     FieldData,
     SessionData,
     StreamElementsApi,
+    SubTier,
     WidgetLoadDetail,
-} from './streamElements';
+} from './stream-elements';
