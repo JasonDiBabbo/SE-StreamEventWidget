@@ -13,7 +13,7 @@ import {
     WidgetLoadDetail,
 } from '@models';
 import { AudioService, EventService } from '@services';
-import { FieldKeys, FieldStore, Time } from '@utilities';
+import { FieldStore } from '@utilities';
 
 declare const SE_API: StreamElementsApi;
 
@@ -205,4 +205,4 @@ export class StreamEventWidget {
     }
 }
 
-const streamEventWidget = new StreamEventWidget();
+new StreamEventWidget();

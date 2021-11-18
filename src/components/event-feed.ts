@@ -1,6 +1,6 @@
 import { StreamEvent } from '@models';
 import { EventService } from '@services';
-import { FieldKeys, FieldStore } from '@utilities';
+import { FieldKeys, FieldStore, Time } from '@utilities';
 
 export class EventFeed {
     /**
@@ -47,8 +47,14 @@ export class EventFeed {
 
         this.document = document;
         this.slideDeck = this.document.querySelector('.slide-deck');
-        this.alertDisplayTime = FieldStore.Get<number>(FieldKeys.FeedAlertDisplayTime);
-        this.eventDisplayTime = FieldStore.Get<number>(FieldKeys.FeedEventDisplayTime);
+
+        this.alertDisplayTime = Time.toMilliseconds(
+            FieldStore.Get<number>(FieldKeys.FeedAlertDisplayTime)
+        );
+
+        this.eventDisplayTime = Time.toMilliseconds(
+            FieldStore.Get<number>(FieldKeys.FeedEventDisplayTime)
+        );
     }
 
     /**
